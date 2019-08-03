@@ -1,0 +1,128 @@
+      <h2>Introduction</h2>
+      <p><strong>Four kinds of programming paradigms</strong></p>
+    <ul>
+      <li><b> Imperative:</b> First do this, then do that (Algol, C, Pascal)</li>
+      <li><b> Functional:</b> Declarative, originates from mathematical discipline (Scheme, Lisp, Scala)</li>
+      <li><b> Logic:</b> Based on axioms, inference rules and queries (Prolog)</li>
+      <li><b> Object oriented:</b> Supports encapsulation and logical grouping of program aspects (SmallTalk, Java, C++)</li>
+    </ul>
+
+    <p><strong>OO programming = OO thinking + programming</strong></p>
+    <ul>
+      <li>There is literally nothing an OO program can do which an imperative program cannot. Just a way of thinking 
+      and organizing.</li>
+      <li>Centered around the concept of <em>objects</em> that contain (i) data, referred to as <em>fields</em> or 
+      <em>attributes</em> and (ii) code in the form of procedures, referred to as <em>methods</em>, that manipulate 
+      the data.</li>
+      <li>An object's procedures can access and often modify the data fields of the object with which they are 
+      associated.</li>
+      <li>Features include encapsulation, data hiding, composition, inheritance,  delegation, polymorphism, dynamic dispatch.</li>
+      <li>Helps in better comprehensibility, safety, reusability, extensibility and maintainability.</li>
+    </ul>
+
+    <p><strong>Java</strong></p>
+    <ul>
+      <li>A general-purpose computer programming language that is concurrent, class-based, object-oriented.</li>
+      <li>Specifically designed to have as few dependencies as possible. Write once, run anywhere (WORA).</li>
+      <li>Java applications are typically compiled to bytecode that can run on any Java virtual machine (JVM) 
+      regardless of computer architecture.</li>
+      <li>Originally developed by James Gosling at Sun Microsystems (which has since been acquired by Oracle 
+      Corp.)</li>
+      <li>The language derives much of its syntax from C and C++, but it has fewer low-level facilities than 
+      either of them.</li>
+      <li>The latest version is Java 9.</li>
+    </ul>
+
+    <p>Java's main strength: <b> Libraries </b> -- that spans length and breadth of technologies: </p>
+    <ul>
+      <li>Core programming, GUI development, Event driven programming,</li>
+      <li>Networking, Web development, Enterprise development,</li>
+      <li>Concurrency, Parallel and Distributed programming, Big data,</li>
+      <li>Embedded, Mobile, ...... the list never ends</li>
+    </ul>
+
+    <p><strong>Writing Java programs</strong></p>
+    <ul>
+      <li>You can use any editor: vi, emacs, textedit, notepad.</li>
+      <li>Source files are saved with <b>.java</b> extension</li>
+      <li><b>javac Hello.java</b> at command prompt/terminal for compilation</li>
+      <li><b>java Hello</b> at command prompt/terminal for execution</li>
+    </ul>
+
+    <p> An Example: Sigma.java </p>
+    <pre class = "brush: java;">
+    public class Sigma {
+       public static void main(String[] args) {
+          Sigma f = new Sigma();
+          int sum = f.findSum(10);
+          System.out.println(&quot;sum = &quot; + sum);
+       }
+
+       public int findSum(int num) {
+          int sum = 0;
+          for (int i=1; i&lt;=num; i++)
+             sum += num;
+          return sum;
+       }
+    }
+    </pre>
+
+    <p>cmd&gt; javac Sigma.java    =&gt; Creates Sigma.class<br>
+       cmd&gt; java Sigma<br>
+       sum = 55<br>
+       cmd&gt;<br>
+    </p>
+
+    <p>Please note: File name should be same as the class name.</p>
+
+    <h3>We will use Eclipse - an Integrated Development Environment (IDE)</h3>
+    <ul>
+      <li>Enables faster development and easier debugging.</li>
+      <li>JUnit - a unit testing framework integrated with Eclipse.</li>
+      <li>JIVE - an add-on to Eclipse, for visualizing program execution.</li>
+    </ul>
+
+    
+   <h2>About the course</h2>
+
+    <p>1. This course is on <em>object oriented programming</em> and Java is used as the vehicle to expose the OO paradigm.</p>
+
+    <p>2. Most of the object oriented concepts are centered around a single example to develop a better intuition. 
+    The expectation is that one grasps the principles of object orientation and apply them in developing medium 
+    to large applications.</p>
+
+    <p>3. The emphasis will be on the object oriented concepts during the initial part of this course. I have 
+    kept the discussion on Java features to bare minimum in the initial part of the lectures since it can take 
+    the attention away from OO concepts.</p>
+    <ul> 
+      <li>For example, mundane things such as doing I/O, working with files, string manipulations involve use of 
+      Java libraries, which if introduced before can affect your understanding OO paradigm. Hence none of the Java
+      library calls, barring <i>System.out.println()</i>, is used until we complete an overview of OO features such 
+      as encapsulation, data hiding, polymorphism, inheritance, reusability and exception handling. </li>
+      <li>Similarly, setting up the environment such as PATH, CLASSPATH, etc., and running the program at 
+      command-prompt are dealt later.</li>
+    </ul>
+
+    <p>Hence, try this series of lessons before you plunge into any Java book.</p>
+
+    <p>4. Adopting object orientation principles is extremely valuable if you are developing application with large 
+    code base with heterogeneous functionality. For writing simple programs (that you learnt in an C programming 
+    course), you may find little value in using OO principles.</p>
+
+    <p>5. While most of the material can be understood without much difficulty, it is possible that you develop a 
+    better/deeper grasp if you attended the lectures.</p>
+
+    <p>6. I assume you have some background on programming language like C and comfortable with basic concepts, 
+    such as input, output, primitive and user-defined data types, arrays, branching, loops and functions.</p>
+
+
+    <h2>Resources</h2>
+    <a href="http://iiti.ac.in/people/~tanimad/JavaTheCompleteReference.pdf" target="_blank">Java Complete Reference</a> McGraw Hill.<br>
+    <a href="http://medialab.di.unipi.it/web/doc/ThinkingJava.pdf" target="_blank">Thinking In Java</a> Prentice Hall.<br>
+    <a href="https://www.tutorialspoint.com/java/java_pdf_version.htm" target="_blank">Java Tutorial </a> Tutorial Point. <br>
+    <a href="http://www.cs.pomona.edu/classes/cs051/handouts/JavaErrorsExplained.pdf" target="_blank">Java Errors Explained</a>.<br>
+    <a href="http://docs.oracle.com/javase/8/docs/" target="_blank">Oracle Java 8 Docs</a> (online).<br>
+    <a href="https://docs.oracle.com/javase/tutorial/" target="_blank">Oracle Java 8 Tutorials</a> (online).<br>
+    <a href="http://192.168.0.48/javadocs/" target="_blank">Oracle Java 8 Docs</a> (local copy).<br>
+    <a href="http://192.168.0.48/tutorial/" target="_blank">Oracle Java 8 Tutorials</a> (local copy).<br>
+    ... and countably infinite stuff on the web.<br>
