@@ -1,0 +1,185 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Inner Classes</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../styles.css" />
+        <script type="text/javascript" src="scripts/shCore.js"></script>
+        <script type="text/javascript" src="scripts/shBrushBash.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCpp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCss.js"></script>
+        <script type="text/javascript" src="scripts/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="scripts/shBrushDiff.js"></script>
+        <script type="text/javascript" src="scripts/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="scripts/shBrushJava.js"></script>
+        <script type="text/javascript" src="scripts/shBrushJScript.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPhp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPlain.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPython.js"></script>
+        <script type="text/javascript" src="scripts/shBrushRuby.js"></script>
+        <script type="text/javascript" src="scripts/shBrushScala.js"></script>
+        <script type="text/javascript" src="scripts/shBrushSql.js"></script>
+        <script type="text/javascript" src="scripts/shBrushVb.js"></script>
+        <script type="text/javascript" src="scripts/shBrushXml.js"></script>
+        <link type="text/css" rel="stylesheet" href="lecture-notes.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/shThemeDefault.css"/>
+        <script type="text/javascript">
+            //SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+            SyntaxHighlighter.defaults['toolbar'] = false;
+            SyntaxHighlighter.defaults['auto-links'] = false;
+ 
+            SyntaxHighlighter.all();
+        </script>
+        <script type="text/JavaScript">
+            //courtesy of BoogieJack.com
+            function killCopy(e){
+            return false
+            }
+            function reEnable(){
+            return true
+            }
+            document.onselectstart=new Function ("return false")
+            if (window.sidebar){
+            document.onmousedown=killCopy
+            document.onclick=reEnable
+            }
+
+        </script>
+</head>
+
+<body>
+ 
+<div id="container">
+<div id="header"><h1>Object Oriented Programming <img align="right" src="../logo-dark.png" alt="Amrita"> </h1> </div>
+  <div id="wrapper">
+    <div id="content">
+
+<table align="right">
+  <td align="left"><a href="24_Collections.html">Prev</a></td>
+  <td align="right"><a href="26_Multithreading.html">Next</a></td>
+</table>
+
+
+<p><b>Please note: Content is from http://www.javatpoint.com/java-inner-class</b></p>
+
+<p><b>Borrowed and shown due to lack of internet connectivity in the lab.</b></p>
+
+<h1 id="h1">Inner Classes</h1>
+
+<ol>
+    <li>Java Inner classes</li>
+    <li>Advantage of Inner class</li>
+    <li>Difference between nested class and inner class</li>
+    <li>Types of Nested classes</li>
+</ol>
+
+<p><b>Java inner class</b> or nested class is a class which is declared inside the class or interface.</p>
+<p>We use inner classes to logically group classes and interfaces in one place so that it can be more readable 
+and maintainable.</p>
+<p>Additionally, it can access all the members of outer class including private data members and methods.</p>
+
+<h3>Syntax of Inner class</h3>
+<pre class="brush: java" >
+class Java_Outer_class {
+
+    //code
+
+    class Java_Inner_class {
+
+        //code
+    }
+}
+</pre>
+
+<h3>Advantage of java inner classes</h3>
+
+<p>There are basically three advantages of inner classes in java. They are as follows:</p>
+
+<p>1) Nested classes represent a special type of relationship that is <b>it can access all the members (data members and methods) of outer class</b> including private.</p>
+<p>2) Nested classes are used <b>to develop more readable and maintainable code</b> because it logically group classes and interfaces in one place only.</p>
+<p>3) <b>Code Optimization</b>: It requires less code to write.</p>
+
+<h3>Difference between nested class and inner class in Java</h3>
+
+<p>Inner class is a part of nested class. Non-static nested classes are known as inner classes.</p>
+
+<h3>Types of Nested classes</h3>
+<p>There are two types of nested classes non-static and static nested classes.The non-static nested classes are also known as inner classes.</p>
+
+<ul>
+    <li>Non-static nested class (inner class)
+    <ol>
+        <li>Member inner class</li>
+        <li>Anonymous inner class</li>
+        <li>Local inner class</li>
+    </ol>
+    </li>
+    <li>Static nested class</li>
+</ul>
+
+<table border="1">
+<tr><th>Type</th><th>Description</th></tr>
+<tr><td>Member Inner Class</td><td>A class created within class and outside method.</td></tr>
+<tr><td>Anonymous Inner Class</td><td>A class created for implementing interface or extending class. Its name is decided by the java compiler.</td></tr>
+<tr><td>Local Inner Class</td><td>A class created within method.</td></tr>
+<tr><td>Static Nested Class</td><td>A static class created within class.</td></tr>
+<tr><td>Nested Interface</td><td>An interface created within class or interface.</td></tr>
+</table>
+
+<h3>Some questions to explore</h3>
+
+<ul>
+    <li>What is the internal code generated by the compiler for member inner class ?</li>
+    <li>What are the two ways to create annonymous inner class ?</li>
+    <li>Can we access the non-final local variable inside the local inner class ?</li>
+    <li>How to access the static nested class ?</li>
+    <li>Can we define an interface within the class ?</li>
+    <li>Can we define a class within the interface ?</li>
+</ul>
+
+    </div>
+  </div>
+
+  <div id="navigation">
+  <p><strong><a href="../index.html">Home</a></strong></p>
+    <ul>
+      <li><a href="01_intro.html">Introduction</a></li>
+      <li><a href="02_Encapsulation.html">Encapsulation</a></li>
+      <li><a href="03_Constructors.html">Constructors</a></li>
+      <li><a href="04_Adding_Features.html">Adding Features</a></li>
+      <li><a href="05_Interactions.html">Adding Interactions</a></li>
+      <li><a href="06_Static.html">Static keyword</a></li>
+      <li><a href="07_Utility_methods.html">Utility Methods</a></li>
+      <li><a href="08_Exercises.html">Exercises</a></li>
+      <li><a href="09_Arrays.html">Arrays</a></li>
+      <li><a href="10_Javadoc.html">Javadoc</a></li>
+      <li><a href="11_Composition.html">Composition</a></li>
+      <li><a href="12_Inheritance.html">Inheritance</a></li>
+      <li><a href="13_Overriding.html">Overriding</a></li>
+      <li><a href="14_Casting.html">Casting</a></li>
+      <li><a href="15_Final.html">Final keyword</a></li>
+      <li><a href="16_Exceptions.html">Exceptions</a></li>
+      <li><a href="17_Interface.html">Interface</a></li>
+      <li><a href="18_Abstract_Classes.html">Abstract Classes</a></li>
+      <li><a href="19_Organizing_Code.html">Organizing Code</a></li>
+      <li><a href="20_InputOutput.html">Input/Output</a></li>
+      <li><a href="21_Strings.html">Strings</a></li>
+      <li><a href="22_Numbers.html">Numbers</a></li>
+      <li><a href="23_Generics.html">Generics</a></li>
+      <li><a href="24_Collections.html">Collections</a></li>
+      <li><a href="25_InnerClasses.html">Inner Classes</a></li>
+      <li><a href="26_Multithreading.html">Multithreading</a></li><li><a href="27_Swings.html">Swings</a></li>
+      <li><a href="28_Applets.html">Applets</a></li>
+    </ul>
+  </div>
+
+  <div id="extra">
+  </div>
+  <div id="footer", align="right">
+    <p>Send comments to swaminathanj@am.amrita.edu</p>
+  </div>
+</div>
+</body>
+</html>

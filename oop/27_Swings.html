@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Swing Framework</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../styles.css" />
+        <script type="text/javascript" src="scripts/shCore.js"></script>
+        <script type="text/javascript" src="scripts/shBrushBash.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCpp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCss.js"></script>
+        <script type="text/javascript" src="scripts/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="scripts/shBrushDiff.js"></script>
+        <script type="text/javascript" src="scripts/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="scripts/shBrushJava.js"></script>
+        <script type="text/javascript" src="scripts/shBrushJScript.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPhp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPlain.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPython.js"></script>
+        <script type="text/javascript" src="scripts/shBrushRuby.js"></script>
+        <script type="text/javascript" src="scripts/shBrushScala.js"></script>
+        <script type="text/javascript" src="scripts/shBrushSql.js"></script>
+        <script type="text/javascript" src="scripts/shBrushVb.js"></script>
+        <script type="text/javascript" src="scripts/shBrushXml.js"></script>
+        <link type="text/css" rel="stylesheet" href="lecture-notes.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/shThemeDefault.css"/>
+        <script type="text/javascript">
+            //SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+            SyntaxHighlighter.defaults['toolbar'] = false;
+            SyntaxHighlighter.defaults['auto-links'] = false;
+ 
+            SyntaxHighlighter.all();
+        </script>
+        <script type="text/JavaScript">
+            //courtesy of BoogieJack.com
+            function killCopy(e){
+            return false
+            }
+            function reEnable(){
+            return true
+            }
+            document.onselectstart=new Function ("return false")
+            if (window.sidebar){
+            document.onmousedown=killCopy
+            document.onclick=reEnable
+            }
+
+        </script>
+</head>
+
+<body>
+ 
+<div id="container">
+<div id="header"><h1>Object Oriented Programming <img align="right" src="../logo-dark.png" alt="Amrita"> </h1> </div>
+  <div id="wrapper">
+    <div id="content">
+
+<table align="right">
+  <td align="left"><a href="26_Multithreading.html">Prev</a></td>
+  <td align="right"><a href="28_Applets.html">Next</a></td>
+</table>
+
+<h2>Java Swing Framework</h2>
+
+<p>Java Swing library provides a set of classes for developing applications with GUI. </p>
+
+<h4>Step 1: Swing Tutorial</h4>
+
+<p>A simple tutorial to learn Swing basics is given in <a href="27_2_Java_Swing_tutorial.pdf">Java Swing Tutorial.</a> As a first step read this tutorial and try the programs to get familiar with writing Swing programs. This tutorial is created by Sudheer (dovari.sudheerkiran@gmail.com) and can also be accessed 
+<a href="https://grid.cs.gsu.edu/~cfredrick/csc4380/slides/The_Java_Swing_tutorial.pdf"> here</a>. </p>
+
+<h4>Step 2: Understand the Calculator application</h4>
+
+<p>Once you are decently comfortable (you don't have to become an expert really, you become an expert only over a period of time), try to get a hang of the the calculator program <a href="ScientificCalculator.java">ScientificCalculator.java</a>. When compiled and executed, this program shows the following UI.</p>
+<ul><img src="figures/calc.png"></ul><br>
+
+<p>One can now press the buttons and perform various computations on numbers.</p>
+
+<p>Try to tweak the program by adding one or two buttons, changing few labels, changing the size, etc.</p>
+
+<h4>Step 3: Transform the Calculator application</h4>
+
+<p>Once you get the hang, start transforming the calculator program to perform computations with 2D Points instead of  numbers. <b>Add</b> can be used to add two Point objects. <b>Mul</b> can be used to support scalar multiplication.</p>
+<ul>
+<li>Firstly, change the button labels to suit the operations supported on points. Sub, Div, Sqrt, log, etc don't make
+sense for point manipulation. Instead change those labels to euclidean distance, manhattan distance, slope, equals, orientation, x-projection, y-projection, x-reflection, y-reflection, etc.</li><br>
+<li>Change the implementation of the corresponding methods to perform computation on points instead of numbers. For example, if you input (1,3), press +, input (2,-1) and press = the calculator should display (3,2).</li> <br>
+<li>You need to add one button each for '(', ')' and comma to be able to type (1,3) + (2,-1).</li><br>
+<li>In case format is not correct, define and throw custom exceptions. You can also catch them and display appropriate message through a dialog box.</li><br>
+<li>Include comments in the source code to describe what each method does.</li><br>
+<li>Try to make the working foolproof. i.e. it is able to handle all kinds of errors from input to computation to
+output in a graceful manner. The user should not experience unpleasent surprises.</li>
+</ul>
+
+<h4>RULES TO REMEMBER AND PRACTICE</h4>
+
+<p>1. Do one change at a time (however trivial it might be), make sure the program compiles, runs and the intended change works correctly before doing the next one.<p>
+
+<p>2. Seek help only after trying enough from your part. The help should be restricted to getting some clues to think in the right direction. Don't ever attempt to copy.</p>
+
+<p>3. Don't try something - be it syntax or a language feature - that you don't understand in the first place. This doesn't help and has an adverse effect on your learning. First understand at least a bit before trying.</p>
+
+<p>4. Don't rely only on the lab hours alone. You will surely not have enough of them to do all this. Use the holidays to complete this.</p>
+
+<p><b>IMPORTANT: You should submit the completed Points Calculator application by Sep 30<sup>th</sup> in AUMS.</b></p>
+
+<p>You may also use <a href="27_4_Swing_Cheatsheet.pdf">Swing_Cheatsheet.pdf</a> for quick reference.
+
+      </div>
+    </div>
+
+  <div id="navigation">
+  <p><strong><a href="../index.html">Home</a></strong></p>
+    <ul>
+      <li><a href="01_intro.html">Introduction</a></li>
+      <li><a href="02_Encapsulation.html">Encapsulation</a></li>
+      <li><a href="03_Constructors.html">Constructors</a></li>
+      <li><a href="04_Adding_Features.html">Adding Features</a></li>
+      <li><a href="05_Interactions.html">Adding Interactions</a></li>
+      <li><a href="06_Static.html">Static keyword</a></li>
+      <li><a href="07_Utility_methods.html">Utility Methods</a></li>
+      <li><a href="08_Exercises.html">Exercises</a></li>
+      <li><a href="09_Arrays.html">Arrays</a></li>
+      <li><a href="10_Javadoc.html">Javadoc</a></li>
+      <li><a href="11_Composition.html">Composition</a></li>
+      <li><a href="12_Inheritance.html">Inheritance</a></li>
+      <li><a href="13_Overriding.html">Overriding</a></li>
+      <li><a href="14_Casting.html">Casting</a></li>
+      <li><a href="15_Final.html">Final keyword</a></li>
+      <li><a href="16_Exceptions.html">Exceptions</a></li>
+      <li><a href="17_Interface.html">Interface</a></li>
+      <li><a href="18_Abstract_Classes.html">Abstract Classes</a></li>
+      <li><a href="19_Organizing_Code.html">Organizing Code</a></li>
+      <li><a href="20_InputOutput.html">Input/Output</a></li>
+      <li><a href="21_Strings.html">Strings</a></li>
+      <li><a href="22_Numbers.html">Numbers</a></li>
+      <li><a href="23_Generics.html">Generics</a></li>
+      <li><a href="24_Collections.html">Collections</a></li>
+      <li><a href="25_InnerClasses.html">Inner Classes</a></li>
+      <li><a href="26_Multithreading.html">Multithreading</a></li>
+      <li><a href="27_Swings.html">Swings</a></li>
+      <li><a href="28_Applets.html">Applets</a></li>
+    </ul>
+  </div>
+
+  <div id="extra">
+  </div>
+  <div id="footer", align="right">
+    <p>Send comments to swaminathanj@am.amrita.edu</p>
+  </div>
+</div>
+</body>
+</html>
