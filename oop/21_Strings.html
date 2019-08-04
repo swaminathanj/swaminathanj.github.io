@@ -1,0 +1,374 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>String and StringBuilder</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../styles.css" />
+        <script type="text/javascript" src="scripts/shCore.js"></script>
+        <script type="text/javascript" src="scripts/shBrushBash.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCpp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCss.js"></script>
+        <script type="text/javascript" src="scripts/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="scripts/shBrushDiff.js"></script>
+        <script type="text/javascript" src="scripts/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="scripts/shBrushJava.js"></script>
+        <script type="text/javascript" src="scripts/shBrushJScript.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPhp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPlain.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPython.js"></script>
+        <script type="text/javascript" src="scripts/shBrushRuby.js"></script>
+        <script type="text/javascript" src="scripts/shBrushScala.js"></script>
+        <script type="text/javascript" src="scripts/shBrushSql.js"></script>
+        <script type="text/javascript" src="scripts/shBrushVb.js"></script>
+        <script type="text/javascript" src="scripts/shBrushXml.js"></script>
+        <link type="text/css" rel="stylesheet" href="lecture-notes.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/shThemeDefault.css"/>
+        <script type="text/javascript">
+            //SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+            SyntaxHighlighter.defaults['toolbar'] = false;
+            SyntaxHighlighter.defaults['auto-links'] = false;
+ 
+            SyntaxHighlighter.all();
+        </script>
+        <script type="text/JavaScript">
+            //courtesy of BoogieJack.com
+            function killCopy(e){
+            return false
+            }
+            function reEnable(){
+            return true
+            }
+            document.onselectstart=new Function ("return false")
+            if (window.sidebar){
+            document.onmousedown=killCopy
+            document.onclick=reEnable
+            }
+
+        </script>
+</head>
+
+<body>
+ 
+<div id="container">
+<div id="header"><h1>Object Oriented Programming <img align="right" src="../logo-dark.png" alt="Amrita"> </h1> </div>
+  <div id="wrapper">
+    <div id="content">
+
+<table align="right">
+  <td align="left"><a href="20_InputOutput.html">Prev</a></td>
+  <td align="right"><a href="22_Numbers.html">Next</a></td>
+</table>
+
+
+
+
+<h2>String class</h2>
+
+<p>In Java, Strings are objects that represents a sequence of characters. <b>String</b> class 
+supports a variety of constructors and methods to create and manipulate them.</p>
+
+<h3>Creating Strings</h3>
+
+<p>Strings can be created in two ways in Java. Both have different semantics.</p>
+
+<pre class="brush: java">
+String str1 = "Hello";   // Direct way to create string
+
+String str2 = new String("hello");  // Creating String instance
+
+char[] arr = {'h', 'e', 'l', 'l', 'o'}; 
+String str3 = new String(arr);  // From char array
+</pre>
+
+<p><b>Why support two ways?</b></p>
+<p>Simply because many programmers would like to treat Strings as a primitive type while the
+programming language engineers think of Strings as a composite object made up of characters.
+When created the direct way, the string behaves like a primitive type. When created using new,
+the string behaves like a reference type.</p>
+
+<h3>String length</h3>
+
+<pre class="brush: java">
+String str = "hello";
+int len = str.length(); // len = 5
+</pre>
+
+<h3>Equality of two strings</h3>
+
+<p>If strings are created the direct way, you can check for the equality like that of any primitive
+type. For example,</p>
+
+<pre class="brush: java">
+  String s1 = "abc";
+  String s2 = "abc";
+  if (s1 == s2) { ... } // returns true
+</pre>
+
+<p>If strings are created using <b>new</b>, they are objects in the heap. You cannot compare them 
+with "==" operator since it will compare two memory locations instead of values. String supports 
+equals() method which is used to compare. See the code snippet below.</p>
+
+<pre class="brush: java">
+String str1 = new String("hello");
+String str2 = new String("hello");
+
+if (str1 == str2) { .... }  // Incorrect way - returns false always
+if (str1.equals(str2)) { ... }  // Correct way - returns true
+</pre>
+
+<p>Recall that we had implemented <b>equals()</b> method for <b>Point</b> class earlier. <b>String</b> 
+class also has such an implementation. The method <b>equalsIgnoreCase()</b> compares two strings for 
+equality by ignoring case.</p>
+
+<h3>Concatenating two strings</h3>
+
+<p>The following code snippet concatenates two strings str1 and str2 and returns a new string that is 
+a concatenation of str1 and str2. The '+' operator can also be used to concatenate two strings.
+
+<pre class="brush: java">
+str3 = str1.concat(str2);
+
+str3 = str1 + str2;
+</pre>
+
+<h3>Immutability of Strings</h3>
+
+<p>Strings are immutable. Once a String object is created it cannot be modified.</p>
+
+<ul>
+  <li>Firstly, none of the methods in the <b>String</b> class modifies itself. Instead it creates a new
+  <b>String</b> object that contains the result of the operation and returns that. The above example on 
+  concatenation is a clear illustration of this fact. The original strings <em>str1</em> and <em>str2</em> 
+  don't undergo any changes, while a new string which is a combination of both is returned.</li><br>
+
+  <li>Secondly, <b>String</b> is implemented as a <em>final</em> class. So, it is simply not possible to 
+  extend <b>String</b> to another class, say StringX, and override all the methods to make it mutable.</li>
+</ul>
+
+<p>Find out why Strings are defined as immutable.</p>
+
+<p>Note that in the above concatenation example, merely calling <b>str1.concat()</b> does not modify 
+<em>str1</em>. However it is possible to reassign <em>str1</em> to the concatenated string as follows.</p>
+
+<pre class="brush: java">
+str1.concat(str2);  // No change to str1
+
+str1 = str1.concat(str2);   // str1 now points to a different memory location
+// The memory location pointed to by original str1 will be garbage collected
+</pre>
+
+<h3>Finding the index of a char in a String</h3>
+
+<p>The <b>indexOf()</b> and <b>lastIndexOf()</b> methods are used to find the first and last index positions
+of the occurrence a particular char or char sequence in a String. All these methods return -1 if the char or 
+string does not occur.</p>
+
+<pre class="brush: java">
+int pos1 = str.indexOf('x'); // first position of 'x' in str, -1 otherwise
+
+int pos2 = str.indexOf("xyz"); // first position of substring "xyz"
+
+int pos3 = str.indexOf("xyz", i);   // first position of "xyz" from index i
+
+int pos4 = str.lastIndexOf('x');    // last occurrence of 'x' in str
+</pre>
+
+<h3>Accessing i<sup>th</sup> character of a String</h3>
+
+The <b>charAt()</b> method is used to access a character at a particular position of a <b>String</b>.
+
+<pre class="brush: java">
+String str = "hello"
+char c = str.charAt(i);   // return character at position i
+
+char c ="hello".charAt(i);  // means the same
+</pre>
+
+<h3>Replacing i<sup>th</sup> character of a String</h3>
+
+The <b>replace()</b> can be used to get a new <b>String</b> in which i<sup>th</sup> character is replaced. 
+Note that <b>replace()</b> method returns a new String.
+
+<pre class="brush: java">
+str2 = str1.replace(i,'x'); // replace char at ith position with 'x'
+</pre>
+
+<p>There are other <b>replace*()</b> methods to replace a char sequence, first occurance and all occurances.</p>
+
+<h3>Checking substring</h3>
+
+<p>The <b>contains()</b> method is used to check if one string contains the other.</p>
+
+<pre class="brush: java">
+if (str1.contains(str2)) { .... }   // Does str1 contain str2?
+</pre>
+
+<h3>Getting substring</h3>
+
+<p>The <b>substring()</b> method is used get a part of a string given a range [i,j) or starting index (i).</p>
+
+<pre class="brush: java">
+str2 = str1.substring(i,j); // from i to j-1
+
+str3 = str1.substring(i);   // from i till end
+</pre>
+
+<h3>Check for a prefix and suffix</h3>
+
+<p>The <b>startsWith()</b> and <b>endsWith()</b> methods are used respectively to check if a string starts or 
+ends with a particular string sequence.</p>
+
+<pre class="brush: java">
+if (str1.startsWith(str2)) { ... }  // Does str1 start with str2?
+
+if (str1.endsWith(str2)) { ... }    // Does str1 end with str2?
+</pre>
+
+<h3>Convert to a char array</h3>
+
+<p>The <b>toCharArray()</b> is used to convert a string to a char array.</p>
+
+<pre class="brush: java">
+char[] cArr = "abc".toCharArray();  // cArr = {'a', 'b', 'c'}
+</pre>
+
+<h3>Convert to upper and lower case</h3>
+
+<p>The <b>toUpperCase()</b> and <b>toLowerCase()</b> are used respectively to convert all characters of a string
+to upper and lower cases.</p>
+
+<pre class="brush: java">
+str = "AbCd".toUpperCase(); // returns "ABCD"
+
+str = "AbCd".toLowerCase(); // returns "abcd"
+</pre>
+
+<h3>Removing leading and trailing whitespaces</h3>
+
+<p>The <b>trim()</b> method is used to remove leading and trailing white spaces of a string.</p>
+
+<pre class="brush: java">
+    str1 = "  abc   ";
+    str2 = str1.trim(); // returns "abc"
+</pre>
+
+<h3>From primitive value to String object</h3>
+
+<p>The <b>valueOf()</b> methods are used to convert values of primitive types to String object. Note that
+<b>valueOf()</b> is a <em>static</em> method that is invoked using class name.</p>
+
+<pre class="brush: java">
+    str = String.valueOf(true); // returns "true"
+    str = String.valueOf(25);   // returns "25"
+    str = String.valueOf(25.8); // returns "25.8"
+</pre>
+
+<h3>Tokenize based on regex pattern</h3>
+
+<p>The <b>split()</b> method is used to split a string into an array of strings based on a regex pattern.</p>
+
+<pre class="brush: java">
+    String str1 = "abc;defg;hi;jklm;nop";
+    String[] tokens1 = str1.split(";");   
+            // tokens1 = {"abc", "defg", "hi", "jklm", "nop"}
+
+    String str2 = "abc;defg:hi,jklm;nop";
+    String[] tokens2 = str2.split(";" | ":" | ",");  
+            // tokens2 = {"abc", "defg", "hi", "jklm", "nop"}
+</pre>
+
+<h3>Creating formatted strings</h3>
+
+<p>The <b>format()</b> method is used create a formatted string in much the same way as printf() of C does. 
+<b>format()</b> is a static method. The code snippet below demonstrates this.</p>
+
+<pre class="brush: java">
+    int invVal = 10; float floatVal = 2.3; String strVal = "hello"
+    String fmtString = String.format("Integer value is %d, "
+                            + "Float value is %f, "
+                            + "String value is %s",
+                              intVal, floatVal, strVal);
+    System.out.println(fmtString);
+</pre>
+
+<p>Note that the effect of the above code is same as the one below.</p>
+
+
+<pre class="brush: java">
+    int invVal = 10; float floatVal = 2.3; String strVal = "hello"
+    System.out.printf("Integer value is %d, "
+                    + "Float value is %f, "
+                    + "String value is %s",
+                      intVal, floatVal, strVal);
+</pre>
+
+<h3>Exercises: Unique characters, reverse, palindrome</h3>
+
+<h2>StringBuilder</h2>
+
+<p><b>StringBuilder</b> is the mutable equivalent of the <b>String</b> class. When you want to manipulate
+(i.e. perform inserts, deletes or appends) a string several times, using a <b>String</b> object is inefficient 
+since for every manipulation we get a new string object. <b>StringBuilder</b> is a mutable sequence of chars and
+hence can be modified without consuming additional space. Once all the manipulations are complete, it can be converted
+to a <b>String</b> object. The following code snippet shows some common operations on StringBuilder.</p>
+
+<pre class="brush: java">
+    StringBuilder sb = new StringBuilder("abc");
+    sb.append("def");   // sb is now "abcdef"
+    sb.append(10.5);    // sb is now "abcdef10.5"
+    sb.insert(3,"xyz"); // sb is now "abcxyzdef10.5"
+    sb.delete(4,7);     // sb is now "abcef10.5"
+    sb.deleteCharAt(2); // sb is now "abef10.5"
+    String str = sb.toString(); // str = "abef10.5"
+</pre>
+
+<p>For complete documentation refer to Java docs page at Oracle.</p>
+
+    </div>
+  </div>
+
+  <div id="navigation">
+  <p><strong><a href="../index.html">Home</a></strong></p>
+    <ul>
+      <li><a href="01_intro.html">Introduction</a></li>
+      <li><a href="02_Encapsulation.html">Encapsulation</a></li>
+      <li><a href="03_Constructors.html">Constructors</a></li>
+      <li><a href="04_Adding_Features.html">Adding Features</a></li>
+      <li><a href="05_Interactions.html">Adding Interactions</a></li>
+      <li><a href="06_Static.html">Static keyword</a></li>
+      <li><a href="07_Utility_methods.html">Utility Methods</a></li>
+      <li><a href="08_Exercises.html">Exercises</a></li>
+      <li><a href="09_Arrays.html">Arrays</a></li>
+      <li><a href="10_Javadoc.html">Javadoc</a></li>
+      <li><a href="11_Composition.html">Composition</a></li>
+      <li><a href="12_Inheritance.html">Inheritance</a></li>
+      <li><a href="13_Overriding.html">Overriding</a></li>
+      <li><a href="14_Casting.html">Casting</a></li>
+      <li><a href="15_Final.html">Final keyword</a></li>
+      <li><a href="16_Exceptions.html">Exceptions</a></li>
+      <li><a href="17_Interface.html">Interface</a></li>
+      <li><a href="18_Abstract_Classes.html">Abstract Classes</a></li>
+      <li><a href="19_Organizing_Code.html">Organizing Code</a></li>
+      <li><a href="20_InputOutput.html">Input/Output</a></li>
+      <li><a href="21_Strings.html">Strings</a></li>
+      <li><a href="22_Numbers.html">Numbers</a></li>
+      <li><a href="23_Generics.html">Generics</a></li>
+      <li><a href="24_Collections.html">Collections</a></li>
+      <li><a href="25_InnerClasses.html">Inner Classes</a></li>
+      <li><a href="26_Multithreading.html">Multithreading</a></li><li><a href="27_Swings.html">Swings</a></li>
+      <li><a href="28_Applets.html">Applets</a></li>
+    </ul>
+  </div>
+
+  <div id="extra">
+  </div>
+  <div id="footer", align="right">
+    <p>Send comments to swaminathanj@am.amrita.edu</p>
+  </div>
+</div>
+</body>
+</html>
+
+</body>

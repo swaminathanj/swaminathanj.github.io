@@ -1,0 +1,282 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Arrays</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../styles.css" />
+        <script type="text/javascript" src="scripts/shCore.js"></script>
+        <script type="text/javascript" src="scripts/shBrushBash.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCpp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCss.js"></script>
+        <script type="text/javascript" src="scripts/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="scripts/shBrushDiff.js"></script>
+        <script type="text/javascript" src="scripts/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="scripts/shBrushJava.js"></script>
+        <script type="text/javascript" src="scripts/shBrushJScript.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPhp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPlain.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPython.js"></script>
+        <script type="text/javascript" src="scripts/shBrushRuby.js"></script>
+        <script type="text/javascript" src="scripts/shBrushScala.js"></script>
+        <script type="text/javascript" src="scripts/shBrushSql.js"></script>
+        <script type="text/javascript" src="scripts/shBrushVb.js"></script>
+        <script type="text/javascript" src="scripts/shBrushXml.js"></script>
+        <link type="text/css" rel="stylesheet" href="lecture-notes.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/shThemeDefault.css"/>
+        <script type="text/javascript">
+            //SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+            SyntaxHighlighter.defaults['toolbar'] = false;
+            SyntaxHighlighter.defaults['auto-links'] = false;
+ 
+            SyntaxHighlighter.all();
+        </script>
+        <script type="text/JavaScript">
+            //courtesy of BoogieJack.com
+            function killCopy(e){
+            return false
+            }
+            function reEnable(){
+            return true
+            }
+            document.onselectstart=new Function ("return false")
+            if (window.sidebar){
+            document.onmousedown=killCopy
+            document.onclick=reEnable
+            }
+
+        </script>
+</head>
+</head>
+
+<body>
+ 
+<div id="container">
+<div id="header"><h1>Object Oriented Programming <img align="right" src="../logo-dark.png" alt="Amrita"> </h1> </div>
+  <div id="wrapper">
+    <div id="content">
+
+<table align="right">
+  <td align="left"><a href="08_Exercises.html">Prev</a></td>
+  <td align="right"><a href="10_Javadoc.html">Next</a></td>
+</table>
+
+<h2>Arrays</h2>
+
+<p>What if you wanted to work with several instances of a class? For example, consider the
+scenario when you want to sort several Point instances along x-axis (from left to right).
+It would be tedious to declare a new variable for each instance of Point class.</p>
+
+<h3>Working with Array of Objects </h3>
+
+<p>An array is a container object that holds a reference to certain number of objects of a 
+single type. And you can refer to them using index where the index ranges from 0 to length
+of the array. The length of an array is fixed when an array is created.</p>
+
+<p>We will now create an array of Points in the test driver.</p>
+<pre class="brush: java">
+    Point[] points = new Point[5];
+</pre>
+
+<p>This creates a single array object that contains reference to 5 Point instances.</p>
+
+<p>Each of the 5 Point instances has to be created explicitly.<p>
+
+<pre class="brush: java">
+  points[0] = new Point(2,5); // 1st element
+  points[2] = new Point();    // 3rd element (set to (0,0) by default constructor)
+  points[3] = new Point(-4,4);   // 4th element 
+</pre>
+
+<p>The methods of these instances can be invoked. For example</p>
+
+<pre class="brush: java">
+  System.out.println( points[0].slope(points[2]) );     // prints 2.5
+  System.out.println( points[2].distance(points[3]) );  // prints 8
+</pre>
+
+
+<p><strong>Try the following and check what happens?</strong></p>
+<ul>
+  <li>System.out.println( points[1] );  // points[1] not created yet</li><br>
+  <li>points[3].add( points[4] ).print(); // points[4] not created yet</li><br>
+  <li>points[7].print();  // index 7 is greater than the length</li><br>
+  <li>System.out.println( points.length );  // length is an attribute of array object</li>
+</ul>
+
+<p>You can use a loop to create all instances in one go. For example, following code
+creates a set of 20 Point instances in a 10x10 grid with arbitrary x and y values.
+Thereafter it computes the slope from point[0] to every other point.</p>
+
+<pre class="brush: java">
+  Point[] points = new Points[20];
+
+  for (int i = 0; i < 20; i++)
+    points[i] = new Point(i*31%11,i*59%11); // i*31(mod 11), i*59(mod 11)
+
+  for (int i = 1; i < 20; i++)
+    System.out.println( "The slope of " + points[0] 
+                        + " and " + points[i] 
+                        + " = " + points[0].slope( points[i]) );
+</pre>
+
+<p><b>Exercise</b>: Add a loop to the above driver code to determine the number of 
+duplicate points and print the duplicates. Since we have assigned the coordinates
+arbitrarily, it is possible that there are duplicates.</p>
+
+<p>Another way to shrink the two-step process of creating an array into one is as
+follows:</p>
+
+<pre class="brush: java">
+  Point[] points = {  new Point(1,-1), new Point(-2,5), new Point(-7,0),
+                      new Point(), new Point(0,8), new Point(-3,-11)
+                  }
+</pre>
+
+<p>The length of the array is set to 6 by default. </p>
+
+<h3>A sort method for Point class</h3>
+
+<p>Add a <b>static method sort()</b> to the <b>Point</b> class to sort the points from
+left to right. It should take a Point array as argument, sort them based on x-coordinate
+and return the sorted array.</p>
+
+<p><b>Why static</b>? Because sort is not specific to a particular instance of Point.
+In fact, it works on a group of points.</p>
+
+<pre class="brush: java">
+  /** We will use the Selection sort logic. */
+
+  public static Point[] sort(Point[] points) {
+      int n = length - 1;             // last index is length - 1
+      for (int i = 0; i < n; i++) {   // loop from index 0 to n-1
+        int k = minimumX(i, n);       // minimum index from i to n
+        points[i].swap(points[k]);    // Swap
+      }
+  }
+
+  public static int minimumX(int start, int end) {
+      minIndex = start;
+      for (int j = start+1; j <= end; j++) {
+        if (points[j].getX() < points[minIndex].getX())
+          minIndex = j;
+      }
+      return minIndex;
+  }
+
+    public void swap(Point q) {
+      Point temp = new Point();
+      temp.x = this.x;
+      temp.y = this.y;
+
+      this.x = q.x;
+      this.y = q.y;
+
+      q.x = temp.x;
+      q.y = temp.y;
+    }
+  }
+</pre>
+
+<p>Note that minimumX() and swap() are useful methods that can potentially be used on
+occasions other than sorting. Hence, we declared them as public. minimumX() works with
+array of points from the start to end indices. Hence, it is declared static. On the
+other hand swap() involves just 2 points and hence is an instance method.</p>
+
+<p>Implement test drivers to check the working.</p>
+
+<pre class="brush: java">
+  Point[] points = new Points[20];
+
+  for (int i = 0; i < 10; i++)              // populate the points
+    points[i] = new Point(i*31%11,i*59%11); 
+
+  Point.sort(points);                       // sort the points
+
+  for(int i = 0; i < 10; i++)               // print the sorted points
+    System.out.println( points[i] );
+</pre>
+
+<p><b>Exercise</b>: To get comfortable working with arrays, you can implement the
+following methods.</p>
+<ol>
+  <li>Improve the logic of minimumX() such that if x-coordinates are same, the one
+  with the least y-coordinate should be considered smaller.</li>
+  <li>And if both x and y happen to be same, you can pick anyone arbitrarily.</li>
+  <li>maximumX()</li>
+  <li>minimumY()</li>
+  <li>maximumY()</li>
+  <li>reverse() - reverse the array.</li>
+  <li>The above is a mutable implementation of sort. Implement a non-mutable 
+  version by creating a new sorted array and returning it instead of changing
+  the existing array.</li>
+  <li>Implement a different sorting algorithm, say insertion sort.</li>
+</ol>
+  
+<h3> Arrays of primitive data types</h4>
+
+<p>For working with arrays of primitive data types creation of array object is enough. 
+You don't have to create individual instances explicitly. For example,</p>
+
+<pre class="brush: java">
+  int[] intArray = new int[5];
+  intArray[0] = 100;    // Start working with the elements
+  intArray[1] = 200;    // of the array immediately
+        :
+        :
+</pre>
+
+<p>Primitive data types: byte, short, int, long, float, double, boolean, char.</p>
+
+<p>Direct initialization of primitive data types is also possible.</p>
+<pre class="brush: java">
+  float[] floatArray = {2.8, 3.5, 15.6, 7.99}; // floatArray.length is set to 4 automatically
+  char[] charArray = {'a', 'b', 'c'};  // charArray.length is set 3
+</pre>
+
+
+    </div>
+  </div>
+
+  <div id="navigation">
+  <p><strong><a href="../index.html">Home</a></strong></p>
+    <ul>
+      <li><a href="01_intro.html">Introduction</a></li>
+      <li><a href="02_Encapsulation.html">Encapsulation</a></li>
+      <li><a href="03_Constructors.html">Constructors</a></li>
+      <li><a href="04_Adding_Features.html">Adding Features</a></li>
+      <li><a href="05_Interactions.html">Adding Interactions</a></li>
+      <li><a href="06_Static.html">Static keyword</a></li>
+      <li><a href="07_Utility_methods.html">Utility Methods</a></li>
+      <li><a href="08_Exercises.html">Exercises</a></li>
+      <li><a href="09_Arrays.html">Arrays</a></li>
+      <li><a href="10_Javadoc.html">Javadoc</a></li>
+      <li><a href="11_Composition.html">Composition</a></li>
+      <li><a href="12_Inheritance.html">Inheritance</a></li>
+      <li><a href="13_Overriding.html">Overriding</a></li>
+      <li><a href="14_Casting.html">Casting</a></li>
+      <li><a href="15_Final.html">Final keyword</a></li>
+      <li><a href="16_Exceptions.html">Exceptions</a></li>
+      <li><a href="17_Interface.html">Interface</a></li>
+      <li><a href="18_Abstract_Classes.html">Abstract Classes</a></li>
+      <li><a href="19_Organizing_Code.html">Organizing Code</a></li>
+      <li><a href="20_InputOutput.html">Input/Output</a></li>
+      <li><a href="21_Strings.html">Strings</a></li>
+      <li><a href="22_Numbers.html">Numbers</a></li>
+      <li><a href="23_Generics.html">Generics</a></li>
+      <li><a href="24_Collections.html">Collections</a></li>
+      <li><a href="25_InnerClasses.html">Inner Classes</a></li>
+      <li><a href="26_Multithreading.html">Multithreading</a></li><li><a href="27_Swings.html">Swings</a></li>
+      <li><a href="28_Applets.html">Applets</a></li>
+    </ul>
+  </div>
+
+  <div id="extra">
+  </div>
+  <div id="footer", align="right">
+    <p>Send comments to swaminathanj@am.amrita.edu</p>
+  </div>
+</div>
+</body>
+</html>

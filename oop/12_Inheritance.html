@@ -1,0 +1,233 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Inheritance</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../styles.css" />
+        <script type="text/javascript" src="scripts/shCore.js"></script>
+        <script type="text/javascript" src="scripts/shBrushBash.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCpp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCss.js"></script>
+        <script type="text/javascript" src="scripts/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="scripts/shBrushDiff.js"></script>
+        <script type="text/javascript" src="scripts/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="scripts/shBrushJava.js"></script>
+        <script type="text/javascript" src="scripts/shBrushJScript.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPhp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPlain.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPython.js"></script>
+        <script type="text/javascript" src="scripts/shBrushRuby.js"></script>
+        <script type="text/javascript" src="scripts/shBrushScala.js"></script>
+        <script type="text/javascript" src="scripts/shBrushSql.js"></script>
+        <script type="text/javascript" src="scripts/shBrushVb.js"></script>
+        <script type="text/javascript" src="scripts/shBrushXml.js"></script>
+        <link type="text/css" rel="stylesheet" href="lecture-notes.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/shThemeDefault.css"/>
+        <script type="text/javascript">
+            //SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+            SyntaxHighlighter.defaults['toolbar'] = false;
+            SyntaxHighlighter.defaults['auto-links'] = false;
+ 
+            SyntaxHighlighter.all();
+        </script>
+        <script type="text/JavaScript">
+            //courtesy of BoogieJack.com
+            function killCopy(e){
+            return false
+            }
+            function reEnable(){
+            return true
+            }
+            document.onselectstart=new Function ("return false")
+            if (window.sidebar){
+            document.onmousedown=killCopy
+            document.onclick=reEnable
+            }
+
+        </script>
+</head>
+</head>
+
+<body>
+ 
+<div id="container">
+<div id="header"><h1>Object Oriented Programming <img align="right" src="../logo-dark.png" alt="Amrita"> </h1> </div>
+  <div id="wrapper">
+    <div id="content">
+
+<table align="right">
+  <td align="left"><a href="11_Composition.html">Prev</a></td>
+  <td align="right"><a href="13_Overriding.html">Next</a></td>
+</table>
+
+<h2>Inheritance</h2>
+
+<p>Another object oriented mechanism that enables to build over an existing feature is
+<b>inheritance.</b> Composition and inheritance play a complementary role in code reuse
+and extension. The former enables 'has-a/part-of' kind of extension while the latter 
+enables 'is-a/hierarchical' kind of extension.</p>
+
+<p>Inheritance can be defined as the process where one class acquires the properties (methods and 
+attributes) of another. With the use of inheritance the information is made manageable in a 
+hierarchical order. The class which inherits the properties of other is known as subclass 
+(derived class, child class) and the class whose properties are inherited is known as superclass 
+(base class, parent class).</p>
+
+<p>The idea of inheritance is simple but powerful: When you want to create a new class and there is 
+already a class that includes some of the features that you want, you can derive your new class from 
+the existing class. In doing so, you can reuse the attributes and methods of the existing class without 
+having to write (and debug!) them yourself.</p>
+
+<p>A subclass inherits all the public and protected members (attributes, methods, and nested classes) 
+from its superclass. It cannot inherit private members. You can use the inherited members as is, 
+replace them, hide them, or supplement them with new members.</p>
+
+<h3>Extending a Class</h3>
+
+<p> We will now extend the Point class to represent a 3-dim Point which includes z-coordinate. 
+For example (2,-3,5) denotes a point in 3D Euclidean space.</p>
+
+<ul>
+  <li>The x and y coordinates defined in Point class cannot be accessed from Point3D since 
+  they are 'private'.</li>
+
+  <li>To access them, the access specifier needs to be changed from 'private' to 'protected'.
+  A 'protected' member can be accessed from both the class and the subclass. So, first change 
+  them and recompile Point class before you get started with extending it.</li>
+
+  <li>Point3D will now derive x and y attributes from Point class. In addition, it also adds a 
+  new attribute z.</li>
+</ul>
+
+<p>The Point3D class, with getter and setter, can be defined as follows. 
+  Note the <b>extends</b> keyword in the class definition.</p>
+
+<pre class="brush: java">
+  public class Point3D extends Point {
+    protected int z;      // z-coordinate
+
+    public void setZ(int zCoord) {
+      this.z = zCoord;
+    }
+
+    public int getZ() {
+      return this.z;
+    }
+  }
+</pre>
+
+<p>The driver class can now instantiate, set and get both Point and Point3D in same manner.</p>
+
+<pre class="brush: java">
+  Point3D p = new Point3D();
+
+  p3.setX(2);      // Calling method from parent class
+  p3.setY(-3);     //              -do-
+  p3.setZ(4);      // Calling method from this class
+
+  System.out.println( "(" + p3.getX() + "," + p3.getY() + "," + p3.getZ() + ")" );
+</pre>
+
+<p>Calling a superclass methods can be done in the same fashion as if they were part of
+subclass definition. You can notice p3.getX() is accessible.</p>
+
+<p>Since almost all the methods in the Point class are public they are visible from Point3D.
+The only private method in Point, namely abs() can be useful to compute the distance between
+two Point3D objects. Hence, make it 'protected'.</p>
+
+<p>In summary, when you extend a class</p>
+
+<ul>
+  <li>You can add new features by defining new attributes and methods - just like how we added
+  z, getZ() and setZ().</li><br>
+  <li>You can use the existing features as if they belong to the extended class, provided they 
+  are declared protected or public - just like how we accessed getX() and getY().</li><br>
+  <li>You can override any feature of the super class by defining another method with the same
+  name and same signature. This is discussed in the next section.</li>
+</ul>
+
+<p style="color: blue"><b>Note</b>: When you instantiate Point3D, the constructor of Point
+will be invoked first followed by the constructor of Point3D.</p>
+
+<h3>Composition vs. Inheritance</h3>
+
+<p>Lets say we defined the Point3D class in the 'composition' way. Lets call this Point3DC.</p>
+
+<pre class="brush: java">
+  class Point3DC {
+    private Point p2d;
+    private int z;
+
+    Point3DC(int xInit, int yInit, int zInit) {
+      p2d = new Point(xInit, yInit);
+      this.z = zInit;
+    }
+
+    public int getZ() {
+      return this.z;
+    }
+  }
+</pre>
+
+<p>The test driver would be as follows. Note the difference in the way z is accessed
+compared to x and y.</p>
+
+<pre class="brush: java">
+  Point3DC p3dc = new Point3DC(3,-5,8);
+  int xCoord = p3dc.p2d.getX(); 
+  int yCoord = p3dc.p2d.getY();
+  int zCoord = p3ds.getZ();
+</pre>
+
+<p>That is the fundamental difference between composition and inheritance. As noted above,
+when the relationship is of the kind 'has-a or part-of', use composition. If the relationship
+is of the kind 'is-a or child-of', use inheritance. Other types of relationships are possible.
+For example, two or more classes may share a sibling kind of relationship. This will be dealt
+a little later.</p>
+
+    </div>
+  </div>
+
+  <div id="navigation">
+  <p><strong><a href="../index.html">Home</a></strong></p>
+    <ul>
+      <li><a href="01_intro.html">Introduction</a></li>
+      <li><a href="02_Encapsulation.html">Encapsulation</a></li>
+      <li><a href="03_Constructors.html">Constructors</a></li>
+      <li><a href="04_Adding_Features.html">Adding Features</a></li>
+      <li><a href="05_Interactions.html">Adding Interactions</a></li>
+      <li><a href="06_Static.html">Static keyword</a></li>
+      <li><a href="07_Utility_methods.html">Utility Methods</a></li>
+      <li><a href="08_Exercises.html">Exercises</a></li>
+      <li><a href="09_Arrays.html">Arrays</a></li>
+      <li><a href="10_Javadoc.html">Javadoc</a></li>
+      <li><a href="11_Composition.html">Composition</a></li>
+      <li><a href="12_Inheritance.html">Inheritance</a></li>
+      <li><a href="13_Overriding.html">Overriding</a></li>
+      <li><a href="14_Casting.html">Casting</a></li>
+      <li><a href="15_Final.html">Final keyword</a></li>
+      <li><a href="16_Exceptions.html">Exceptions</a></li>
+      <li><a href="17_Interface.html">Interface</a></li>
+      <li><a href="18_Abstract_Classes.html">Abstract Classes</a></li>
+      <li><a href="19_Organizing_Code.html">Organizing Code</a></li>
+      <li><a href="20_InputOutput.html">Input/Output</a></li>
+      <li><a href="21_Strings.html">Strings</a></li>
+      <li><a href="22_Numbers.html">Numbers</a></li>
+      <li><a href="23_Generics.html">Generics</a></li>
+      <li><a href="24_Collections.html">Collections</a></li>
+      <li><a href="25_InnerClasses.html">Inner Classes</a></li>
+      <li><a href="26_Multithreading.html">Multithreading</a></li><li><a href="27_Swings.html">Swings</a></li>
+      <li><a href="28_Applets.html">Applets</a></li>
+    </ul>
+  </div>
+
+  <div id="extra">
+  </div>
+  <div id="footer", align="right">
+    <p>Send comments to swaminathanj@am.amrita.edu</p>
+  </div>
+</div>
+</body>
+</html>

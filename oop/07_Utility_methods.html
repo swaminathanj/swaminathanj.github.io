@@ -1,0 +1,196 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Utility methods</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../styles.css" />
+        <script type="text/javascript" src="scripts/shCore.js"></script>
+        <script type="text/javascript" src="scripts/shBrushBash.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCpp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCss.js"></script>
+        <script type="text/javascript" src="scripts/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="scripts/shBrushDiff.js"></script>
+        <script type="text/javascript" src="scripts/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="scripts/shBrushJava.js"></script>
+        <script type="text/javascript" src="scripts/shBrushJScript.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPhp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPlain.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPython.js"></script>
+        <script type="text/javascript" src="scripts/shBrushRuby.js"></script>
+        <script type="text/javascript" src="scripts/shBrushScala.js"></script>
+        <script type="text/javascript" src="scripts/shBrushSql.js"></script>
+        <script type="text/javascript" src="scripts/shBrushVb.js"></script>
+        <script type="text/javascript" src="scripts/shBrushXml.js"></script>
+        <link type="text/css" rel="stylesheet" href="lecture-notes.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/shThemeDefault.css"/>
+        <script type="text/javascript">
+            //SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+            SyntaxHighlighter.defaults['toolbar'] = false;
+            SyntaxHighlighter.defaults['auto-links'] = false;
+ 
+            SyntaxHighlighter.all();
+        </script>
+        <script type="text/JavaScript">
+            //courtesy of BoogieJack.com
+            function killCopy(e){
+            return false
+            }
+            function reEnable(){
+            return true
+            }
+            document.onselectstart=new Function ("return false")
+            if (window.sidebar){
+            document.onmousedown=killCopy
+            document.onclick=reEnable
+            }
+
+        </script>
+</head>
+</head>
+
+<body>
+ 
+<div id="container">
+<div id="header"><h1>Object Oriented Programming <img align="right" src="../logo-dark.png" alt="Amrita"> </h1> </div>
+  <div id="wrapper">
+    <div id="content">
+
+<table align="right">
+  <td align="left"><a href="06_Static.html">Prev</a></td>
+  <td align="right"><a href="08_Exercises.html">Next</a></td>
+</table>
+
+<h2>Utility methods</h2>
+
+<p>What if we want to compare two object instances for equality? What if we want to convert
+the content of an instance in a convenient form such as String? This section addresses these
+questions.</p>
+
+<h3>equals()</h3>
+
+<p>It is often helpful to compare two object instances (of same class) for equality. If p and q 
+are two instances of Point class, it is inappropriate to compare as <em>if (p == q)</em>, as 
+this would only compare two references or addresses. We saw this at the end of Encapsulation
+section. What we need is a method which compares the (relevant) attributes instead of comparing 
+addresses. The equals() method is implemented to determine the equalily. It returns true or false. 
+Illustrated below.</p>
+
+<pre class="brush: java">
+public class Point {
+  private int x;  
+  private int y;
+
+  public boolean equals(Point q){
+    if ( (this.x == q.x) && (this.y == q.y) )
+      return true;
+    else
+      return false;
+  }
+}
+</pre>
+
+<p>The equals() method can be implemented as appropriate. For example, in your application
+you would treat 2 instances as same if x values match, you can implement so. In summary,</p>
+
+<pre class="brush: java">
+  Point p = new Point(7,-5);
+  Point q = new Point(7,-5);
+
+  if (p == q)    // returns false
+  { ... }
+
+  if ( p.equals(q) )   // returns true
+  { ... }
+</pre>
+
+<p>One question that might arise is why should we name the method as equals to test the 
+equality? Why can't we give some other name? The equals() method is implemented in the
+Object class and all classes that we implement extensions to Object class. By using 
+equals() we are overriding its functionality. This will become clear once we discuss
+inheritance.</p>
+
+<p style="color: blue"><b>Note</b>: C++ has the concept of <b>operator overloading</b> 
+where you can overload the operator such as +, -, ==, etc. Based on the operand types, 
+the appropriate operator would be automatically be invoked. Java doesn't have this 
+feature as the designers of Java language felt this feature is unsafe and can potentially
+be misused.</p>
+
+<h3>2. toString()</h3>
+
+<p>Have you tried passing a Point instance to a print statement such as System.out.println(p)? 
+Here p is an instance of Point class. Try it. What does it print?</p>
+
+<p>Wouldn't it be nice if it printed in (x,y) format? It is possible to convert to format of
+this (or some other) form automatically whenever necessary by implementing 'toString()' method.
+See the example below. toString() returns a value of String type.</p>
+
+<pre class="brush: java">
+public class Point {
+  private int x;  
+  private int y;
+
+  public String toString() {
+      return "(" + x + "," + y + ")";
+  }
+}
+</pre>
+
+<pre class="brush: java">
+  Point p = new Point(3,7);
+  System.out.println(p);  // p is automatically converted to
+  String s = p;           // String format in both cases
+</pre>
+
+<p>Essentially, wherever a String is expected, if you pass a Point instance, it will automatically
+be converted to <i>(x,y)</i> form.</p>
+
+<p>Note: As you will later learn, toString() and equals() are defined in Object class which 
+we are overridden. This concept will be clear when you learn inheritance.</p> 
+
+
+    </div>
+  </div>
+
+  <div id="navigation">
+  <p><strong><a href="../index.html">Home</a></strong></p>
+    <ul>
+      <li><a href="01_intro.html">Introduction</a></li>
+      <li><a href="02_Encapsulation.html">Encapsulation</a></li>
+      <li><a href="03_Constructors.html">Constructors</a></li>
+      <li><a href="04_Adding_Features.html">Adding Features</a></li>
+      <li><a href="05_Interactions.html">Adding Interactions</a></li>
+      <li><a href="06_Static.html">Static keyword</a></li>
+      <li><a href="07_Utility_methods.html">Utility Methods</a></li>
+      <li><a href="08_Exercises.html">Exercises</a></li>
+      <li><a href="09_Arrays.html">Arrays</a></li>
+      <li><a href="10_Javadoc.html">Javadoc</a></li>
+      <li><a href="11_Composition.html">Composition</a></li>
+      <li><a href="12_Inheritance.html">Inheritance</a></li>
+      <li><a href="13_Overriding.html">Overriding</a></li>
+      <li><a href="14_Casting.html">Casting</a></li>
+      <li><a href="15_Final.html">Final keyword</a></li>
+      <li><a href="16_Exceptions.html">Exceptions</a></li>
+      <li><a href="17_Interface.html">Interface</a></li>
+      <li><a href="18_Abstract_Classes.html">Abstract Classes</a></li>
+      <li><a href="19_Organizing_Code.html">Organizing Code</a></li>
+      <li><a href="20_InputOutput.html">Input/Output</a></li>
+      <li><a href="21_Strings.html">Strings</a></li>
+      <li><a href="22_Numbers.html">Numbers</a></li>
+      <li><a href="23_Generics.html">Generics</a></li>
+      <li><a href="24_Collections.html">Collections</a></li>
+      <li><a href="25_InnerClasses.html">Inner Classes</a></li>
+      <li><a href="26_Multithreading.html">Multithreading</a></li><li><a href="27_Swings.html">Swings</a></li>
+      <li><a href="28_Applets.html">Applets</a></li>
+    </ul>
+  </div>
+
+  <div id="extra">
+  </div>
+  <div id="footer", align="right">
+    <p>Send comments to swaminathanj@am.amrita.edu</p>
+  </div>
+</div>
+</body>
+</html>

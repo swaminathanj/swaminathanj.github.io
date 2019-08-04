@@ -1,0 +1,1398 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Collections Framework</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../styles.css" />
+        <script type="text/javascript" src="scripts/shCore.js"></script>
+        <script type="text/javascript" src="scripts/shBrushBash.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCpp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCss.js"></script>
+        <script type="text/javascript" src="scripts/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="scripts/shBrushDiff.js"></script>
+        <script type="text/javascript" src="scripts/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="scripts/shBrushJava.js"></script>
+        <script type="text/javascript" src="scripts/shBrushJScript.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPhp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPlain.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPython.js"></script>
+        <script type="text/javascript" src="scripts/shBrushRuby.js"></script>
+        <script type="text/javascript" src="scripts/shBrushScala.js"></script>
+        <script type="text/javascript" src="scripts/shBrushSql.js"></script>
+        <script type="text/javascript" src="scripts/shBrushVb.js"></script>
+        <script type="text/javascript" src="scripts/shBrushXml.js"></script>
+        <link type="text/css" rel="stylesheet" href="lecture-notes.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/shThemeDefault.css"/>
+        <script type="text/javascript">
+            //SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+            SyntaxHighlighter.defaults['toolbar'] = false;
+            SyntaxHighlighter.defaults['auto-links'] = false;
+ 
+            SyntaxHighlighter.all();
+        </script>
+        <script type="text/JavaScript">
+            //courtesy of BoogieJack.com
+            function killCopy(e){
+            return false
+            }
+            function reEnable(){
+            return true
+            }
+            document.onselectstart=new Function ("return false")
+            if (window.sidebar){
+            document.onmousedown=killCopy
+            document.onclick=reEnable
+            }
+
+        </script>
+</head>
+
+<body>
+ 
+<div id="container">
+<div id="header"><h1>Object Oriented Programming <img align="right" src="../logo-dark.png" alt="Amrita"> </h1> </div>
+  <div id="wrapper">
+    <div id="content">
+
+<table align="right">
+  <td align="left"><a href="23_Generics.html">Prev</a></td>
+  <td align="right"><a href="25_InnerClasses.html">Next</a></td>
+</table>
+
+
+<p><b>Please note: Content is from http://www.javatpoint.com/collections-in-java</b></p>
+
+<p><b>Borrowed and shown due to lack of internet connectivity in the lab.</b></p>
+
+<h1 id="h1">Collections in Java</h1>
+
+<div id="upr">
+<ol>
+<li><a href="#">Java Collection Framework</a></li>
+<li><a href="#collectionhierarchy">Hierarchy of Collection Framework</a></li>
+<li><a href="#collectionmethods">Collection interface</a></li>
+<li><a href="#collectioniterator">Iterator interface</a></li>
+</ol>
+</div>
+
+<p><b>Collections in Java</b> is a framework that provides an architecture to store and manipulate the 
+group of objects.</p>
+
+<p> All the operations that you perform on a data such as searching, sorting, insertion, manipulation, 
+deletion etc. can be performed by Java Collections.</p>
+
+<p>Java Collection simply means a single unit of objects. Java Collection framework provides many 
+interfaces (Set, List, Queue, Deque etc.) and classes (ArrayList, Vector, LinkedList, PriorityQueue, 
+HashSet, LinkedHashSet, TreeSet etc).</p>
+
+<h4 class="h3">What is Collection in Java</h4>
+<p>Collection represents a single unit of objects i.e. a group.</p>
+
+<h4 class="h3">What is framework in Java</h4>
+
+<ul>
+<li>provides readymade architecture.</li>
+<li>represents set of classes and interface.</li>
+<li>is optional.</li>
+</ul>
+ 
+<h4 class="h4">What is Collection framework</h4>
+<p>Collection framework represents a unified architecture for storing and manipulating group of objects.
+It has:</p>
+<ol>
+<li>Interfaces and its implementations i.e. classes</li>
+<li>Algorithm</li>
+</ol>
+    
+<hr class="clearfloat"/>
+
+<a id="collectionhierarchy"></a>
+<h3 class="h2">Hierarchy of Collection Framework</h3>
+<p>Let us see the hierarchy of collection framework.The <strong>java.util</strong> package contains all the classes and interfaces for Collection framework.</p>
+<img src="figures/collection-hierarchy.png" alt="Hierarchy of collection framework"/>
+
+<hr/>
+<a id="collectionmethods"></a>
+<h3 class="h2">Methods of Collection interface</h3>
+<p>There are many methods declared in the Collection interface. They are as follows:</p>
+<table class="alt" border="1">
+<tr><th>No.</th><th>Method</th><th>Description</th></tr>
+<tr><td>1</td><td>public boolean add(Object element)</td><td> is used to insert an element in this collection.</td></tr>
+<tr><td>2</td><td>public boolean addAll(Collection c)</td><td>is used to insert the specified collection elements in the invoking collection.</td></tr>
+<tr><td>3</td><td>public boolean remove(Object element)</td><td>is used to delete an element from this collection.</td></tr>
+<tr><td>4</td><td>public boolean removeAll(Collection c)</td><td>is used to delete all the elements of specified collection from the invoking collection.</td></tr>
+<tr><td>5</td><td>public boolean retainAll(Collection c)</td><td>is used to delete all the elements of invoking collection except the specified collection.</td></tr>
+<tr><td>6</td><td>public int size()</td><td>return the total number of elements in the collection.</td></tr>
+<tr><td>7</td><td>public void clear()</td><td>removes the total no of element from the collection.</td></tr>
+<tr><td>8</td><td>public boolean contains(Object element)</td><td>is used to search an element.</td></tr>
+<tr><td>9</td><td>public boolean containsAll(Collection c)</td><td>is used to search the specified collection in this collection.</td></tr>
+<tr><td>10</td><td>public Iterator iterator()</td><td>returns an iterator.</td></tr>
+<tr><td>11</td><td>public Object[] toArray()</td><td>converts collection into array.</td></tr>
+<tr><td>12</td><td>public boolean isEmpty()</td><td>checks if collection is empty.</td></tr>
+<tr><td>13</td><td>public boolean equals(Object element)</td><td>matches two collection.</td></tr>
+<tr><td>14</td><td>public int hashCode()</td><td>returns the hashcode number for collection.</td></tr>
+</table>
+
+<hr/>
+<a id="collectioniterator"></a>
+<h3 id="h2">Iterator interface</h3>
+<table>
+<tr><td>Iterator interface provides the facility of iterating the elements in forward direction only. 
+</td></tr>
+</table>
+
+<h4 class="h4">Methods of Iterator interface</h4>
+<p>There are only three methods in the Iterator interface. They are:
+</p>
+<ol>
+<li><strong>public boolean hasNext()</strong> it returns true if iterator has more elements.</li>
+<li><strong>public object next()</strong> it returns the element and moves the cursor pointer to the next element.</li>
+<li><strong>public void remove()</strong> it removes the last elements returned by the iterator. It is rarely used.</li>
+</ol>
+
+<hr/>
+
+<h1 class="h1">Java ArrayList class</h1>
+<ul class="points">
+<li>Java ArrayList class uses a dynamic array for storing the elements.It extends AbstractList class and implements List interface.</li>
+<li>Java ArrayList class can contain duplicate elements.</li>
+<li>Java ArrayList class maintains insertion order.</li>
+<li>Java ArrayList class is non synchronized.</li>
+<li>Java ArrayList allows random access because array works at the index basis.</li>
+<li>In Java ArrayList class, manipulation is slow because a lot of shifting needs to be occurred if any element is removed from the array list.</li>
+</ul>
+
+<h2 class="h2">Hierarchy of ArrayList class:</h2>
+<img src="figures/arraylist.png" alt="ArrayList class hierarchy"/>
+
+<hr/>
+<h3 class="h2">Java Non-generic Vs Generic Collection</h3>
+<p>Java collection framework was non-generic before JDK 1.5. Since 1.5, it is generic.</p>
+<p>Java new generic collection allows you to have only one type of object in collection. Now it is type safe so typecasting is not required at run time.</p>
+<p>Let's see the old non-generic example of creating java collection.</p>
+<pre class="brush: java">
+  ArrayList al=new ArrayList();//creating old non-generic arraylist
+</pre>
+
+<p>Let's see the new generic example of creating java collection.</p>
+<pre class="brush: java">
+  ArrayList&lt;String&gt; al=new ArrayList&lt;String&gt;();//creating new generic arraylist
+</pre>
+<p>In generic collection, we specify the type in angular braces. Now ArrayList is forced to have only specified type of objects in it. If you try to add another type of object, it gives <i>compile time error</i>.</p>
+
+<h3 class="h3">Example of Java ArrayList class</h3>
+<pre class="brush: java">
+
+import java.util.*;
+
+class TestCollection1 {
+ public static void main(String args[]) {
+ 
+  ArrayList&lt;Point&gt; al=new ArrayList&lt;Point&gt;(); // creating arraylist of Points
+
+  al.add(new Point(1,1)); // adding Point objects to arraylist
+  al.add(new Point(-1,1));
+  al.add(new Point(-1,-1));
+  al.add(new Point(1,-1));
+
+  Iterator itr = al.iterator(); // Getting Iterator from arraylist
+  while(itr.hasNext()) {        // to traverse elements
+   System.out.println(itr.next());  // Assumes toString() is implemented
+  }
+ }
+}
+
+</pre>
+
+<h3 class="h3">Two ways to iterate the elements of collection in java</h3>
+<ol>
+<li>By Iterator interface.</li>
+<li>By for-each loop.</li>
+</ol>
+<p>In the above example, we have seen traversing ArrayList by Iterator. Let's see the example to traverse ArrayList elements using for-each loop.</p>
+
+<h3 class="h3">Iterating the elements of Collection by for-each loop</h3>
+<pre class="brush: java">
+import java.util.*;
+
+class TestCollection2 {
+
+ public static void main(String args[]) {
+  ArrayList&lt;String&gt; al=new ArrayList&lt;String&gt;();
+  al.add("Ravi");
+  al.add("Vijay");
+  al.add("Ravi");
+  al.add("Ajay");
+
+  for(String obj:al)
+    System.out.println(obj);
+ }
+}
+</pre>
+
+<h3 class="h3">User-defined class objects in Java ArrayList</h3>
+<pre class="brush: java">
+class Student{
+  int rollno;
+  String name;
+  int age;
+
+  Student(int rollno,String name,int age){
+   this.rollno=rollno;
+   this.name=name;
+   this.age=age;
+  }
+}
+</pre>
+
+<pre class="brush: java">
+import java.util.*;
+
+public class TestCollection3 {
+ public static void main(String args[]) {
+
+  //Creating user-defined class objects
+  Student s1=new Student(101,"Sonoo",23);
+  Student s2=new Student(102,"Ravi",21);
+  Student s2=new Student(103,"Hanumat",25);
+    
+  ArrayList&lt;Student&gt; al=new ArrayList&lt;Student&gt;(); //creating arraylist
+  al.add(s1);//adding Student class object
+  al.add(s2);
+  al.add(s3);
+  
+  Iterator itr=al.iterator();
+  //traversing elements of ArrayList object
+  while(itr.hasNext()){
+    Student st=(Student)itr.next();
+    System.out.println(st.rollno+" "+st.name+" "+st.age);
+  }
+ }
+}
+</pre>
+
+<hr/>
+<h3 class="h3">Example of addAll(Collection c) method</h3>
+
+<pre class="brush: java">
+
+import java.util.*;
+
+public class TestCollection4 {
+ public static void main(String args[]) {
+ 
+  ArrayList&lt;Line&gt; al=new ArrayList&lt;Line&gt;();
+  al.add(new Line(new Point(0,1), new Point(1,1)));
+  al.add(new Line(new Point(1,1), new Point(1,0)));
+  al.add(new Line(new Point(0,1), new Point(1,0)));
+  
+  ArrayList&lt;Line&gt; al2=new ArrayList&lt;Line&gt;();
+  al2.add(new Line(new Point(), new Point(-1,1)));
+  al2.add(new Line(new Point(-1,1), new Point(-1,-1)));
+  
+  al.addAll(al2);  
+
+  Iterator itr=al.iterator();
+  while(itr.hasNext()){
+   System.out.println(itr.next());
+  }
+ }
+}
+</pre>
+
+<h3 class="h3">Example of removeAll() method</h3>
+
+<pre class="brush: java">
+import java.util.*;
+
+public class TestCollection5 {
+ public static void main(String args[]) {
+ 
+  ArrayList&lt;String&gt; al=new ArrayList&lt;String&gt;();
+  al.add("Ravi");
+  al.add("Vijay");
+  al.add("Ajay");
+  
+  ArrayList&lt;String&gt; al2=new ArrayList&lt;String&gt;();
+  al2.add("Ravi");
+  al2.add("Hanumat");
+  
+  al.removeAll(al2);
+
+  System.out.println("iterating the elements after removing the elements of al2...");
+  Iterator itr=al.iterator();
+  while(itr.hasNext()){
+   System.out.println(itr.next());
+  }
+
+  }
+}
+</pre>
+
+<h3 class="h3">Example of retainAll() method</h3>
+
+<pre class="brush: java">
+
+import java.util.*;
+
+class TestCollection6 {
+ public static void main(String args[]) {
+
+  ArrayList&lt;Point&gt; al=new ArrayList&lt;Point&gt;();
+  al.add(new Point(1,-1));
+  al.add(new Point(-1,-1));
+  al.add(new Point(-1,1));
+  ArrayList&lt;String&gt; al2=new ArrayList&lt;String&gt;();
+  al2.add(new Point(1,-1)); // already added to al
+  al2.add(new Point(1,1));
+
+  al.retainAll(al2);
+
+  System.out.println("iterating the elements after retaining the elements of al2...");
+  Iterator itr=al.iterator();
+  while(itr.hasNext()){
+   System.out.println(itr.next());
+  }
+ }
+}
+</pre>
+
+<hr/>
+
+<h1 class="h1">Java LinkedList class</h1>
+
+<ul class="points">
+<li>Java LinkedList class uses doubly linked list to store the elements. It extends the AbstractList class and implements List and Deque interfaces.</li>
+<li>Java LinkedList class can contain duplicate elements.</li>
+<li>Java LinkedList class maintains insertion order.</li>
+<li>Java LinkedList class is non synchronized.</li>
+<li>In Java LinkedList class, manipulation is fast because no shifting needs to be occurred.</li>
+<li>Java LinkedList class can be used as list, stack or queue.</li>
+</ul>
+
+<img src="figures/linkedlist.png" alt="java LinkedList class in collection framework"/>
+
+<h3 class="h3">Java LinkedList Example</h3>
+
+<pre class="brush: java">
+import java.util.*;
+
+public class TestCollection7 {
+ public static void main(String args[]){
+ 
+  LinkedList&lt;Circle&gt; al=new LinkedList&lt;Circle&gt;();
+  al.add(new Circle(new Point(),5));
+  al.add(new Circle(new Point(1,1),3));
+  al.add(new Circle(new Point(1,-1),7));
+  al.add(new Circle(new Point(-1,1),4));
+
+  Iterator&lt;String&gt; itr=al.iterator();
+  while(itr.hasNext()){
+   System.out.println(itr.next());  // Assumes toString() implemented in Circle
+  }                                 // Otherwise will print only addresses
+ }
+}
+</pre>
+
+<hr/>
+
+<h1 class="h1">Difference between ArrayList and LinkedList</h1>
+<p>ArrayList and LinkedList both implements List interface and maintains insertion order. Both are non synchronized classes.</p>
+<p>But there are many differences between ArrayList and LinkedList classes that are given below.</p>
+
+<table class="alt" border="1">
+<tr><th>ArrayList</th><th>LinkedList</th></tr>
+<tr><td>1) ArrayList internally uses <strong>dynamic array</strong> to store the elements.</td><td>LinkedList internally uses <strong>doubly linked list</strong> to store the elements.</td></tr>
+<tr><td>2) Manipulation with ArrayList is <strong>slow</strong> because it internally uses array. If any element is removed from the array, all the bits are shifted in memory.</td><td>Manipulation with LinkedList is <strong>faster</strong> than ArrayList because it uses doubly linked list so no bit shifting is required in memory.</td></tr>
+<tr><td>3) ArrayList class can <strong>act as a list</strong> only because it implements List only.</td><td>LinkedList class can <strong>act as a list and queue</strong> both because it implements List and Deque interfaces.</td></tr>
+<tr><td>4) ArrayList is <strong>better for storing and accessing</strong> data.</td><td>LinkedList is <strong>better for manipulating</strong> data.</td></tr>
+</table>
+
+<h3 class="h2">Example of ArrayList and LinkedList in Java</h3>
+<p>Let's see a simple example where we are using ArrayList and LinkedList both.</p>
+<pre class="brush: java">
+import java.util.*;  
+
+class TestArrayLinked {  
+ public static void main(String args[]) {  
+   
+  List&lt;String&gt; al=new ArrayList&lt;String&gt;();//creating arraylist  
+  al.add("Ravi");//adding object in arraylist  
+  al.add("Vijay");  
+  al.add("Ravi");  
+  al.add("Ajay");  
+  
+  List&lt;String&gt; al2=new LinkedList&lt;String&gt;();//creating linkedlist  
+  al2.add("James");//adding object in linkedlist  
+  al2.add("Serena");  
+  al2.add("Swati");  
+  al2.add("Junaid");  
+  
+  System.out.println("arraylist: "+al);
+  System.out.println("linkedlist: "+al2);
+ }  
+}  
+</pre>
+
+<hr/>
+
+<h1 class="h1">Java List Interface</h1>
+<p>List Interface is the subinterface of Collection.It contains methods to insert and delete elements in index basis.It is a factory of ListIterator interface.
+</p>
+
+<h3 class="h3">Commonly used methods of List Interface:</h3>
+
+<ol>
+<li>public void add(int index,Object element);</li>
+<li>public boolean addAll(int index,Collection c);</li>
+<li>public object get(int Index position); </li>
+<li>public object set(int index,Object element);</li>
+<li>public object remove(int index);</li>
+<li>public ListIterator listIterator();</li>
+<li>public ListIterator listIterator(int i);</li>
+</ol>
+
+
+<hr/>
+
+<h2 class="h2">Java ListIterator Interface</h2>
+<p>ListIterator Interface is used to traverse the element in backward and forward direction.
+</p>
+
+<h3 class="h3">Commonly used methods of ListIterator Interface:</h3>
+
+
+<ol>
+<li>public boolean hasNext();</li>
+<li>public Object next();</li>
+<li>public boolean hasPrevious();</li>
+<li>public Object previous();</li>
+</ol>
+
+
+<h3 class="h3">Example of ListIterator Interface:</h3>
+
+<pre class="brush: java">
+import java.util.*;
+
+public class TestCollection8 {
+  public static void main(String args[]) {
+
+    ArrayList&lt;Point&gt; al=new ArrayList&lt;Point&gt;();
+    al.add(new Point(0,0));
+    al.add(new Point(2,2));
+    al.add(new Point(3,3));
+    al.add(1, new Point(1,1)); // Insert at position 1
+
+    System.out.println("element at 2nd position: "+al.get(2));
+
+    ListIterator&lt;String&gt; itr=al.listIterator();
+
+    System.out.println("traversing elements in forward direction...");
+    while(itr.hasNext()){
+      System.out.println(itr.next()); // Assumes toString() defined in Point class
+    }
+
+    System.out.println("traversing elements in backward direction...");
+    while(itr.hasPrevious()){
+      System.out.println(itr.previous()); // Assumes toString() in Point class
+    }
+  }
+}
+</pre>
+
+
+<div class="codeblock3"><pre>
+Output:element at 2nd position: (2,2)
+       traversing elements in forward direction...
+       (0,0)
+       (1,1)
+       (2,2)
+       (3,3)
+       traversing elements in backward direction...
+       (3,3)
+       (2,2)
+       (1,1)
+       (0,0)
+</pre></div>
+
+<hr/>
+
+<h1 class="h1">Java HashSet class</h1>
+
+<ul class="points">
+<li>uses hashtable to store the elements.It extends AbstractSet class and implements Set interface.</li>
+<li>contains unique elements only.</li>
+</ul>
+
+<h2 class="h2">Difference between List and Set:</h2>
+<p>List can contain duplicate elements whereas Set contains unique elements only.
+</p>
+
+<h2 class="h2">Hierarchy of HashSet class:</h2>
+<img src="figures/hashset.png" alt="HashSet class hierarchy"/>
+
+<h3 class="h3">Example of HashSet class:</h3>
+
+<pre class="brush: java">
+
+import java.util.*;
+
+class TestCollection9 {
+ public static void main(String args[]) {
+ 
+  HashSet&lt;Point&gt; al=new HashSet&lt;Point&gt;();
+  al.add(new Point(1,1));
+  al.add(new Point(2,2));
+  al.add(new Point(1,1)); // item repeated - will overwrite previous (1,1)
+  al.add(new Point(3,3));
+
+  Iterator&lt;String&gt; itr=al.iterator();
+  while(itr.hasNext()){
+   System.out.println(itr.next());
+  }
+ }
+}
+</pre>
+
+<div class="codeblock3"><pre>
+Output:(2,2)
+       (3,3)
+       (1,1)
+
+Note: output can be in any order
+</pre></div>
+
+<hr/>
+
+<h1 class="h1">Java LinkedHashSet class</h1>
+
+<ul>
+<li>contains unique elements only like HashSet. It extends HashSet class and implements Set interface.</li>
+<li>maintains insertion order.</li>
+</ul>
+
+
+<h2 class="h2">Hierarchy of LinkedHashSet class</h2>
+<img src="figures/linkedhashset.png" alt="LinkedHashSet class hierarchy"/>
+
+<h3 class="h3">Example of LinkedHashSet class:</h3>
+
+<pre class="brush: java">
+
+import java.util.*;
+
+class TestCollection10 {
+  public static void main(String args[]) {
+ 
+    LinkedHashSet&lt;Point&gt; al=new LinkedHashSet&lt;Point&gt;();
+    al.add(new Point(1,1));
+    al.add(new Point(2,2));
+    al.add(new Point(1,1)); // item repeated - will overwrite previous (1,1)
+    al.add(new Point(3,3));
+
+    Iterator&lt;String&gt; itr=al.iterator();
+    while(itr.hasNext()){
+      System.out.println(itr.next());
+    }
+  }
+}
+</pre>
+
+<div class="codeblock3"><pre>
+Output:(1,1)
+       (2,2)
+       (3,3)
+</pre></div>
+<br/>
+
+<hr/>
+
+<h1 class="h1">Java TreeSet class</h1>
+
+<ul>
+<li>contains unique elements only like HashSet. The TreeSet class implements NavigableSet interface that extends the SortedSet interface.</li>
+<li>maintains ascending order.</li>
+</ul>
+
+
+<h2 class="h2">Hierarchy of TreeSet class:</h2>
+<img src="figures/treeset.png" alt="TreeSet class hierarchy"/>
+
+<h3 class="h3">Example of TreeSet class:</h3>
+
+<pre class="brush: java">
+import java.util.*;
+
+class TestCollection11 {
+  public static void main(String args[]) {
+ 
+    TreeSet&lt;String&gt; al=new TreeSet&lt;String&gt;();
+    al.add("Ravi");
+    al.add("Vijay");
+    al.add("Ravi");
+    al.add("Ajay");
+
+    Iterator&lt;String&gt; itr=al.iterator();
+    while(itr.hasNext()){
+    System.out.println(itr.next());
+    }
+  }
+}
+</pre>
+
+
+<div class="codeblock3"><pre>
+Output:Ajay
+       Ravi
+       Vijay
+       
+</pre></div>
+
+<hr/>
+
+<h1 class="h1">Java Queue Interface</h1>
+<p>The Queue interface basically orders the element in FIFO(First In First Out)manner.
+</p>
+
+<h3 class="h3">Methods of Queue Interface :</h3>
+
+<ol>
+<li>public boolean add(object);</li>
+<li>public boolean offer(object); </li>
+<li>public remove();</li>
+<li>public poll();</li>
+<li>public element();</li>
+<li>public peek();</li>
+</ol>
+
+<hr/>
+
+<h2 class="h2">PriorityQueue class</h2>
+<p>The PriorityQueue class provides the facility of using queue. But it does not orders the elements in FIFO manner.
+</p>
+
+
+<h3 class="h3">Example of PriorityQueue:</h3>
+
+<pre class="brush: java">
+
+import java.util.*;
+
+class TestCollection12 {
+  public static void main(String args[]) {
+
+    PriorityQueue&lt;String&gt; queue=new PriorityQueue&lt;String&gt;();
+    queue.add("Amit");
+    queue.add("Vijay");
+    queue.add("Karan");
+    queue.add("Jai");
+    queue.add("Rahul");
+
+    System.out.println("head:"+queue.element());
+    System.out.println("head:"+queue.peek());
+
+    System.out.println("iterating the queue elements:");
+    Iterator itr=queue.iterator();
+    while(itr.hasNext()){
+      System.out.println(itr.next());
+    }
+
+    queue.remove();
+    queue.poll();
+
+    System.out.println("after removing two elements:");
+    Iterator&lt;String&gt; itr2=queue.iterator();
+    while(itr2.hasNext()){
+      System.out.println(itr2.next());
+    }
+  }
+}
+</pre>
+
+<div class="codeblock3"><pre>
+Output:head:Amit
+       head:Amit
+       iterating the queue elements:
+       Amit
+       Jai
+       Karan
+       Vijay
+       Rahul
+       after removing two elements:
+       Karan
+       Rahul
+       Vijay
+</pre></div>
+<br/>
+
+<hr/>
+
+<h1 class="h1">Java Map Interface</h1>
+<p>A map contains values on the basis of key i.e. key and value pair. Each key and value pair is known as an entry. Map contains only unique keys.</p>
+<p>Map is useful if you have to search, update or delete elements on the basis of key.</p>
+
+<img src="figures/java-map-hierarchy.png" alt="Map hierarchy"/>
+
+<h3 class="h3">Useful methods of Map interface</h3>
+<table class="alt" border="1">
+<tr><th>Method</th><th>Description</th></tr>
+<tr><td>public Object put(Object key, Object value)</td><td>is used to insert an entry in this map.</td></tr>
+<tr><td>public void putAll(Map map)</td><td>is used to insert the specified map in this map.</td></tr>
+<tr><td>public Object remove(Object key)</td><td>is used to delete an entry for the specified key.</td></tr>
+<tr><td>public Object get(Object key)</td><td>is used to return the value for the specified key.</td></tr>
+<tr><td>public boolean containsKey(Object key)</td><td>is used to search the specified key from this map.</td></tr>
+<tr><td>public Set keySet()</td><td>returns the Set view containing all the keys.</td></tr>
+<tr><td>public Set entrySet()</td><td>returns the Set view containing all the keys and values.</td></tr>
+</table>
+
+<h2 class="h2">Entry Interface</h2>
+<p>Entry is the subinterface of Map. So we will be accessed it by Map.Entry name. It provides methods to get key and value.
+</p>
+<h3 class="h3">Methods of Map.Entry interface</h3>
+<ol class="points">
+<li><strong>public Object getKey():</strong> is used to obtain key.</li>
+<li><strong>public Object getValue():</strong>is used to obtain value.</li>
+</ol>
+
+<hr/>
+
+<h1 class="h1">Java HashMap class</h1>
+
+<ul class="points">
+<li>A HashMap contains values based on the key. It implements the Map interface and extends AbstractMap class.</li>
+<li>It contains only unique elements.</li>
+<li>It may have one null key and multiple null values.</li>
+<li>It maintains no order.</li>
+</ul>
+
+
+
+<h2 class="h2">Hierarchy of HashMap class:</h2>
+<img src="figures/hashmap.png" alt="HashMap class hierarchy"/>
+
+
+<h3 class="h3">Example of HashMap class:</h3>
+
+<pre class="brush: java">
+import java.util.*;
+
+class TestCollection13 {
+ public static void main(String args[]) {
+ 
+  HashMap&lt;Integer,String&gt; hm=new HashMap&lt;Integer,String&gt;();
+
+  hm.put(100,"Amit");
+  hm.put(101,"Vijay");
+  hm.put(102,"Rahul");
+
+  for(Map.Entry m:hm.entrySet()){
+   System.out.println(m.getKey()+" "+m.getValue());
+  }
+ }
+}
+
+</pre>
+
+<div class="codeblock3"><pre>
+Output:102 Rahul
+       100 Amit
+       101 Vijay
+</pre></div>
+
+<h3 class="h3">What is difference between HashSet and HashMap?</h3>
+<p>HashSet contains only values whereas HashMap contains entry(key and value).</p>
+
+<hr/>
+
+<h1 class="h1">Java LinkedHashMap class</h1>
+
+<ul class="points">
+<li>A LinkedHashMap contains values based on the key. It implements the Map interface and extends HashMap class.</li>
+<li>It contains only unique elements.</li>
+<li>It may have one null key and multiple null values.</li>
+<li>It is same as HashMap instead maintains insertion order. </li>
+</ul>
+
+
+<h2 class="h2">Hierarchy of LinkedHashMap class:</h2>
+<img src="figures/linkedhashmap.png" alt="LinkedHashMap class hierarchy"/>
+
+<h3 class="h3">Example of LinkedHashMap class:</h3>
+
+<pre class="brush: java">
+import java.util.*;
+
+class TestCollection14 {
+ public static void main(String args[]) {
+ 
+  LinkedHashMap&lt;Integer,String&gt; hm=new LinkedHashMap&lt;Integer,String&gt;();
+
+  hm.put(100,"Amit");
+  hm.put(101,"Vijay");
+  hm.put(102,"Rahul");
+
+  for(Map.Entry m:hm.entrySet()){
+   System.out.println(m.getKey()+" "+m.getValue());
+  }
+ }
+}
+</pre>
+
+<div class="codeblock3"><pre>
+Output:100 Amit
+       101 Vijay
+       102 Rahul
+</pre></div>
+
+<hr/>
+
+<h1 class="h1">Java TreeMap class</h1>
+
+<ul class="points">
+<li>A TreeMap contains values based on the key. It implements the NavigableMap interface and extends AbstractMap class.</li>
+<li>It contains only unique elements.</li>
+<li>It cannot have null key but can have multiple null values.</li>
+<li>It is same as HashMap instead maintains ascending order. </li>
+</ul>
+
+
+<h2 class="h2">Hierarchy of TreeMap class:</h2>
+<img src="figures/treemap.png" alt="TreeMap class hierarchy"/>
+
+<h3 class="h3">Example of TreeMap class:</h3>
+
+<pre class="brush: java">
+import java.util.*;
+
+class TestCollection15 {
+ public static void main(String args[]) {
+ 
+  TreeMap&lt;Integer,String&gt; hm=new TreeMap&lt;Integer,String&gt;();
+
+  hm.put(100,"Amit");
+  hm.put(102,"Ravi");
+  hm.put(101,"Vijay");
+  hm.put(103,"Rahul");
+
+  for(Map.Entry m:hm.entrySet()){
+   System.out.println(m.getKey()+" "+m.getValue());
+  }
+ }
+}
+
+</pre>
+
+
+<div class="codeblock3"><pre>
+Output:100 Amit
+       101 Vijay
+       102 Ravi
+       103 Rahul
+</pre></div>
+<hr/>
+
+<h3 class="h3">What is difference between HashMap and TreeMap?</h3>
+<table class="alt" border="1">
+<tr><th>HashMap</th><th>TreeMap</th></tr>
+<tr><td>1) HashMap can contain one null key.</td><td>TreeMap can not contain any null key.</td></tr>
+<tr><td>2) HashMap maintains no order.</td><td>TreeMap maintains ascending order.</td></tr>
+</table>
+
+<hr/>
+
+<h1 class="h1">Java Hashtable class</h1>
+<ul class="points">
+<li>A Hashtable is an array of list.Each list is known as a bucket.The position of bucket is identified by calling the hashcode() method.A Hashtable contains values based on the key. It implements the Map interface and extends Dictionary class.</li>
+<li>It contains only unique elements.</li>
+<li>It may have not have any null key or value.</li>
+<li>It is synchronized.</li>
+</ul>
+
+ 
+<h3 class="h3">Example of Hashtable:</h3>
+
+<pre class="brush: java">
+import java.util.*;
+
+class TestCollection16 {
+ public static void main(String args[]) {
+
+  Hashtable&lt;Integer,String&gt; hm=new Hashtable&lt;Integer,String&gt;();
+  hm.put(100,"Amit");
+  hm.put(102,"Ravi");
+  hm.put(101,"Vijay");
+  hm.put(103,"Rahul");
+
+  for(Map.Entry m:hm.entrySet()){
+   System.out.println(m.getKey()+" "+m.getValue());
+  }
+ }
+}
+</pre>
+
+<div class="codeblock3"><pre>
+Output:103 Rahul
+       102 Ravi
+       101 Vijay
+       100 Amit
+       
+</pre></div>
+
+<h3 class="h3">Difference between HashMap and Hashtable</h3>
+<p>HashMap and Hashtable both are used to store data in key and value form. Both are using hashing technique to store unique keys.</p>
+<p>But there are many differences between HashMap and Hashtable classes that are given below.</p>
+
+<table class="alt" border="1">
+<tr><th>HashMap</th><th>Hashtable</th></tr>
+<tr><td>1) HashMap is <strong>non synchronized</strong>. It is not-thread safe and can't be shared between many threads without proper synchronization code.</td><td>Hashtable is <strong>synchronized</strong>. It is thread-safe and can be shared with many threads.</td></tr>
+<tr><td>2) HashMap <strong>allows one null key and multiple null values</strong>.</td><td>Hashtable <strong>doesn't allow any null key or value</strong>.</td></tr>
+<tr><td>3) HashMap is a <strong>new class introduced in JDK 1.2</strong>.</td><td>Hashtable is a <strong>legacy class</strong>.</td></tr>
+<tr><td>4) HashMap is <strong>fast</strong>.</td><td>Hashtable is <strong>slow</strong>.</td></tr>
+<tr><td>5) We can make the HashMap as synchronized by calling this code<br> Map m = Collections.synchronizedMap(hashMap);</td><td>Hashtable is internally synchronized and can't be unsynchronized.</td></tr>
+<tr><td>6) HashMap is <strong>traversed by Iterator</strong>.</td><td>Hashtable is <strong>traversed by Enumerator and Iterator</strong>.</td></tr>
+<tr><td>7) Iterator in HashMap is <strong>fail-fast</strong>.</td><td>Enumerator in Hashtable is <strong>not fail-fast</strong>.</td></tr>
+<tr><td>8) HashMap inherits <strong>AbstractMap</strong> class.</td><td>Hashtable inherits <strong>Dictionary</strong> class.</td></tr>
+</table>
+
+<hr/>
+
+<h1 class="h1">Sorting in Collection</h1>
+<p>
+We can sort the elements of:
+</p>
+<ol>
+<li>String objects</li>
+<li>Wrapper class objects</li>
+<li>User-defined class objects</li>
+</ol>
+
+
+<table>
+<tr><td>
+<strong>Collections</strong> class provides static methods for sorting the elements of collection.If collection elements are of Set type, we can use TreeSet.But We cannot sort the elements of List.Collections class provides methods for sorting the elements of List type elements.
+</td></tr>
+</table>
+
+<h3 class="h3">Method of Collections class for sorting List elements</h3>
+<table>
+<tr><td>
+<strong>public void sort(List list):</strong> is used to sort the elements of List.List elements must be of Comparable type.
+</td></tr>
+</table>
+
+<h4 id="h4">Note: String class and Wrapper classes implements the Comparable interface.So if you store the objects of string or wrapper classes, it will be Comparable.</h4>
+
+<h3 class="h3">Example of Sorting the elements of List that contains string objects</h3>
+
+<pre class="brush: java">
+import java.util.*;
+
+class TestSort1 {
+  public static void main(String args[]) {
+
+    ArrayList&lt;String&gt; al=new ArrayList&lt;String&gt;();
+    al.add("Viru");
+    al.add("Saurav");
+    al.add("Mukesh");
+    al.add("Tahir");
+
+    Collections.sort(al);
+    Iterator itr=al.iterator();
+    while(itr.hasNext()){
+      System.out.println(itr.next());
+    }
+  }
+}
+
+</pre>
+
+<div class="codeblock3"><pre>
+Output:Mukesh
+       Saurav
+       Tahir
+       Viru
+       
+</pre></div>
+
+ 
+<h3 class="h3">Example of Sorting the elements of List that contains Wrapper class objects</h3>
+
+<pre class="brush: java">
+import java.util.*;
+
+class TestSort2 {
+  public static void main(String args[]) {
+
+    ArrayList al=new ArrayList();
+    al.add(Integer.valueOf(201));
+    al.add(Integer.valueOf(101));
+    al.add(230);//internally will be converted into objects as Integer.valueOf(230)
+
+    Collections.sort(al);
+
+    Iterator itr=al.iterator();
+    while(itr.hasNext()){
+      System.out.println(itr.next());
+    }
+  }
+}
+</pre>
+
+<div class="codeblock3"><pre>
+Output:101
+       201
+       230
+              
+</pre></div>
+
+<hr/>
+
+<h1 class="h1">Java Comparable interface</h1>
+<p>Java Comparable interface is used to order the objects of user-defined class.This interface is found in java.lang package and contains only one method named compareTo(Object). It provide single sorting sequence only i.e. you can sort the elements on based on single data member only. For example it may be rollno, name, age or anything else.
+</p>
+
+<h3  class="h3">compareTo(Object obj) method</h3>
+<p><strong>public int compareTo(Object obj):</strong> is used to compare the current object with the specified object.</p>
+
+<hr/>
+<p>We can sort the elements of:</p>
+<ol>
+<li>String objects</li>
+<li>Wrapper class objects</li>
+<li>User-defined class objects</li>
+</ol>
+
+
+<h3  class="h2">Collections class</h3>
+<p><strong>Collections</strong> class provides static methods for sorting the elements of collections. If collection elements are of Set or Map, we can use TreeSet or TreeMap. But We cannot sort the elements of List. Collections class provides methods for sorting the elements of List type elements.</p>
+
+<h3 class="h3">Method of Collections class for sorting List elements</h3>
+<p><strong>public void sort(List list):</strong> is used to sort the elements of List. List elements must be of Comparable type.</p>
+
+<h4 class="n">Note: String class and Wrapper classes implements Comparable interface by default. So if you store the objects of string or wrapper classes in list, set or map, it will be Comparable by default.</h4>
+
+
+<h2 class="h2">Java Comparable Example</h2>
+<p>Let's see the example of Comparable interface that sorts the list elements on the basis of age.</p>
+
+<p class="filename">File: Student.java</p>
+<pre class="brush: java">
+class Student implements Comparable&lt;Student&gt;{
+  int rollno;
+  String name;
+  int age;
+
+  Student(int rollno,String name,int age){
+    this.rollno=rollno;
+    this.name=name;
+    this.age=age;
+  }
+
+  public int compareTo(Student st){
+    if(age==st.age)
+      return 0;
+    else if(age>st.age)
+      return 1;
+    else
+      return -1;
+  }
+}
+</pre>
+
+
+<p class="filename">File: TestSort3.java</p>
+<pre class="brush: java">
+import java.util.*;
+import java.io.*;
+
+public class TestSort3{
+  public static void main(String args[]){
+    ArrayList&lt;Student&gt; al=new ArrayList&lt;Student&gt;();
+    al.add(new Student(101,"Vijay",23));
+    al.add(new Student(106,"Ajay",27));
+    al.add(new Student(105,"Jai",21));
+
+    Collections.sort(al);
+    for(Student st:al){
+      System.out.println(st.rollno+" "+st.name+" "+st.age);
+    }
+  }
+}
+</pre>
+
+<div class="codeblock3"><pre>
+Output:105 Jai 21
+       101 Vijay 23
+       106 Ajay 27
+</pre></div>
+
+<hr/>
+
+<h1 class="h1">Java Comparator interface</h1>
+<p><strong>Java Comparator interface</strong> is used to order the objects of user-defined class.</p>
+<p>This interface is found in java.util package and contains 2 methods compare(Object obj1,Object obj2) and equals(Object element).</p>
+<p> It provides multiple sorting sequence i.e. you can sort the elements on the basis of any data member, for example rollno, name, age or anything else.</p>
+
+<h4 class="h3">compare() method</h4>
+<p><strong>public int compare(Object obj1,Object obj2):</strong> compares the first object with second object.</p>
+
+<hr/>
+<h2 class="h2">Collections class</h2>
+
+<p><strong>Collections</strong> class provides static methods for sorting the elements of collection. If collection elements are of Set or Map, we can use TreeSet or TreeMap. But we cannot sort the elements of List. Collections class provides methods for sorting the elements of List type elements also.</p>
+
+<h4 class="h3">Method of Collections class for sorting List elements</h4>
+<p>
+<strong>public void sort(List list, Comparator c):</strong> is used to sort the elements of List by the given Comparator.
+</p>
+
+
+<h2 class="h2">Java Comparator Example (Non-generic Old Style)</h2>
+<p>Let's see the example of sorting the elements of List on the basis of age and name. In this example, we have created 4 java classes:</p>
+<ol class="points">
+<li>Student.java</li>
+<li>AgeComparator.java</li>
+<li>NameComparator.java</li>
+<li>Simple.java</li>
+</ol>
+
+<strong>Student.java</strong>
+<p>This class contains three fields rollno, name and age and a parameterized constructor.</p>
+
+<pre class="brush: java">
+class Student{
+  int rollno;
+  String name;
+  int age;
+
+  Student(int rollno,String name,int age){
+    this.rollno=rollno;
+    this.name=name;
+    this.age=age;
+  }
+}
+</pre>
+
+<strong>AgeComparator.java</strong>
+<p>This class defines comparison logic based on the age. If age of first object is greater than the second, we are returning positive value, it can be any one such as 1, 2 , 10 etc. If age of first object is less than the second object, we are returning negative value, it can be any negative value and if age of both objects are equal, we are returning 0.</p>
+<pre class="brush: java">
+import java.util.*;
+
+class AgeComparator implements Comparator{
+  public int compare(Object o1,Object o2){
+    Student s1=(Student)o1;
+    Student s2=(Student)o2;
+
+    if(s1.age==s2.age)
+      return 0;
+    else if(s1.age>s2.age)
+      return 1;
+    else
+    return -1;
+  }
+}
+</pre>
+
+<strong>NameComparator.java</strong>
+<p>This class provides comparison logic based on the name. In such case, we are using the compareTo() method of String class, which internally provides the comparison logic.</p>
+
+<pre class="brush: java">
+import java.util.*;
+
+class NameComparator implements Comparator{
+
+  public int compare(Object o1,Object o2){
+    Student s1=(Student)o1;
+    Student s2=(Student)o2;
+
+    return s1.name.compareTo(s2.name);
+  }
+}
+</pre>
+
+<strong>Simple.java</strong>
+<p>In this class, we are printing the objects values by sorting on the basis of name and age.</p>
+<pre class="brush: java">
+
+import java.util.*;
+import java.io.*;
+
+class Simple{
+  public static void main(String args[]){
+
+    ArrayList al=new ArrayList();
+    al.add(new Student(101,"Vijay",23));
+    al.add(new Student(106,"Ajay",27));
+    al.add(new Student(105,"Jai",21));
+
+    System.out.println("Sorting by Name...");
+
+    Collections.sort(al,new NameComparator());
+    Iterator itr=al.iterator();
+    while(itr.hasNext()){
+      Student st=(Student)itr.next();
+      System.out.println(st.rollno+" "+st.name+" "+st.age);
+    }
+
+    System.out.println("sorting by age...");
+
+    Collections.sort(al,new AgeComparator());
+    Iterator itr2=al.iterator();
+    while(itr2.hasNext()){
+      Student st=(Student)itr2.next();
+      System.out.println(st.rollno+" "+st.name+" "+st.age);
+    }
+  }
+}
+</pre>
+
+<div class="codeblock3"><pre>
+       Sorting by Name...
+       106 Ajay 27
+       105 Jai 21
+       101 Vijay 23
+       
+       Sorting by age...       
+       105 Jai 21
+       101 Vijay 23
+       106 Ajay 27
+</pre></div>
+
+<hr/>
+<h2 class="h2">Java Comparator Example (Generic)</h2>
+<strong>Student.java</strong>
+<pre class="brush: java">
+class Student{
+  int rollno;
+  String name;
+  int age;
+
+  Student(int rollno,String name,int age){
+    this.rollno=rollno;
+    this.name=name;
+    this.age=age;
+  }
+}
+</pre>
+
+<strong>AgeComparator.java</strong>
+<pre class="brush: java">
+import java.util.*;
+
+class AgeComparator implements Comparator&lt;Student&gt;{
+  public int compare(Student s1,Student s2){
+    if(s1.age==s2.age)
+      return 0;
+    else if(s1.age>s2.age)
+      return 1;
+    else
+      return -1;
+  }
+}
+</pre>
+
+<strong>NameComparator.java</strong>
+<p>This class provides comparison logic based on the name. In such case, we are using the compareTo() method of String class, which internally provides the comparison logic.</p>
+
+<pre class="brush: java">
+import java.util.*;
+
+class NameComparator implements Comparator&lt;Student&gt;{
+  public int compare(Student s1,Student s2){
+    return s1.name.compareTo(s2.name);
+  }
+}
+</pre>
+
+<strong>Simple.java</strong>
+<p>In this class, we are printing the objects values by sorting on the basis of name and age.</p>
+<pre class="brush: java">
+import java.util.*;
+import java.io.*;
+
+class Simple {
+  public static void main(String args[]){
+
+    ArrayList&lt;Student&gt; al=new ArrayList&lt;Student&gt;();
+    al.add(new Student(101,"Vijay",23));
+    al.add(new Student(106,"Ajay",27));
+    al.add(new Student(105,"Jai",21));
+
+    System.out.println("Sorting by Name...");
+
+    Collections.sort(al,new NameComparator());
+    for(Student st: al){
+      System.out.println(st.rollno+" "+st.name+" "+st.age);
+    }
+
+    System.out.println("sorting by age...");
+
+    Collections.sort(al,new AgeComparator());
+    for(Student st: al){
+      System.out.println(st.rollno+" "+st.name+" "+st.age);
+    }
+  }
+}
+</pre>
+
+<div class="codeblock3"><pre>
+Output:Sorting by Name...
+       106 Ajay 27
+       105 Jai 21
+       101 Vijay 23
+
+       Sorting by age...       
+       105 Jai 21
+       101 Vijay 23
+       106 Ajay 27
+</pre></div>
+
+      </div>
+    </div>
+
+  <div id="navigation">
+  <p><strong><a href="../index.html">Home</a></strong></p>
+    <ul>
+      <li><a href="01_intro.html">Introduction</a></li>
+      <li><a href="02_Encapsulation.html">Encapsulation</a></li>
+      <li><a href="03_Constructors.html">Constructors</a></li>
+      <li><a href="04_Adding_Features.html">Adding Features</a></li>
+      <li><a href="05_Interactions.html">Adding Interactions</a></li>
+      <li><a href="06_Static.html">Static keyword</a></li>
+      <li><a href="07_Utility_methods.html">Utility Methods</a></li>
+      <li><a href="08_Exercises.html">Exercises</a></li>
+      <li><a href="09_Arrays.html">Arrays</a></li>
+      <li><a href="10_Javadoc.html">Javadoc</a></li>
+      <li><a href="11_Composition.html">Composition</a></li>
+      <li><a href="12_Inheritance.html">Inheritance</a></li>
+      <li><a href="13_Overriding.html">Overriding</a></li>
+      <li><a href="14_Casting.html">Casting</a></li>
+      <li><a href="15_Final.html">Final keyword</a></li>
+      <li><a href="16_Exceptions.html">Exceptions</a></li>
+      <li><a href="17_Interface.html">Interface</a></li>
+      <li><a href="18_Abstract_Classes.html">Abstract Classes</a></li>
+      <li><a href="19_Organizing_Code.html">Organizing Code</a></li>
+      <li><a href="20_InputOutput.html">Input/Output</a></li>
+      <li><a href="21_Strings.html">Strings</a></li>
+      <li><a href="22_Numbers.html">Numbers</a></li>
+      <li><a href="23_Generics.html">Generics</a></li>
+      <li><a href="24_Collections.html">Collections</a></li>
+      <li><a href="25_InnerClasses.html">Inner Classes</a></li>
+      <li><a href="26_Multithreading.html">Multithreading</a></li>
+      <li><a href="27_Swings.html">Swings</a></li>
+      <li><a href="28_Applets.html">Applets</a></li>
+    </ul>
+  </div>
+
+  <div id="extra">
+  </div>
+  <div id="footer", align="right">
+    <p>Send comments to swaminathanj@am.amrita.edu</p>
+  </div>
+</div>
+</body>
+</html>
+

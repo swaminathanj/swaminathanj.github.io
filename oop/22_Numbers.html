@@ -1,0 +1,232 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Number, Math and Random</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../styles.css" />
+        <script type="text/javascript" src="scripts/shCore.js"></script>
+        <script type="text/javascript" src="scripts/shBrushBash.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCpp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCss.js"></script>
+        <script type="text/javascript" src="scripts/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="scripts/shBrushDiff.js"></script>
+        <script type="text/javascript" src="scripts/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="scripts/shBrushJava.js"></script>
+        <script type="text/javascript" src="scripts/shBrushJScript.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPhp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPlain.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPython.js"></script>
+        <script type="text/javascript" src="scripts/shBrushRuby.js"></script>
+        <script type="text/javascript" src="scripts/shBrushScala.js"></script>
+        <script type="text/javascript" src="scripts/shBrushSql.js"></script>
+        <script type="text/javascript" src="scripts/shBrushVb.js"></script>
+        <script type="text/javascript" src="scripts/shBrushXml.js"></script>
+        <link type="text/css" rel="stylesheet" href="lecture-notes.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/shThemeDefault.css"/>
+        <script type="text/javascript">
+            //SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+            SyntaxHighlighter.defaults['toolbar'] = false;
+            SyntaxHighlighter.defaults['auto-links'] = false;
+ 
+            SyntaxHighlighter.all();
+        </script>
+        <script type="text/JavaScript">
+            //courtesy of BoogieJack.com
+            function killCopy(e){
+            return false
+            }
+            function reEnable(){
+            return true
+            }
+            document.onselectstart=new Function ("return false")
+            if (window.sidebar){
+            document.onmousedown=killCopy
+            document.onclick=reEnable
+            }
+
+        </script>
+</head>
+
+<body>
+ 
+<div id="container">
+<div id="header"><h1>Object Oriented Programming <img align="right" src="../logo-dark.png" alt="Amrita"> </h1> </div>
+  <div id="wrapper">
+    <div id="content">
+
+<table align="right">
+  <td align="left"><a href="21_Strings.html">Prev</a></td>
+  <td align="right"><a href="23_Generics.html">Next</a></td>
+</table>
+
+
+<h2>Numbers</h2>
+
+<p>When it comes to working with numbers, we use primitive types such as byte, short, int, long, float and double.
+A pure object oriented language does not support primitive types. In other words, in an object oriented world
+everything is an object (of some type defined by a class). However, primitive types are convenient to use and 
+hence Java supports them. There are classes equivalent to each of the primitive types as listed below.</p>
+
+<ul>
+    <li>byte and Byte</li>
+    <li>short and Short</li>
+    <li>int and Integer</li>
+    <li>long and Long</li>
+    <li>float and Float</li>
+    <li>double and Double</li>
+</ul>
+
+<p>All these classes are derived from the parent class <b>Number</b> and hence these classes are referred 
+to as <b>Number</b> types.</p>
+
+<p>Using the class instance of these types clearly has some advantages. For example, the <b>Integer</b>
+class offers a variety of methods that can manipulate the integer.</p>
+
+<p>The static method <b>parseInt()</b> is used to convert a String to an Integer, provided it is possible.</p>
+
+<pre class="brush: java">
+    int x = Integer.parseInt("23"); // x = 23
+    Integer y = Integer.parseInt("23"); // y = 23
+    int z = Integer.parseInt("23ab"); // z = 23
+    int w = Integer.parseInt("ab23"); // throws NumberFormatException
+</pre>
+
+<p>The <b>toString()</b> method can be used to convert an <b>Integer</b> to a <b>String</b>.
+There is also a <b>static toString()</b> method that accomplishes the same.</p>
+
+<pre class="brush: java">
+    Integer x = new Integer(19); // x = 19
+    String str = x.toString();  // str = "19"
+
+    String str = Integer.toString(19);  // str = "19"
+</pre>
+
+<p>There are a bunch of methods that supports bitwise operations such as left rotation, right rotation, finding
+the highest and lowest bit position with a 1, changing to other number representations such as to float, double,
+long, etc.</p>
+
+<p>In a similar fashion, the other <b>Number</b> types also provide several such utility operations.
+Please refer to Java docs for complete information.</p>
+
+<h3>Auto-boxing and Auto-unboxing</h3>
+
+<p>As you can observe assigning an <b>Integer</b> object to a variable of primitive type <b>int</b>
+is possible. Java takes care of the making this conversion in an implicit manner. This feature is called
+auto-boxing/auto-unboxing.</p>
+<ul>
+    <li>When a primtive number type is implicitly converted to its equivalent <b>Number</b> type, it is 
+    called as <em>auto-boxing</em>. For example, <b>int</b> to <b>Integer</b>.</li>
+    <li>When a <b>Number</b> type is implicitly converted to its equivalent primitive type, it is called
+    as <em>auto-unboxing</em>. For example, <b>Float</b> to <b>float</b>.</li>
+</ul>
+
+<h2>Math</h2>
+
+<p>The <b>Math</b> class provides wide variety of methods (most of them are static) to perform several 
+mathematical computations. Usage of some of them are shown below.</p>
+
+<pre class="brush: java">
+    double d = Math.abs(-3.5);  // d = 3.5
+    int c = Math.ceil(3.5);     // c = 4
+    int f = Math.floor(3.5);    // f = 3
+    float sr = Math.sqrt(9.0);    // sr = 3.0
+    double cr = Math.cbrt(27.0);   // cr = 3.0
+    int p = Math.power(3,4);    // p = 81 (3^4)
+    float max = Math.max(5.1,3.9);  // max = 5.1
+    long min = Math.min(5,3);   // min = 3
+</pre>
+
+<ul>
+    <li>There are methods to perform trignometric operations <b>sin, cos, tan</b> and their inverses 
+    <b>asin, acos, atan</b>. </li>
+    <li>The <b>toDegrees()</b> and <b>toRadians()</b> methods can be used to convert the angle
+    from one form to the other.</li>
+    <li>The <b>log()</b> and <b>log10()</b> methods compute the natural logarithm (to base e) and logarithm 
+    to base 10 respectively.</li> 
+    <li>The <b>random()</b> method returns a <b>double</b> value in the range 0.0 and 1.0. This number
+    can be multiplied by 10 or 100 and rounded off to get an integer if integer is what is needed.</li>
+</ul>
+
+<h2>Random</h2>
+
+<p>When a few random numbers are required, <b>Math.random()</b> method suffices. If a series of random 
+numbers need to be generated, it is better to use <b>Random</b> class from <b>java.util</b>
+package. The following example demonstrates how random numbers can be generated.</p>
+
+<pre class="brush: java">
+    import java.util.Random;
+
+    public class RandomTest {
+      public static void main(String[] args) {
+
+        Random rand = new Random();
+        int i = rand.nextInt();
+        double d = rand.nextDouble();
+        float f = rand.nextFloat();
+        long l = rand.nextLong();
+      }
+    }
+</pre>
+
+<p>The code below shows how random numbers can be generated between 0 to 99.</p>
+
+<pre class="brush: java">
+    import java.util.Random;
+
+    public class RandomRange {
+      public static void main(String[] args) {
+
+        Random rand = new Random();
+        int x = rand.nextInt(100);
+      }
+    }
+</pre>
+
+    </div>
+  </div>
+
+  <div id="navigation">
+  <p><strong><a href="../index.html">Home</a></strong></p>
+    <ul>
+      <li><a href="01_intro.html">Introduction</a></li>
+      <li><a href="02_Encapsulation.html">Encapsulation</a></li>
+      <li><a href="03_Constructors.html">Constructors</a></li>
+      <li><a href="04_Adding_Features.html">Adding Features</a></li>
+      <li><a href="05_Interactions.html">Adding Interactions</a></li>
+      <li><a href="06_Static.html">Static keyword</a></li>
+      <li><a href="07_Utility_methods.html">Utility Methods</a></li>
+      <li><a href="08_Exercises.html">Exercises</a></li>
+      <li><a href="09_Arrays.html">Arrays</a></li>
+      <li><a href="10_Javadoc.html">Javadoc</a></li>
+      <li><a href="11_Composition.html">Composition</a></li>
+      <li><a href="12_Inheritance.html">Inheritance</a></li>
+      <li><a href="13_Overriding.html">Overriding</a></li>
+      <li><a href="14_Casting.html">Casting</a></li>
+      <li><a href="15_Final.html">Final keyword</a></li>
+      <li><a href="16_Exceptions.html">Exceptions</a></li>
+      <li><a href="17_Interface.html">Interface</a></li>
+      <li><a href="18_Abstract_Classes.html">Abstract Classes</a></li>
+      <li><a href="19_Organizing_Code.html">Organizing Code</a></li>
+      <li><a href="20_InputOutput.html">Input/Output</a></li>
+      <li><a href="21_Strings.html">Strings</a></li>
+      <li><a href="22_Numbers.html">Numbers</a></li>
+      <li><a href="23_Generics.html">Generics</a></li>
+      <li><a href="24_Collections.html">Collections</a></li>
+      <li><a href="25_InnerClasses.html">Inner Classes</a></li>
+      <li><a href="26_Multithreading.html">Multithreading</a></li><li><a href="27_Swings.html">Swings</a></li>
+      <li><a href="28_Applets.html">Applets</a></li>
+    </ul>
+  </div>
+
+  <div id="extra">
+  </div>
+  <div id="footer", align="right">
+    <p>Send comments to swaminathanj@am.amrita.edu</p>
+  </div>
+</div>
+</body>
+</html>
+
+</body>
