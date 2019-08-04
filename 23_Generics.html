@@ -1,0 +1,313 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Java Generics</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../styles.css" />
+        <script type="text/javascript" src="scripts/shCore.js"></script>
+        <script type="text/javascript" src="scripts/shBrushBash.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCpp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCss.js"></script>
+        <script type="text/javascript" src="scripts/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="scripts/shBrushDiff.js"></script>
+        <script type="text/javascript" src="scripts/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="scripts/shBrushJava.js"></script>
+        <script type="text/javascript" src="scripts/shBrushJScript.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPhp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPlain.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPython.js"></script>
+        <script type="text/javascript" src="scripts/shBrushRuby.js"></script>
+        <script type="text/javascript" src="scripts/shBrushScala.js"></script>
+        <script type="text/javascript" src="scripts/shBrushSql.js"></script>
+        <script type="text/javascript" src="scripts/shBrushVb.js"></script>
+        <script type="text/javascript" src="scripts/shBrushXml.js"></script>
+        <link type="text/css" rel="stylesheet" href="lecture-notes.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/shThemeDefault.css"/>
+        <script type="text/javascript">
+            //SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+            SyntaxHighlighter.defaults['toolbar'] = false;
+            SyntaxHighlighter.defaults['auto-links'] = false;
+ 
+            SyntaxHighlighter.all();
+        </script>
+        <script type="text/JavaScript">
+            //courtesy of BoogieJack.com
+            function killCopy(e){
+            return false
+            }
+            function reEnable(){
+            return true
+            }
+            document.onselectstart=new Function ("return false")
+            if (window.sidebar){
+            document.onmousedown=killCopy
+            document.onclick=reEnable
+            }
+
+        </script>
+</head>
+
+<body>
+ 
+<div id="container">
+<div id="header"><h1>Object Oriented Programming <img align="right" src="../logo-dark.png" alt="Amrita"> </h1> </div>
+  <div id="wrapper">
+    <div id="content">
+
+<table align="right">
+  <td align="left"><a href="22_Numbers.html">Prev</a></td>
+  <td align="right"><a href="24_Collections.html">Next</a></td>
+</table>
+
+
+<h2>Java Generics</h2>
+
+<p>Generics are a facility of generic programming that were added to the Java programming language in 2004 within the official version J2SE 5.0. They were designed to extend Java's type system to allow a type or method to operate on objects of various types while providing compile-time type safety.</p>
+
+<h3>Why are generics necessary?</h3>
+
+<p>Lets assume you implement a class/method to sort an array of integers. Is it necessary to have a separate implementation of floats, strings, points, lines, etc? Not really. Java generic methods and generic classes 
+enable programmers to specify:</p>
+<ul>
+  <li>with a single method declaration, a set of related methods or,</li>
+  <li>with a single class declaration, a set of related types.</li>
+</ul>
+
+<p>We will see an implementation of a generic method followed by a generic class. This topic will be dealt in
+the most simplistic way. Very rarely you will have to code generic classes/methods. Java Collections Framework
+defines a number of classes that are implemented generically. In most cases, using them would be sufficient.</p>
+
+<h3>1. Generic Methods</h3>
+
+<p>You can write a single generic method declaration that can be called with arguments of different types. Based on
+the types of the arguments passed to the generic method, the compiler handles each method call appropriately. Following 
+are the rules to define generic methods.</p>
+
+<ul>
+  <li>All generic method declarations have a type parameter section delimited by angle brackets (< and >) that 
+  precedes the method's return type ( &ltT&gt in the next example).</li><br>
+  <li>Each type parameter section contains one or more type parameters separated by commas. A type parameter, also 
+  known as a type variable, is an identifier that specifies a generic type name.</li><br>
+  <li>The type parameters can be used to declare the return type and act as placeholders for the types of the arguments 
+  passed to the generic method, which are known as actual type arguments.</li><br>
+  <li>A generic method's body is declared like that of any other method. Note that type parameters can represent 
+  only reference types, not primitive types (like int, double and char).</li>
+</ul>
+
+<p>Following example illustrates how we can print data of different types using a single generic method:</p>
+
+<pre class="brush: java">
+  public class PrintGeneric {
+ 
+    public static &ltT&gt void printAnyType(T x) {
+      System.out.println("I am a variable of " + x.getClass());
+      System.out.println("The parent of my " + x.getClass().getGenericSuperclass());
+      System.out.println(x);
+      System.out.println();
+    }
+  }
+</pre> 
+ 
+<p>You can now write a driver (PrintGenericTest.java) as follows to check the working.</p>
+ 
+ <pre class="brush: java">
+  public class PrintGenericTest {
+    public static void main(String[] args) {
+ 
+      PrintGeneric.printAnyType(new Integer(10));   // Print an integer
+      PrintGeneric.printAnyType(new Double(10.5));  // Print a double
+      PrintGeneric.printAnyType(new Character('c')); // Print a character
+      PrintGeneric.printAnyType(new String("generics")); // Print a string
+    }
+  }
+</pre>
+ 
+<p>You can also add the following statement to the driver to print a variable of type Point, Line, etc. 
+Check it out.</p>
+ 
+<ul><li>PrintGeneric.printAnyType(new Point(2,3));</li></ul>
+<ul><li>PrintGeneric.printAnyType(new Line(new Point(), new Point(2,3));</li></ul>
+ 
+<p>If you had implemented <b>toString()</b> method in the <b>Point</b> class it will print the output 
+of the form (x,y). If not, it will print the address such as Point@55f96302 since it points to a 
+memory location.</p>
+
+<h4>Exercises</h4>
+ 
+<p>1. Implement a method printAnyArray() to print the array elements.</p>
+ 
+<pre class="brush: java">
+    public static &ltT&gt void printAnyArray(T[] arr) {
+      // Your code here. Loop through the array and print
+ 
+      // Write a Test Driver to check its working for all types of arrays
+      // i.e. Integer, Double, Character and String (ArrayGenericTest.java)
+    }
+</pre> 
+
+<p>2. Implement a new method that takes two variables of same type as arguments,
+   add them and prints the result. For number types, it is the usual add.
+   For char and string types, add implies concatenation. For Point types,
+   Point's add method must be invoked.</p>
+ 
+   <p>(Hint: You need to check the type before deciding what to do.)</p>
+ 
+<p>Write a test driver to check its working (AddGenericTest.java)</p>
+ 
+<p>3. Include a new method that takes an array of any type as input (as above), 
+   checks the type first, sorts them and prints the sorted array.</p>
+ 
+  <p> Write a test driver to check its working (SortGenericTest.java)</p>
+
+<h3>2. Generic Classes</h3>
+
+<p>A generic class declaration looks like a non-generic class declaration, except that the class name is 
+followed by a type parameter section.</p>
+
+<p>The type parameter section of a generic class can have one or more type parameters 
+separated by commas. These classes are known as parameterized classes or parameterized types because they accept 
+one or more parameters.</p>
+
+<p>Following example illustrates how we can define a generic class. The class Box contains one attribute whose
+type can be anything. Here T refers to a generic type which is known at compile time.</p> 
+ 
+<pre class="brush: java">
+public class Box&ltT&gt {
+ 
+  private T t;
+ 
+  public void set(T t) {
+    this.t = t;
+  }
+ 
+  public T get() {
+    return t;
+  }
+}
+</pre>
+ 
+<p>The driver class to use the generic class Box, say BoxDriver, is implemented as follows:</p>
+ 
+<pre class="brush: java"> 
+public class BoxDriver {
+  public static void main(String[] args) { 
+     Box&ltInteger&gt integerBox = new Box&ltInteger&gt(); // Use Integer not int
+     Box&ltString&gt stringBox = new Box&ltString&gt();
+     Box&ltPoint&gt pointBox = new Box&ltPoint&gt();
+     Box&ltLine&gt lineBox = new Box&ltLine&gt();
+
+     integerBox.set(new Integer(10));
+     stringBox.set(new String("Hello World"));
+     pointBox.set(new Point(2,3));
+     lineBox.set(new Point(), new Point(2,3));
+ 
+     System.out.printf("Integer value :%d\n", integerBox.get());
+     System.out.printf("String value :%s\n", stringBox.get());
+     System.out.printf("Point value :%s\n", pointBox.get());
+     System.out.printf("Line value :%s\n", lineBox.get());
+  }
+}
+</pre>
+
+<p>The last two statements will print the point in (x,y) form and line in y = mx + c form provided 
+toString() was implemented.</p>
+
+<h4>Exercise</h4>
+
+<p>1. Define a generic class for representing Family. It can be a human family or dog family or family 
+of any living species. A family contains father, mother and array of children. Given below is the driver 
+code.</p>
+
+<pre class="brush: java">
+
+public class Test {
+
+  public static void main(String[] args) {
+
+    Human hf = new Human("Adam", 50);
+    Human hm = new Human("Eve", 45);
+    Human[] hc = new Human[3];
+    hc[0] = new Human("Cain", 20);
+    hc[1] = new Human("Abel", 15);
+    hc[2] = new Human("Seth", 10);
+
+    Family&ltHuman&gt fm = new Family&ltHuman&gt(hf,hm,hc);
+    fm.getFather().print();
+    fm.getMother().print();
+    for (int i=0; i&lthc.length; i++)
+      fm.getChild(i).print();
+
+    Dog df = new Dog("Jimmy", 8);
+    Dog dm = new Dog("Julie", 7);
+    Dog[] dc = new Dog[2];
+    dc[0] = new Dog("toto", 1);
+    dc[1] = new Dog("nimo", 2);
+
+    Family&ltDog&gt fd = new Family&ltDog&gt(df,dm,dc);
+    fd.getFather().print(); 
+    fd.getMother().print();
+    for (int i=0; i&ltdc.length; i++)
+      fd.getChild(i).print();
+  }
+}
+</pre>
+
+<p>You need to implement the generic (or container) class <b>Family</b> plus the contained classes 
+<b>Human</b> and <b>Dog</b> classes. The Human and Dog classes need to implement the constructor 
+and print methods which are being invoked by the above driver.</p>
+
+<p>2. Define a generic class <b>Dozen</b> for holding a dozen items. You need to define methods for
+inserting an item, removing an item, replacing an item. The item can be points, lines, squares, 
+triangles or practically any entity. You have already implemented classes for Point, Line, Square,
+Triangle as part of the lab session. So, you can use them directly here. Implement driver to 
+instantiate a dozen of each and invoke methods on them.</p>
+
+
+    </div>
+  </div>
+
+  <div id="navigation">
+  <p><strong><a href="../index.html">Home</a></strong></p>
+    <ul>
+      <li><a href="01_intro.html">Introduction</a></li>
+      <li><a href="02_Encapsulation.html">Encapsulation</a></li>
+      <li><a href="03_Constructors.html">Constructors</a></li>
+      <li><a href="04_Adding_Features.html">Adding Features</a></li>
+      <li><a href="05_Interactions.html">Adding Interactions</a></li>
+      <li><a href="06_Static.html">Static keyword</a></li>
+      <li><a href="07_Utility_methods.html">Utility Methods</a></li>
+      <li><a href="08_Exercises.html">Exercises</a></li>
+      <li><a href="09_Arrays.html">Arrays</a></li>
+      <li><a href="10_Javadoc.html">Javadoc</a></li>
+      <li><a href="11_Composition.html">Composition</a></li>
+      <li><a href="12_Inheritance.html">Inheritance</a></li>
+      <li><a href="13_Overriding.html">Overriding</a></li>
+      <li><a href="14_Casting.html">Casting</a></li>
+      <li><a href="15_Final.html">Final keyword</a></li>
+      <li><a href="16_Exceptions.html">Exceptions</a></li>
+      <li><a href="17_Interface.html">Interface</a></li>
+      <li><a href="18_Abstract_Classes.html">Abstract Classes</a></li>
+      <li><a href="19_Organizing_Code.html">Organizing Code</a></li>
+      <li><a href="20_InputOutput.html">Input/Output</a></li>
+      <li><a href="21_Strings.html">Strings</a></li>
+      <li><a href="22_Numbers.html">Numbers</a></li>
+      <li><a href="23_Generics.html">Generics</a></li>
+      <li><a href="24_Collections.html">Collections</a></li>
+      <li><a href="25_InnerClasses.html">Inner Classes</a></li>
+      <li><a href="26_Multithreading.html">Multithreading</a></li><li><a href="27_Swings.html">Swings</a></li>
+      <li><a href="28_Applets.html">Applets</a></li>
+    </ul>
+  </div>
+
+  <div id="extra">
+  </div>
+  <div id="footer", align="right">
+    <p>Send comments to swaminathanj@am.amrita.edu</p>
+  </div>
+</div>
+</body>
+</html>
+
+</body>

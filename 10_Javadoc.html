@@ -1,0 +1,167 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Generating documentation</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../styles.css" />
+        <script type="text/javascript" src="scripts/shCore.js"></script>
+        <script type="text/javascript" src="scripts/shBrushBash.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCpp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCss.js"></script>
+        <script type="text/javascript" src="scripts/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="scripts/shBrushDiff.js"></script>
+        <script type="text/javascript" src="scripts/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="scripts/shBrushJava.js"></script>
+        <script type="text/javascript" src="scripts/shBrushJScript.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPhp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPlain.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPython.js"></script>
+        <script type="text/javascript" src="scripts/shBrushRuby.js"></script>
+        <script type="text/javascript" src="scripts/shBrushScala.js"></script>
+        <script type="text/javascript" src="scripts/shBrushSql.js"></script>
+        <script type="text/javascript" src="scripts/shBrushVb.js"></script>
+        <script type="text/javascript" src="scripts/shBrushXml.js"></script>
+        <link type="text/css" rel="stylesheet" href="lecture-notes.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/shThemeDefault.css"/>
+        <script type="text/javascript">
+            //SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+            SyntaxHighlighter.defaults['toolbar'] = false;
+            SyntaxHighlighter.defaults['auto-links'] = false;
+ 
+            SyntaxHighlighter.all();
+        </script>
+        <script type="text/JavaScript">
+            //courtesy of BoogieJack.com
+            function killCopy(e){
+            return false
+            }
+            function reEnable(){
+            return true
+            }
+            document.onselectstart=new Function ("return false")
+            if (window.sidebar){
+            document.onmousedown=killCopy
+            document.onclick=reEnable
+            }
+
+        </script>
+</head>
+</head>
+
+<body>
+ 
+<div id="container">
+<div id="header"><h1>Object Oriented Programming <img align="right" src="../logo-dark.png" alt="Amrita"> </h1> </div>
+  <div id="wrapper">
+    <div id="content">
+
+<table align="right">
+  <td align="left"><a href="09_Arrays.html">Prev</a></td>
+  <td align="right"><a href="11_Composition.html">Next</a></td>
+</table>
+
+<h2>Generating documentation</h2>
+
+<h3>Javadoc in Eclipse</h3>
+
+<p>You can generate the documentation for the Point class in Eclipse in the following manner.</p>
+
+<p>1. Open Eclipse project folder (Geometry in our case).</p>
+
+<p>2. In the menu bar, select Project &rarr; Generate Javadoc.</p>
+
+<p>3. At first step of the wizard, you can define settings for:
+<ul>
+  <p>3.1. Select path for the javadoc.exe tool from the JDK.</p>
+  <p>3.2. Project resources for which to generate Javadoc.</p>
+  <p>3.3. Classes and methods for which to generate Javadoc based on their visibility.</p>
+  <p>3.4. Location of the Javadoc (by default it will be placed in the doc folder in the project location).</p>
+</ul>
+
+<p>4. In the next step provide the documentation title.</p>
+
+<p>5. In the last step, select the checkbox 'Open generated index file in browser'.</p>
+
+<p><b>Note</b>: There are several features in the wizard which you can explore at your leisure.</p>
+
+<h3>Utility of Javadoc</h3>
+
+<p>You don't have to write a separate manual stating what functionalities are supported by your class.
+It is automatically created by javadoc. The user of your code gets enough information to know the
+classes you have implemented and methods supported along with the argument and return types. By
+publishing your compiled .class files (byte code) and the java documentation, any programmer can
+use your code without having to know the underlying implementation.</p>
+
+<h3>Javadoc at command-line</h3>
+
+<p>CMD> javadoc -d docs Point.java // Generates many files including Point.html in docs folder
+
+<p>Open Point.html in a browser. It contains the necessary information for an user to know
+  what all functionalities are supported by Point so that they can use it.</p>
+
+<p>Take your time to understand what is in the html page.<p>
+
+<p>Are private attributes or methods mentioned in the html? Now change an attribute to public.<p>
+  <ul><li><b>public</b> int x;</li></ul>
+
+<p>Run javadoc, regenerate Point.html and check.</p>
+
+<p>Now in Point.java, just above the add method include a comment using /** ... */<p>
+<pre class="brush: java">
+  /** This method adds two Points and returns the sum */ </b>
+  public Point add(Point q) {
+       // Your code
+  }
+</pre>
+
+<p>Run javadoc, regenerate Point.html and check. Adding comments help!!</p>
+
+<p>javadoc has great many features. For more check out the web.</p>
+
+
+    </div>
+  </div>
+
+  <div id="navigation">
+  <p><strong><a href="../index.html">Home</a></strong></p>
+    <ul>
+      <li><a href="01_intro.html">Introduction</a></li>
+      <li><a href="02_Encapsulation.html">Encapsulation</a></li>
+      <li><a href="03_Constructors.html">Constructors</a></li>
+      <li><a href="04_Adding_Features.html">Adding Features</a></li>
+      <li><a href="05_Interactions.html">Adding Interactions</a></li>
+      <li><a href="06_Static.html">Static keyword</a></li>
+      <li><a href="07_Utility_methods.html">Utility Methods</a></li>
+      <li><a href="08_Exercises.html">Exercises</a></li>
+      <li><a href="09_Arrays.html">Arrays</a></li>
+      <li><a href="10_Javadoc.html">Javadoc</a></li>
+      <li><a href="11_Composition.html">Composition</a></li>
+      <li><a href="12_Inheritance.html">Inheritance</a></li>
+      <li><a href="13_Overriding.html">Overriding</a></li>
+      <li><a href="14_Casting.html">Casting</a></li>
+      <li><a href="15_Final.html">Final keyword</a></li>
+      <li><a href="16_Exceptions.html">Exceptions</a></li>
+      <li><a href="17_Interface.html">Interface</a></li>
+      <li><a href="18_Abstract_Classes.html">Abstract Classes</a></li>
+      <li><a href="19_Organizing_Code.html">Organizing Code</a></li>
+      <li><a href="20_InputOutput.html">Input/Output</a></li>
+      <li><a href="21_Strings.html">Strings</a></li>
+      <li><a href="22_Numbers.html">Numbers</a></li>
+      <li><a href="23_Generics.html">Generics</a></li>
+      <li><a href="24_Collections.html">Collections</a></li>
+      <li><a href="25_InnerClasses.html">Inner Classes</a></li>
+      <li><a href="26_Multithreading.html">Multithreading</a></li><li><a href="27_Swings.html">Swings</a></li>
+      <li><a href="28_Applets.html">Applets</a></li>
+   </ul>
+  </div>
+
+  <div id="extra">
+  </div>
+  <div id="footer", align="right">
+    <p>Send comments to swaminathanj@am.amrita.edu</p>
+  </div>
+</div>
+</body>
+</html>

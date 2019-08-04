@@ -1,0 +1,448 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Exceptions</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../styles.css" />
+        <script type="text/javascript" src="scripts/shCore.js"></script>
+        <script type="text/javascript" src="scripts/shBrushBash.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCpp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCss.js"></script>
+        <script type="text/javascript" src="scripts/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="scripts/shBrushDiff.js"></script>
+        <script type="text/javascript" src="scripts/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="scripts/shBrushJava.js"></script>
+        <script type="text/javascript" src="scripts/shBrushJScript.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPhp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPlain.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPython.js"></script>
+        <script type="text/javascript" src="scripts/shBrushRuby.js"></script>
+        <script type="text/javascript" src="scripts/shBrushScala.js"></script>
+        <script type="text/javascript" src="scripts/shBrushSql.js"></script>
+        <script type="text/javascript" src="scripts/shBrushVb.js"></script>
+        <script type="text/javascript" src="scripts/shBrushXml.js"></script>
+        <link type="text/css" rel="stylesheet" href="lecture-notes.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/shThemeDefault.css"/>
+        <script type="text/javascript">
+            //SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+            SyntaxHighlighter.defaults['toolbar'] = false;
+            SyntaxHighlighter.defaults['auto-links'] = false;
+ 
+            SyntaxHighlighter.all();
+        </script>
+        <script type="text/JavaScript">
+            //courtesy of BoogieJack.com
+            function killCopy(e){
+            return false
+            }
+            function reEnable(){
+            return true
+            }
+            document.onselectstart=new Function ("return false")
+            if (window.sidebar){
+            document.onmousedown=killCopy
+            document.onclick=reEnable
+            }
+
+        </script>
+</head>
+
+
+<body>
+ 
+<div id="container">
+<div id="header"><h1>Object Oriented Programming <img align="right" src="../logo-dark.png" alt="Amrita"> </h1> </div>
+  <div id="wrapper">
+    <div id="content">
+
+<table align="right">
+  <td align="left"><a href="15_Final.html">Prev</a></td>
+  <td align="right"><a href="17_Interface.html">Next</a></td>
+</table>
+
+<h2>Exceptions</h2>
+
+<p>An exception (or exceptional event) is a problem that arises during the execution of a program. When an exception occurs the normal flow of the program is disrupted and the program/application terminates abnormally, which is not recommended, therefore these exceptions are to be handled.</p>
+
+<p>In Java, exception is an event that disrupts the normal flow of the program. It is an object which is thrown at runtime. We will see how to define a custom (or new) exception, how to throw it when something goes wrong, and how to handle it when it arises during the execution.</p>
+
+<h3>Defining a Exception class</h3>
+
+<p>Lets turn out attention to the Point class. Lets say we are working with points in the first quadrant 
+only. This would mean the x- and y- coordinates are non-negative. At any point during the program execution
+we should never allow the x and y attributes of Point class to take negative values.</p>
+
+<p>We will define a new Exception that can be used by Point class:  NegativeCoordinateException</p>
+
+<p>Define a class <b>NegativeCoordinateException.java</b> as follows:</p>
+
+<pre class="brush: java">
+public class NegativeCoordinateException extends Exception {
+   NegativeCoordinateException(String s) {  // Constructor which invokes 
+      super(s);                             // parent class' constructor
+   }
+}
+</pre>
+
+<p>All exceptions are derived from Exception class. Exception class is part of the Java library.</p>
+
+<h3>Throwing an Exception object</h3>
+
+<p>An instance of this exception can be thrown when a x or y is assigned a negative value or when a computation 
+results in these attributes becoming negative.</p>
+
+<p>Now pertinent methods in Point class must be updated to throw this exception. 
+Below we show how this is done for the setX() method of Point class.</p>
+
+<pre class="brush: java">
+class Point {
+                     :
+                     :
+   public void setx(int xCoord) throws NegativeCoordinateException {
+      if (xCoord >= 0)
+         this.x = xCoord;
+      else
+         throw new NegativeCoordinateException("The coordinate cannot be negative");
+   }
+                     :
+                     :
+}
+</pre>
+
+<p>We create an instance of NegativeCoordinateException along with a suitable message and 
+throw it if xCoord < 0. In a similar manner, the setY() method and the constructors need
+to be modified to throw this exception.</p>
+
+<p>We also need to look at other methods that can potentially result rendering x or y negative.
+For example, the scalarMultiply() will result in negative coordinates if the argument passed
+is negative. A check needs to be added to this method and the exception needs to be thrown.</p>
+
+<p>Exercise: Implement changes to all the pertinent methods by making necessary checks.</p>
+
+
+<h3>Catching & Handling an Exception</h3>
+
+<p>Now, any code that is invoking these methods of the Point class must catch the exception and 
+decide the course of action. This is done witin a try { ... } catch () { .... } block. For example,</p>
+
+<pre class="brush: java">
+  Point p = new Point();
+
+  try {
+    p.setX(xVal);
+    p.setY(yVal)
+  } 
+  catch (NegativeCoordinateException nce) {
+    // Implement an appropriate action here
+  }
+</pre>
+
+<p>Catching of an exception happens when you include the call which can throw the said exception
+in <em>try { ... } catch { ...}</em> blocks. If x happens to be < 0, the control shifts to 
+<em>catch</em> block. Otherwise <em>catch</em> block is not executed.</p>
+
+<p>Typically there are 3 kinds of actions taken.</p>
+
+<p><b>1. Simply exit</b> the program by including "System.exit(0);" in the catch block. </p>
+
+<p><b>2. Handle the Exception</b>. You may print the message by calling nce.getMessage(). 
+The method getMessage() is implemented in Exception class. And hence, it  can be called 
+from the subclass NegativeCoordinateException that we defined. This will print the message 
+"The coordinate cannot be negative" that we have defined.</p>
+
+<p>Alternately, you may also print the stack trace when the exception is caught.
+This is done by calling nce.printStackTrace(); in the catch block to enable the user to gain
+better insight in the problem.</p>
+
+<p><b>3. Throw the exception in turn to its caller</b>. Do not handle it.</p>
+
+<pre class="brush: java">
+    // Driver.java
+    public class Driver {
+
+      public void test() throws NegativeCoordinateException {
+        Point p = new Point();
+        p.setX(-3);           // Not in try ... catch block
+      }
+
+      public static void main(String[] args) {
+        Driver d = new Driver();
+        try {
+          d.test();
+        }
+        catch (NegativeCoordinateException nce) {
+          nce.printStackTrace();
+        }
+      }
+    }
+</pre>
+
+<p>Now when setX(-3) throws an exception,the caller method test() does not handle it. Instead 
+it throws to its caller. Either the caller may handle or it can in turn throw it. If none of 
+the methods in the call hierarchy handle it, the program will exit. In the above case, the
+caller of test() method which is main() handles the exception.</p> 
+
+<p>In the absence of try ... catch block along the caller hierarchy, the program will terminate
+when the exception arises. But if we handle it, we can decide to take an alternative course of
+action and continue with it execution.</p>
+
+<h3>Checked vs. Unchecked Exceptions</h3>
+
+<p>Exceptions in Java are of two types. (i) Checked (ii) Unchecked. Checked exceptions 
+have to be caught or thrown to its caller. If not, compiler reports an error.</p>
+
+<p>For instance, in the above example, if you don't call setX() within a try ... catch block and fail to
+throw NegativeCoordinateException, the compiler will report an error. Try and check.</p> 
+
+<p>Any exception that extends Exception class fall in this category. The exception that we have defined NegativeCoordinateException is an example of checked exception.</p>
+
+<p>Instead, if NegativeCoordinateException extended RuntimeException class, then try ... catch or throw
+is not mandatory. In the absence of try ... catch block, if setX() is passed a negative value, the 
+exception will be thrown and but not handled causing the program to exit. This is an example of unchecked 
+exception.</p>
+
+<h4>Is there a thumb rule to decide the type of exception</h4>
+
+<p>Generally, any exception, if it occured and not handled, will cause the program to incorrectly behave 
+or affect the execution flow needs to be a checked exception. An exception which occurs only rarely and 
+does not affect the program execution in a serious way can be unchecked.</p>
+
+<p>IllegalCastException and NullPointerException are examples of unchecked exception (deriving from 
+RuntimeException). When we manipulate any object, it could be null in which case a NullPointerException
+must be thrown. In OO world, everything is an object. Making NullPointerException checked would literally
+force the programmer to include 98% of the code in try block!! Similar reasoning applies to casting also.</p>
+
+<h3>Exception vs. Error</h3>
+
+<p>An exception is one which when handled properly cause the program execution flow to work correctly.</p>
+
+<p>An error is one which, when it occurs, cannot be handled by any means. The only possibility for the
+program is to exit. In such a case, an error can be thrown. Unlike Exception, statements that cause an 
+Error to be thrown are not enclosed within try block since there is no point catching it.</p>
+
+<p><b>Defining a new type of error</b>: Extend  Error class (instead of Exception class). Other things 
+remain the same.</p>
+
+<pre class="brush: java">
+  public class SomeError extends Error {
+    SomeError(String s) {
+      super(s);
+    }
+  }
+</pre>
+
+<p><b>Throwing the Error instance</b>: This is similar to how an Exception is thrown. Check and throw a 
+new instance of an appropriate error type.</p>
+
+<p style="color: red">Handling the Error: Not possible!!!</p>
+
+<p>JVM implements two Error types.</p>
+
+<ol>
+  <li><b>OutOfMemoryError</b>: Whenever any class is instantiated, it will fail if sufficient memory for 
+  the object instance cannot be allocated by the JVM. However, this is very rare scenario unless the 
+  programmer incorrectly specifies the exit condition of an iteration causing infinite instances of an 
+  object to be created.</li><br>
+
+  <li><b>StackOverflowError</b>: Whenever a method is called, it will fail if sufficient memory for the
+  method call cannot be allocated by the JVM. However, this is is a vary rare scenario unless the
+  programmer fails to specify the exit criteria for recursion causing infinite recursive calls.</li>
+</ol>
+
+<p>Exercise: Try defining the exception by extending the RuntimeException and check the behavior.</p>
+
+<h3>Exceptions in Java libraries</h3>
+
+<p>Java libraries define several exceptions such as IOException, ArrayIndexOutOfBoundsException, 
+NullPointerException, etc. These are thrown by certain methods which need to be caught and handled 
+if you are using them.</p>
+
+<p>How do you know if a particular method is going to throw an exception?</p>
+<ul><li>The documentation generated by javadoc will have this information.</li></ul>
+<ul><li>Re-generate Java doc and check Point.html after the above updates to the class.</li></ul> 
+
+<h3>A try block can throw multiple exceptions</h3>
+
+<p>It is possible that a try block throws more than one exception. For instance, lets say we are
+trying to open a file. There are multiple ways this operation can fail.</p>
+<ol>
+  <li>The file does not exist.</li>
+  <li>No permission to access the file.</li>
+  <li>The content of the file is garbled.</li>
+</ol>
+
+<p>Hence, an exception for each failure needs to be defined and can be thrown by the method implementing
+file open. It can then be handled the following way.</p>
+
+<pre class="brush: java">
+  try { // The constructor in File.java checks and throws these 3 exceptions
+
+    File f = new File("/home/user/exception.txt");  
+  } 
+  catch (FileNotFoundException fnfe) {
+    // Handle it
+  }
+  catch (NoPermissionException npe) {
+    // Handle it
+  }
+  catch (GarbledContentException gce) {
+    // Handle it
+  }
+</pre>
+
+<h3>Exceptions can be nested</h3>
+
+<p>The try ... catch block can be nested. You can have a try...catch block inside another try or catch
+block. Any nesting depth is possible.</p>
+
+<pre class="brush: java">
+  try {
+      .....
+      try {
+          .....
+      }
+      catch (BTypeException bte) {
+          .....
+      }
+  }
+  catch (ATypeException ate) {
+      .....
+      try {
+          .....
+      }
+      catch (CTypeException cte) {
+          .....
+      }
+  }
+</pre>
+
+<h3>A general exception can catch specific exceptions</h3>
+
+<p>In the previous section we noted that an instance of sub class can be assigned to an instance of super class.
+When we define a new exception, we extend from Exception class. Consider the following definition.</p>
+
+<pre class="brush: java">
+  class ParticularException extends Exception {
+      ......
+  }
+</pre>
+
+<p>Now, a catch clause that expects an Exception instance can also catch ParticularException instance. i.e.</p>
+
+<pre class="brush: java">
+  try {
+      .....
+  }
+  catch (Exception e) { // catches Exception and ParticularException instances.
+      .....
+  }
+</pre>
+
+<p>This has an importance consequence to the order of catch blocks that we specify. i.e. in case we have
+multiple catch clauses, the more specific ones should be specified before the less specific ones.</p>
+
+<table>
+  <tr align="center">
+    <td><b>The wrong way</b></td>
+    <td><b>The correct way</b></td>
+  </tr>
+  <tr>
+    <td>
+      <pre class="brush: java">
+        try {
+            .....
+        }
+        catch (Exception e) {
+            // Handles both exceptions
+        }
+        catch (ParticularException pe) {
+            // Unreachable code
+        }
+      </pre>
+    </td>
+    <td>
+      <pre class="brush: java">
+        try {
+            .....
+        }
+        catch (ParticularException pe) {
+            // Handles particular exception
+        }
+        catch (Exception e) {
+            // Handles other exceptions
+        }
+      </pre>
+    </td>
+  </tr>
+</table>
+
+<h3>The finally clause</h3>
+
+<p>Sometimes you may not want to handle an exception. Instead you may want to gracefully exit.
+A finally block can be used for this purpose. Let's say you opened a file/database and working
+with it in the try block and an exception is thrown. Let's say you don't have a catch block to
+handle the exception, but you want to close the file before exiting. The finally clause can come
+handy in this scenario.</p>
+
+<pre class="brush: java">
+  try {
+      // Open a file/database and do some processing
+      // An exception is thrown
+  }
+  finally {
+    // Close the file/database to avoid dangling updates
+  }
+</pre>
+
+<p>You can also have try ... catch ... finally. Whenever execution of try block results in an
+exception, whether catch block exists to handle it or not, finally block will be executed.</p>
+
+<p>A try block must be followed by either catch block(s) or finally block or both.</p>
+
+
+    </div>
+  </div>
+
+  <div id="navigation">
+  <p><strong><a href="../index.html">Home</a></strong></p>
+    <ul>
+      <li><a href="01_intro.html">Introduction</a></li>
+      <li><a href="02_Encapsulation.html">Encapsulation</a></li>
+      <li><a href="03_Constructors.html">Constructors</a></li>
+      <li><a href="04_Adding_Features.html">Adding Features</a></li>
+      <li><a href="05_Interactions.html">Adding Interactions</a></li>
+      <li><a href="06_Static.html">Static keyword</a></li>
+      <li><a href="07_Utility_methods.html">Utility Methods</a></li>
+      <li><a href="08_Exercises.html">Exercises</a></li>
+      <li><a href="09_Arrays.html">Arrays</a></li>
+      <li><a href="10_Javadoc.html">Javadoc</a></li>
+      <li><a href="11_Composition.html">Composition</a></li>
+      <li><a href="12_Inheritance.html">Inheritance</a></li>
+      <li><a href="13_Overriding.html">Overriding</a></li>
+      <li><a href="14_Casting.html">Casting</a></li>
+      <li><a href="15_Final.html">Final keyword</a></li>
+      <li><a href="16_Exceptions.html">Exceptions</a></li>
+      <li><a href="17_Interface.html">Interface</a></li>
+      <li><a href="18_Abstract_Classes.html">Abstract Classes</a></li>
+      <li><a href="19_Organizing_Code.html">Organizing Code</a></li>
+      <li><a href="20_InputOutput.html">Input/Output</a></li>
+      <li><a href="21_Strings.html">Strings</a></li>
+      <li><a href="22_Numbers.html">Numbers</a></li>
+      <li><a href="23_Generics.html">Generics</a></li>
+      <li><a href="24_Collections.html">Collections</a></li>
+      <li><a href="25_InnerClasses.html">Inner Classes</a></li>
+      <li><a href="26_Multithreading.html">Multithreading</a></li><li><a href="27_Swings.html">Swings</a></li>
+      <li><a href="28_Applets.html">Applets</a></li>
+    </ul>
+  </div>
+
+  <div id="extra">
+  </div>
+  <div id="footer", align="right">
+    <p>Send comments to swaminathanj@am.amrita.edu</p>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,376 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Object-to-Object Interactions</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../styles.css" />
+        <script type="text/javascript" src="scripts/shCore.js"></script>
+        <script type="text/javascript" src="scripts/shBrushBash.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCpp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCss.js"></script>
+        <script type="text/javascript" src="scripts/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="scripts/shBrushDiff.js"></script>
+        <script type="text/javascript" src="scripts/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="scripts/shBrushJava.js"></script>
+        <script type="text/javascript" src="scripts/shBrushJScript.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPhp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPlain.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPython.js"></script>
+        <script type="text/javascript" src="scripts/shBrushRuby.js"></script>
+        <script type="text/javascript" src="scripts/shBrushScala.js"></script>
+        <script type="text/javascript" src="scripts/shBrushSql.js"></script>
+        <script type="text/javascript" src="scripts/shBrushVb.js"></script>
+        <script type="text/javascript" src="scripts/shBrushXml.js"></script>
+        <link type="text/css" rel="stylesheet" href="lecture-notes.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/shThemeDefault.css"/>
+        <script type="text/javascript">
+            //SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+            SyntaxHighlighter.defaults['toolbar'] = false;
+            SyntaxHighlighter.defaults['auto-links'] = false;
+ 
+            SyntaxHighlighter.all();
+        </script>
+        <script type="text/JavaScript">
+            //courtesy of BoogieJack.com
+            function killCopy(e){
+            return false
+            }
+            function reEnable(){
+            return true
+            }
+            document.onselectstart=new Function ("return false")
+            if (window.sidebar){
+            document.onmousedown=killCopy
+            document.onclick=reEnable
+            }
+
+        </script>
+</head>
+</head>
+
+<body>
+ 
+<div id="container">
+<div id="header"><h1>Object Oriented Programming <img align="right" src="../logo-dark.png" alt="Amrita"> </h1> </div>
+  <div id="wrapper">
+    <div id="content">
+
+<table align="right">
+  <td align="left"><a href="04_Adding_Features.html">Prev</a></td>
+  <td align="right"><a href="06_Static.html">Next</a></td>
+</table>
+
+<h2>Defining Interactions between Objects</h2>
+
+<h3>Adding collaborative features</h3>
+
+<p>Two or more objects can collaborate with each other to compute some result.
+For example, two points can interact with each other to compute the distance between them. 
+This can be accomplished by adding methods which takes another Point instance as an argument 
+and working with the attributes of both. In this page, we will look into adding such features.</p>
+
+<p>We will list down the features before discussing the implementation.</p>
+
+<ol>
+	<li>A method to compute the sum of two points.</li><br>
+	<li>A method to determine the slope of a line passing through 2 points.</li><br>
+	<li>A method to determine the distance between 2 points.</li><br>
+	<li>A method to determine the equation of a line passing through 2 points.</li><br>
+	<li>A method to determine the orientation given 3 points.</li><br>
+</ol>
+
+<h4>1. Sum of 2 points</h4>
+
+<p>Given points p = (xp,yp) and q = (xq,yq), adding them amounts to adding their respective x and y 
+coordinates. This operation results in a new Point r given by (xp+xq, yp+yq). In the object oriented 
+approach, Point p invokes its sum() method by passing Point q as an argument. The implementation is 
+given below.</p>
+
+<pre class="brush: java">
+	/** Add the respective x- and y-coordinates */
+	public Point sum(Point q) {
+		return new Point(this.x + q.x, this.y + q.y);
+	}
+</pre>
+
+<p><b>How come we accessed q.x and q.y directly? And why did it work?</b></p>
+
+<p>Defining the attributes as private restricts direct access from objects of different class.
+In this case, q is also a Point instance and 'this' instance can access private members of
+another Point instance directly. However, from the Driver class, you will be forced to invoke 
+getX() and getY() to read x and y values.</p>
+
+<p>Implement a driver to test the correct working of sum.</p>
+
+<pre class="brush: java">
+	Point p = new Point(7,-3);
+	Point q = new Point(4,10);
+	System.out.println( p.sum(q) );
+</pre>
+
+<p>As an exercise, you can check if p.sum(q) is same as q.sum(p). What do you expect?</p>
+
+<h4>2. Slope of a line passing through 2 points</h4>
+
+<p>Given points p = (xp,yp) and q = (xq,yq), the slope can be computed by (yq - yp)/(xq - xp).
+In the object oriented approach, Point p invokes its slope() method by taking Point q as an
+argument to compute the slope. In other words, Point p collaborates with Point q. Note that
+the slope() method can return a real number too.</p>
+
+<pre class="brush: java">
+	/** 'this' x and y attributes collaborates with 
+		q's x and y to compute the slope */
+
+	public double slope(Point q) {
+		return (q.y - this.y) / (q.x - this.x);
+	}
+</pre>
+
+<p>Implement a test driver to check its working.</p>
+
+<pre class="brush: java">
+	Point p = new Point(4,7);
+	Point q = new Point(1,3);
+	System.out.println( p.slope(q) );
+</pre>
+
+<p>Be sure to test with different values for the coordinates.</p>
+<ul>
+	<li>p = (5,8) and q = (3,8)</li>
+	<li>p = (5,8) and q = (5,2)</li>
+	<li>p = (2,7) and q = (1,3)</li>
+</ul>
+
+<p><b>Did you observe that each of the above coordinates opens up a new insight?</b></p>
+
+<p>In the first case, slope is 0. The second one results in division-by-zero and the
+last one reveals that the decimal part of the slope is chopped off leading to 
+inaccurate result.</p>
+
+<p style="color: blue">This only goes on to emphasize the importance of thorough testing. 
+A full-fledged testing is at least as important as developing the code. As you add each 
+feature, ensure that you test it out thoroughly by backing it up with appropriate test 
+drivers. You don't want the user of your code to run into issues that you did not anticipate 
+in the first place. That is poor coding!!!</p>
+
+<p>The first is not really an issue. The second one can be tackled by a minor check and
+return 2<sup>31</sup>-1 or -2<sup>31</sup> depending on positive or negative infinity.
+The thrid one can be sorted out by type casting the slope value computation (shown below).</p>
+
+<pre class="brush: java">
+	public double slope(Point q) {
+		return (double) (q.y - this.y) / (q.x - this.x);
+	}
+</pre>
+
+<h4>3. Distance between two points</h4>
+
+<p>The distance measure that we will use is Manhattan distance which is computed as:
+<b>|x2 - x1| + |y2 - y1|</b>. It is the number of unit steps required in horizontal and 
+vertical directions to reach from one point to the other.</p>
+<ul>
+	<table align="center">
+		<tr>
+			<td align="center"><b>Manhattan distance</b></td>
+			<td>&emsp; &emsp; &emsp;</td>
+			<td align="center"><b>Euclidean distance</b></td>
+		</tr>
+		<tr>
+			<td><img src="figures/manhattan.png" width="175"></td>
+			<td></td>
+			<td><img src="figures/euclidean.png" width="175"></td>
+		</tr>
+	</table>
+</ul>
+
+<p>Note that Euclidean distance measure is more accurate than Manhattan. But it requires
+us to compute the square root which is tricky. And we have not reached the stage to use
+math libraries yet! Manhattan distance requires us to compute absolute value which is 
+not difficult.</p>
+
+<p>We define an auxiliary method absolute() which is made use of by distance() method. The
+absolute() method takes an integer as input, check if it is negative and if so, multiplies
+it with -1 and returns it. The distance() method makes use of absolute().</p>
+
+<pre class="brush: java">
+	private int absolute(int num) {
+
+		// Your code here
+	}
+
+	public int distance(Point q) {
+		
+		// Your code here
+	}
+</pre>
+
+ <p>Note that we have used the access specifier 'private' for absolute(). This is
+ because absolute() is an internal method and we don't want to expose it to outside
+world. Computing absolute value is a generic operation and no one is expected to invoke
+or collaborate with Point object towards this. At the later stage, even we would use
+Java's math library and this definition is a stop-gap solution until then.</p>
+
+<p>The driver code as follows.</p>
+
+<pre class = "brush: java;">
+  Point p = new Point(2,7);
+  Point q = new Point(-3,1);
+  System.out.println( p.distance(q) );
+</pre>
+
+<h4>4. Equation of a line passing through 2 points</h4>
+
+<p>Given 2 points, first determine the slope m. With one point (xp,yp) and slope m, 
+the equation of a line can be determined as y - yp = m (x - xp). Re-arranging, the 
+equation can be written down as: <b>y = mx + (yp - m*xp)</b>.</p>
+
+<p>To compute m, one can use the slope() method. And y-interecpt c = yp - m * xp 
+can be computed. Note both m and c are double. Then the equation can be printed by 
+concatenating the parts appropriately.</p>
+
+<pre class="brush: java">
+	public String equationOfLine(Point q) {
+		double m = slope(q);	// meaning this.slope(q)
+		double c = this.y - m * this.x; // can also use q.y - m*q.x
+		System.out.println("y = " + m + "x + " + c);
+	}
+</pre>
+
+<p>It is a good idea to define a new method yIntercept() which takes slope as an
+argument and returns c. This can be invoked at line 3 of equationOfLine().</p>
+
+<pre class="brush: java">
+	public double yIntercept(double m) { ... }
+</pre>
+
+<p>Implement a test driver to check the correct working.</p>
+
+<pre class = "brush: java;">
+  Point p = new Point(2,7);
+  Point q = new Point(-3,1);
+  System.out.println( p.equationOfLine(q) );
+</pre>
+
+<h4>5. Orientation of 3 points</h4>
+
+<p>Given 3 points p, q and r sorted by their y-coordinates, we say that p-q-r is
+oriented clockwise if slope(pq) > slope(qr) and anti-clockwise if slope(pq) <
+slope(qr). The points are said to be collinear when both the slopes turns out to
+be the same.</p>
+<ul><img src="figures/orientation.png" width="200"></ul>
+
+<p>It would be more intuitive to add three methods for checking the orientation rather
+than a single method which returns one of possible three values (say -1, 0 , 1) since
+it is not evident what -1 would mean: clockwise or counter-clockwise. Also, in practical
+settings we would interested in knowing a particular orientation.</p> 
+
+<p>Consequently, we add methods isClockwise(), isCounterClockwise() and isCollinear() 
+which return <i>true</i> if the respective condition is satisfied and <i>false</i> 
+otherwise. And each takes two other points as arguments.</p>
+
+<pre class="brush: java">
+	public boolean isClockwise(Point q, Point r) {
+		// Your code here
+	}
+
+	public boolean isCounterClockwise(Point q, Point r) {
+		// Your code here
+	}
+
+	public boolean isCollinear(Point q, Point r) {
+		// Your code here
+	}
+</pre>
+
+<p>A typical test driver code will run as follows. Make sure you test each outcome
+to check the correct working of all 3 methods.</p>
+
+<pre class="brush: java">
+	Point p = new Point(3,-7);
+	Point q = new Point(-2,0);
+	Point r = new Point(0,11);
+	if ( p.isClockwise(q,r) )
+		System.out.println("Clockwise");
+	else if ( p.isCounterClockwise(q,r) )
+		System.out.println("Counter-clockwise");
+	else
+		System.out.println("Collinear");
+</pre>
+
+<p><b>Try these</b></p>
+
+<p>1. If p.isClockwise(q,r) returns true what would r.isClockwise(q,p) return? 
+Make a guess and then try it out.</p>
+
+<p>2. When would p.isClockwise(q,r) and r.isCounterClockwise(q,p) return the
+same value?</p>
+
+<p>3. Does it make sense to compute q.isClockwise(p,r)? Why or why not?</p>
+
+<h3>A note on Delegation</h3>
+
+<p>Consider the isClockwise() method. There are at least two possible ways to implement
+it.</p> 
+
+<p><b>First approach</b>: We noted above that slope(pq) > slope (qr). This implementation 
+would mean that p collaborates with q to accomplish part of the work (computing slope(pq)) 
+and <b>delegates</b> the other part of the work to q (computing slope(qr)). q collaborates 
+with r to accomplish this work.</p>
+
+<p><b>Second approach</b>: It is also true that p-q-r are clockwise if slope(pq) > slope(pr). 
+This implementation would mean that p collaborates with q and r independently to accomplish
+the computation of slope(pq) and slope(pr) without delegation.</p>
+
+<p>Although, the end result is the same, JIVE sequence diagram brings out the distinction
+succintly. Check it out.</p>
+
+<p>You can think of more functionalities and add appropriate methods. And
+back it up with the necessary test cases.</p>
+
+
+    </div>
+  </div>
+
+  <div id="navigation">
+  <p><strong><a href="../index.html">Home</a></strong></p>
+    <ul>
+      <li><a href="01_intro.html">Introduction</a></li>
+      <li><a href="02_Encapsulation.html">Encapsulation</a></li>
+      <li><a href="03_Constructors.html">Constructors</a></li>
+      <li><a href="04_Adding_Features.html">Adding Features</a></li>
+      <li><a href="05_Interactions.html">Adding Interactions</a></li>
+      <li><a href="06_Static.html">Static keyword</a></li>
+      <li><a href="07_Utility_methods.html">Utility Methods</a></li>
+      <li><a href="08_Exercises.html">Exercises</a></li>
+      <li><a href="09_Arrays.html">Arrays</a></li>
+      <li><a href="10_Javadoc.html">Javadoc</a></li>
+      <li><a href="11_Composition.html">Composition</a></li>
+      <li><a href="12_Inheritance.html">Inheritance</a></li>
+      <li><a href="13_Overriding.html">Overriding</a></li>
+      <li><a href="14_Casting.html">Casting</a></li>
+      <li><a href="15_Final.html">Final keyword</a></li>
+      <li><a href="16_Exceptions.html">Exceptions</a></li>
+      <li><a href="17_Interface.html">Interface</a></li>
+      <li><a href="18_Abstract_Classes.html">Abstract Classes</a></li>
+      <li><a href="19_Organizing_Code.html">Organizing Code</a></li>
+      <li><a href="20_InputOutput.html">Input/Output</a></li>
+      <li><a href="21_Strings.html">Strings</a></li>
+      <li><a href="22_Numbers.html">Numbers</a></li>
+      <li><a href="23_Generics.html">Generics</a></li>
+      <li><a href="24_Collections.html">Collections</a></li>
+      <li><a href="25_InnerClasses.html">Inner Classes</a></li>
+      <li><a href="26_Multithreading.html">Multithreading</a></li><li><a href="27_Swings.html">Swings</a></li>
+      <li><a href="28_Applets.html">Applets</a></li>
+   </ul>
+  </div>
+
+  <div id="extra">
+  </div>
+  <div id="footer", align="right">
+    <p>Send comments to swaminathanj@am.amrita.edu</p>
+  </div>
+</div>
+</body>
+</html>
