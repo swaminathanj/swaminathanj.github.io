@@ -1,0 +1,422 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Quadratic Sorting</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../styles.css" />
+        <script type="text/javascript" src="../scripts/shCore.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushBash.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCpp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCss.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushDiff.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushJava.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushJScript.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPhp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPlain.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPython.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushRuby.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushScala.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushSql.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushVb.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushXml.js"></script>
+        <link type="text/css" rel="stylesheet" href="lecture-notes.css"/>
+        <link type="text/css" rel="stylesheet" href="../styles/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="../styles/shThemeDefault.css"/>
+        <script type="text/javascript">
+            //SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+            SyntaxHighlighter.defaults['toolbar'] = false;
+            SyntaxHighlighter.defaults['auto-links'] = false;
+ 
+            SyntaxHighlighter.all();
+        </script>
+</head>
+
+<body>
+ 
+<div id="container">
+<div id="header"><h1>Design and Analysis of Algorithms<img align="right" src="../logo-dark.png" alt="Amrita"> </h1> </div>
+  <div id="wrapper">
+    <div id="content">
+
+<table align="right">
+  <td align="left"><a href="04_Masters.html">Prev</a></td>
+  <td align="right"><a href="06_nlogn_sorting.html">Next</a></td>
+</table>
+
+<h2>Sorting</h2>
+
+<p>Sorting is a fundamental necessity in many application scenarios. Sorting makes further processing easier. 
+For example, binary search is possible only when you have a sorted list. In this and the next few lectures 
+we will discuss eight different ways to sort. The sorting methods are characterized by their (i) running time,
+(ii) space requirement, (iii) whether it can be done in-place and (iv) if it is stable.</p>
+
+<p>Time and space complexity have already been introduced. An algorithm is called <b>in-place</b> if it can
+sort without using additional space. An O(1) extra space can be used but the additional space requirement 
+should not grow with the input size.</p> 
+
+<p>An algorithm is <b>stable</b> if it preserves the order in case there are elements that are same. For
+example, if the input array is {2<sub>a</sub>, 3, 1, 2<sub>b</sub>}, the algorithm must guarantee that
+in the sorted array 2<sub>a</sub> remains ahead of 2<sub>b</sub>.</p>
+
+<p>Sorting requires comparison of elements and hence the time complexity is a measure of number of comparisons
+required. The elements to be sorted are usually stored in an array. The size of the array refers to the input 
+size. Conventionally the input array is denoted by A[0..n-1]. For simplicity, we assume that each element 
+occupies O(1) space. This need not be true always. For example, the elements could be strings with a size of m. 
+or objects of an user-defined class. The techniques discussed here are generic.</p>
+
+<h2>Quadratic-time Sorting Methods</h2>
+
+<p>In this section we discuss three sorting algorithms that takes &Theta;(n<sup>2</sup>) time.</p>
+<ul>
+  <li>1. Bubble sort</li>
+  <li>2. Selection sort</li>
+  <li>3. Insertion sort</li>
+</ul>
+
+<h3>1. Bubble sort</h3>
+
+<p>A brute-force approach to sort. This takes n-1 iterations to sort. In each iteration, successive elements
+are compared and swapped if necessary. At the end of the first iteration, the largest element moves to the 
+last position. At the end of second iteration, the second largest element moves to the second last position.
+So on and so forth. The algorithm is given below.</p>
+
+<pre class="brush: java">
+  // Algorithm: Bubblesort
+
+  bubblesort(Input A[0..n-1]) {
+    for (i = 0; i < n-1; i++)
+      for (j = 0; j < n-1-i; j++)
+        if (A[j] > A[j+1])
+          swap(A[j], A[j+1]);
+  }
+</pre>
+
+<p>The following example demonstates the sorting of the list: {50,20,30,10,40}.</p>
+
+<table> 
+  <td>
+    <b>Iteration 1</b>      <br>
+    {<b>50,20</b>,30,10,40} <br>
+    {20,<b>50,30</b>,10,40} <br>
+    {20,30,<b>50,10</b>,40} <br>
+    {20,30,10,<b>50,40</b>} <br>
+    {20,30,10,40,<b>50</b>} <br>
+                            <br>
+    (n-1 comparisons +      <br>
+    atmost n-1 swaps)
+  </td>
+  <td>
+    <b>Iteration 2</b>     <br>
+    {<b>20,30</b>,10,40,50}<br>
+    {20,<b>30,10</b>,40,50}<br>
+    {20,10,<b>30,40</b>,50}<br>
+    {20,10,30,<b>40,50</b>}<br>
+                           <br>
+                           <br>
+    (n-2 comparisons +     <br>
+    atmost n-2 swaps)
+  </td>
+  <td>
+    <b>Iteration 3</b>     <br>
+    {<b>20,10</b>,30,40,50}<br>
+    {10,<b>20,30</b>,40,50}<br>
+    {10,20,<b>30,40,50</b>}<br>
+                           <br>
+                           <br>
+                           <br>
+    (n-3 comparisons +     <br>
+    atmost n-2 swaps)
+  </td>
+  <td>
+  <b>Iteration 4</b>       <br>
+    {<b>10,20</b>,30,40,50}<br>
+    {<b>10,20,30,40,50</b>}<br>
+                           <br>
+                           <br>
+                           <br>
+                           <br>
+    (n-4 comparisons +     <br>
+    atmost n-4 swaps)
+  </td>
+</table>
+
+<h4>Analysis of bubble sort</h4>
+
+<b>(a) Running Time</b>
+
+<p>In each iteration, n-1-i comparisons and at most as many swaps are done. Since i ranges from 0 to n-2,
+(n-1) + (n-2) + ... + 1 comparisons and swaps (or inversions) are done. So the worst case time complexity
+is determined as:</p>
+<ul>T(n) = 2(n-1) + 2(n-2) + ..... + 2(1) = 2[n(n-1)/2] = &Theta;(n<sup>2</sup>)</ul>
+
+<p>Note that even if the number of swaps are lesser, it does not reduce the time complexity since n-1-i
+comparisons are necessary anyway.</p>
+
+<p><strong>Is there a benefit if input array A[] is already sorted?</strong></p>
+<p>No. The worst case cannot be improved since the number of comparisons remains the same.</p>
+<ul> T(n)<sub>bc</sub> = (n-1) + (n-2) + ..... + (1) = [n(n-1)/2] = &Theta;(n<sup>2</sup>).</ul>
+
+<b>(b) Memory (space) requirement</b>
+
+<p>No extra space is required to sort. Ofcourse, we need a 'temp' storage to swap two elements. But the 'temp' 
+takes O(1) space and  does not increase with the input size n.</p>
+<ul>S(n) = n+1 = &Theta;(n)</ul>
+
+<b>(c) In-place or not</b>
+<p>Since no extra space/memory is required the algorithm is in-place.</p>
+
+<b>(d) Stable or not</b>
+<p>Bubble sort is stable. The <b>if (A[j] > A[j+1])</b> condition ensures that when the successive entries are same
+no inversions will happen. A swap is done only if an element is clearly greater than the next element.</p>
+<p>Note that if > is replaced by >= in the condition, the algorithm becomes unstable. Since the programmer can
+implement in a stable manner, bubble sort is stable.</p>
+
+         
+<b>Optimization</b>
+<p>If during an iteration, no swaps were performed, then we know that the list is sorted. In such a case,
+we can break out of the loop abandoning rest of the iterations. While this optimization does not improve
+the worst case running time, it can speed up the algorithm for some corner cases. For instance, if the input
+list is already sorted, after the first iteration, the algorithm terminates resulting in &Theta;(n) running time. 
+However, such cases are rare.</p>
+
+<pre class="brush: java">
+  // Algorithm: ImprovedBubblesort
+
+  improvedbubblesort(Input A[0..n-1]) {
+    for (i = 0; i < n-1; i++)
+      flag = false;              // set at the start of every iteration
+      for (j = 0; j < n-1-i; j++)
+        if (A[j] > A[j+1])
+          swap(A[j], A[j+1]);
+          flag = true;           // A swap is done during the iteration
+      if (!flag)                 // If flag still remains 0 at the
+        return;                  // end of the iteration break out
+  }
+</pre>
+
+<p><strong>Exercise</strong>: Implement the recursive version of bubblesort. The inner loop can be
+replaced by a recursive code. Extract the recurrence equation and solve it using Master's method
+to determine the time complexity.</p>
+
+<h3>2. Selection Sort</h3>
+
+<p>Selection sort employs a slightly different strategy. It traverses the array, finds the largest element
+and exchanges it with the one at the last position. In the second iteration, it swaps the second largest
+with the second last position. So on and so forth. As the iterations proceed, the sorted part (right) of 
+the array grows in size while the non-sorted part (left) diminishes. The algorithm is given below.</p>
+
+<pre class="brush: java">
+  // Algorithm: SelectionSort
+
+  selectionsort(Input A[0..n-1]) {
+    for (i = 0; i < n-1; i++) {
+      max = A[0];
+      lastpos = n-1-i
+      for (j = 1; j < lastpos; j++) {
+        if (A[j] > max)
+          max = A[j];
+          maxpos = j;
+      }
+      swap(maxpos, lastpos);
+    }
+  }
+</pre> 
+
+<p>The algorithm finishes in n-1 iterations as each of the n-1 elements get into their respective positions
+resulting in the first element to automatically move to its position. The statements 5 ~ 11 including the
+inner loop determines the max element and its position so that the elements could be swapped.</p>
+
+<p>The following example demonstrates the working of the algorithm for the input array {50,30,40,10,20}.</p>
+
+<ul>
+<table border="1" align="center">
+  <td align="center">
+    <b>Iteration</b> <br><br>
+    i = 0 <br>
+    i = 1 <br>
+    i = 2 <br>
+    i = 3 <br>
+    i = 4 <br>
+          <br>
+  </td>
+  <td align="center">
+    <b>State of the array</b><br><br>
+    {50,30,40,10,20}         <br>
+    {20,30,40,10,<b>50</b>}  <br>
+    {20,30,10,<b>40,50</b>}  <br>
+    {20,10,<b>30,40,50</b>}  <br>
+    {<b>10,20,30,40,50</b>}  <br>
+                             <br>
+  </td>
+  <td align="center">
+    <b>Computation</b>                 <br><br>
+    max = 50; maxpos = 0; lastpos = 4; <br>
+    max = 40, maxpos = 2; lastpos = 3; <br>
+    max = 30, maxpos = 1; lastpos = 2; <br>
+    max = 20, maxpos = 0, lastpos = 1; <br>
+                                       <br>
+                                       <br>
+  </td>
+</table>
+</ul>
+
+<h4>Analysis of Selection Sort</h4>
+
+<b>(a) Running Time</b>
+<p>In each iteration n-1-i comparisons are done and exactly one swap is done. The running time is given by
+
+<ul>T(n) = [(n-1) + 1] + [(n-2) + 1] + ... + [1 + 1] = n + (n-1) + ... + 2 = [n(n+1)/2] - 1 = &Theta;(n<sup>2</sup>)</ul>
+
+<p>Even if the input array is sorted, n-1-i comparisons has to be done in each iteration although swapping is not 
+necessary. Hence , it wuld not affect the time complexity in a significant way. It would still be &Theta;(n<sup>2</sup>).</p>
+
+<b>(b) Memory requirement</b>
+<p>Needs no extra space other than the array itself. Hence <b>S(n) = &Theta;(n)</b></p>
+
+<b>(c) In-place or not</b>
+<p>In-place for the above mentioned reason</p>
+
+<b>(d) Stable or not</b>
+<ul>Stable if implemented with '>' condition for swap.</ul>
+      
+<p><b>Note</b>: Unlike bubble sort, it is not possible to short circuit the number of iterations, if the list is
+already sorted.</p>
+
+<p>Selection Sort is preferred over bubble sort since number of swaps required is atmost (n-1) as against n(n-1)/2 
+swaps for bubble sort. For this reason, it runs faster.</p>
+
+<h3>3. Insertion Sort</h3>
+
+<p>The insertion sort works based on the following strategy: Pick each element from second position to the last, 
+compare against the previous elements one-by-one and insert it at the appropriate position. The algorithm is
+given below.</p>
+
+<pre class="brush: java">
+  // Insertion Sort
+
+  insertionsort(Input A[0..n-1]) {
+    for (i = 1; i < n; i++) {
+      temp = A[i];
+      for (j = i-1; j >= 0; j++) {
+        if (temp > A[j])    // Time to insert, break out of inner loop
+          break;
+      }
+      RightShiftByOnePosition(A[j+1..i-1]);
+      A[j+1] = temp;
+    }        
+  }
+</pre>
+
+<p>The following example demonstrates the working of insertion sort for the array {5,2,4,6,1,3}.</p>
+
+<ul>
+<table border="1">
+  <td align="center">
+    <b>Iteration</b> <br><br>
+    i = 1 <br>
+    i = 2 <br>
+    i = 3 <br>
+    i = 4 <br>
+    i = 5 <br>
+          <br>
+  </td>
+  <td align="center">
+    <b>State of the array</b><br><br>
+    {5,<b>2</b>,4,6,1,3}  <br>
+    {2,5,<b>4</b>,6,1,3}  <br>
+    {2,4,5,<b>6</b>,1,3}  <br>
+    {2,4,5,6,<b>1</b>,3}  <br>
+    {1,2,4,5,6,<b>3</b>}  <br>
+    {1,2,3,4,5,6}         <br>
+  </td>
+  <td align="left">
+    <b>&emsp;&emsp;Computation</b>                <br><br>
+    temp = 2; 2 < 5; Right shift 5; A[0] = 2;         <br>
+    temp = 4; 4 < 5, 4 > 2; Right shift 5; A[1] = 4   <br>
+    temp = 6; 6 > 5;                                  <br>
+    temp = 1; 1 < 6, 1 < 5, 1 < 4, 1 < 2; Right shift 2, 4, 5, 6; A[0] = 1  <br>
+    temp = 3; 3 < 6, 3 < 5, 3 < 4, 3 > 2; Right shift 4, 5, 6; A[2] = 3     <br>
+                                                                            <br>
+  </td>
+</table>
+</ul>
+
+<p>Observe that after 'i' iterations, the first (i+1) elements are in a sorted state. However, the first (i+1)
+elements need not neccessarily be smallest (i+1) items.</li>
+
+<h4>Analysis of Insertion Sort</h4>
+
+<b>(a) Running Time</b>
+<p>During each iteration, at most i comparisons needs to be done and as many number of right shift operations is
+necessary. Hence, the worst case time complexity is given by</p>
+
+<ul>T(n) = [1 + 2 +......+ (n-1)]*2 = n(n-1) = &Theta;(n<sup>2</sup>)</ul>
+
+<p><strong>Is there an advantage if the input list is sorted?</strong></p>
+
+<p>Yes. If the input list is sorted, the first comparison fails and no shifts need to done in each iteration.
+Hence, the running time is n-1 comparisons + 0 shifts.</p>
+
+<ul>T(n)<sub>Bestcase</sub> =  [1 + 1 + 1.....+ 1] = n-1 = &Theta;(n)</ul> 
+
+<p>In general, insertion sort is good if the input list is in a nearly sorted state. In scenarios where the list
+dynamically increases and decreases in size, this sorting technique can be useful in maintaining the sorted list 
+with minimal operations.</p>
+
+<p>In practical settings, insertion sort performs faster than many algorithms.</p>
+
+<b>(b) Memory requirement</b>
+<p>The entire sorting can be done without the need of additional space. Hence, S(n) = &Theta;(n).</p>
+
+<b>(c) In-place or not</b>
+<p>In-place for the above mentioned reason.</p>
+
+<b>(d) Stable or not</b>
+<p>The <b>if (A[i] > A[j])</b> condition does not ensure that the algorithm is stable. An element is not brought
+forward only if it is strictly greater. The condition needs to be changed to <b>if (A[i] >= A[j])</b> in order 
+to ensure that no element is brought forward unless it is strictly lesser than the element against it which is
+compared.</p>
+
+<p><strong>Exercises:</strong><br>
+1. Will use of binary search to identify the position to insert help in improving the time complexity?
+Justify.<br>
+2. Does the use of linked list along with the binary search improve the time complexity? Also, discuss the
+practical implications?
+</p>
+
+
+   </div>
+  </div>
+
+  <div id="navigation">
+  <p><br><strong><a href="../index.html">Home</a></strong></p>
+    <ul>
+      <li><a href="01_Intro.html">Why algorithm design matters?</a></li>
+      <li><a href="02_Analysis.html">Analyzing algorithms</a></li>
+      <li><a href="03_Asymptotics.html">Asymptotic notations</a></li>
+      <li><a href="04_Masters.html">Master's method</a></li>
+      <li><a href="05_Quadratic_sorting.html">Quadratic-time sorting</a></li>
+      <li><a href="06_nlogn_sorting.html">NlogN sorting (Divide-and-Conquer)</a></li>
+      <li><a href="07_Heapsort.html">Heap and Heap sort</a></li>
+      <li><a href="08_Linear_sorting.html">Lower bound and Linear-time sorting</a></li>
+      <li><a href="09_Selection.html">Selection problem</a></li>
+      <li><a href="10_Optimization_Problems.html">Optimization Problems</a></li>
+      <li><a href="11_Task_Scheduling.html">Task Scheduling</a></li>
+      <li><a href="12_Integer_Knapsack.html">Integer Knapsack</a></li>
+      <li><a href="13_LCS.html">Longest Common Subsequence</a></li>
+      <li><a href="14_LIS.html">Longest Increasing Subsequence</a></li>
+      <li><a href="15_LPS.html">Longest Palindromic Subsequence</a></li>
+      <li><a href="16_MSS.html">Maximum Subsequence Sum</a></li>    </ul>
+  </div>
+
+  <div id="extra">
+  </div>
+  <div id="footer", align="right">
+    <p>Send comments to swaminathanj@am.amrita.edu</p>
+  </div>
+</div>
+</body>
+</html>

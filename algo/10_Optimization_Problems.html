@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Optimization Problems</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../styles.css" />
+        <script type="text/javascript" src="../scripts/shCore.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushBash.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCpp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCss.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushDiff.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushJava.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushJScript.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPhp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPlain.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPython.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushRuby.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushScala.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushSql.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushVb.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushXml.js"></script>
+        <link type="text/css" rel="stylesheet" href="lecture-notes.css"/>
+        <link type="text/css" rel="stylesheet" href="../styles/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="../styles/shThemeDefault.css"/>
+        <script type="text/javascript">
+            //SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+            SyntaxHighlighter.defaults['toolbar'] = false;
+            SyntaxHighlighter.defaults['auto-links'] = false;
+ 
+            SyntaxHighlighter.all();
+        </script>
+</head>
+
+<body>
+ 
+<div id="container">
+<div id="header"><h1>Design and Analysis of Algorithms<img align="right" src="../logo-dark.png" alt="Amrita"> </h1> </div>
+  <div id="wrapper">
+    <div id="content">
+
+<table align="right">
+  <td align="left"><a href="09_Selection.html">Prev</a></td>
+  <td align="right"><a href="11_Task_Scheduling.html">Next</a></td>
+</table>
+
+<h2>Optimization Problems</h2>
+<p>Optimization problems refers to the class of problems where the goal is to maximize or minimize the solution. i.e. Among 
+the several solutions, possibly exponential, choose the one that is best based on some particular criteria.</p>
+
+<h3>Examples</h3>
+
+<p><b>1. Task scheduling</b>: Given a set of tasks and the duration required to complete each of them, what is the best
+way to schedule them so as to minimize the average completion time?</p>
+
+<p><b>2. Knapsack</b>: Given a set of items, each of which has certain weight (w<sub>i</sub>) and benefit (b<sub>i</sub>), 
+and a knapsack of capacity W, what is the best way to fill the knapsack so as to maximize the benefit?</p>
+
+<p><b>3. Chain Matrix Multiplication</b>: Given a chain of matrices, each of which has the dimension d<sub>i-1</sub> x 
+d<sub>i</sub>, what is the best way to multiply them so as to minimize the number of overall multiplications.</p>
+
+<p><b>4. Maximum Subsequence Sum</b>: Given an array of numbers, that possibly includes negative values, determine the
+particular subsequence whose sum the maximum.</p>
+
+<p><b>5. Longest Common Subsequence</b>: Given two strings of same or different lengths, find the longest common
+subsequence.</p>
+
+<p><b>6. Optimal Binary Search Trees</b>: Given a set of keys, with probability of search queries for each key, what is the 
+best way to form a binary search tree of the keys so as to minimize the overall cost answering the search queries?</p>
+
+<p><b>7. Data Compression</b>: Given a set of symbols, with the probability of occurrence of each symbol in a document,
+what is the best way to encode the document so as to achieve maximum compression?</p>
+
+<p><b>8. Minimum Spanning Tree</b>: Given an undirected graph of certain number of vertices and edges with certain weights,
+what is the smallest weighted spanning tree that connects all the vertices of the graph.</p>
+
+<p><b>9. Shortest path</b>: Given a graph of certain number of vertices and edges with certain weights, determine the
+shortest path from a node to another node.</p>
+
+<p><b>10. Travelling Salesman</b>: Given a set of nodes, denoting cities, and the edges between the nodes, denoting the
+distances between the cities, what is the best way for a salesman to visit all the nodes exactly once and come back to 
+the starting node?</p>
+
+<p>While the above list gives the flavor of optimization problems, it is by no means exhaustive. There exists countless
+such problems. What we are going to learn are some standard algorithmic strategies that are employed to handle them.
+The strategies include the following in the order of preference:</p>
+
+<ul>
+	<li><b>1. Greedy strategy</b>: This is the most preferred strategy applied when the following properties hold.<br>
+	<ol>
+		<li>Optimal substructure</li>
+		<li>Greedy choice property</li>
+	</ol></li><br>
+
+	<li><b>2. Dynamic programming</b>: Dynamic programming is a "systematic brute-force" technique that avoids solving
+	same subproblems again through a bottom-up approach. This is applied when greedy choice property does not hold.<br>
+	<ol>
+		<li>Optimal substructure</li>
+		<li>Overlapping subproblems</li>
+	</ol></li>
+</ul>
+
+<p>If a problem does not exhibit overlapping subproblems property too, dynamic programming solution will be as inefficient 	as the brute-force solution. This is not an issue if the solution takes polynomial time. However, if it takes exponential 	time, we need to compromise and settle for a suboptimal solution. The following strategies are applied in such cases.</p>
+
+<ul>
+	<li><b>3. Branch-and-bound</b>: This is a heuristic based technique wherein the search is pruned at every stage and some
+	search paths are eliminated based on a promising criteria. It could be possible that we eliminate the path towards best
+	solution leading to a sub-optimal solution. Branch-and-bound strategy usually guarantees that solution obtained is not
+	worse than the optimal solution by a certain factor.</li> <br>
+
+	<li><b>4. Backtracking</b>: Backtracking is another strategy where in the search paths are explored upto a certain depth
+	and if optimal solution is not found, it backtracks searches other paths.</li>
+</ul>
+
+<h3>Definitions</h3>
+
+<p><b>Optimal substructure</b>: The optimal solution to a problem contains within itself optimal solutions to its subproblems.</p>
+
+<p><b>Greedy choice property</b>: Locally optimal solutions leads to globally optimum solution.</p>
+
+<p><b>Overlapping subproblems</b>: Breaking down the problem recursively leads to several subproblems that are the same.</p>
+
+
+   </div>
+  </div>
+
+  <div id="navigation">
+  <p><br><strong><a href="../index.html">Home</a></strong></p>
+    <ul>
+      <li><a href="01_Intro.html">Why algorithm design matters?</a></li>
+      <li><a href="02_Analysis.html">Analyzing algorithms</a></li>
+      <li><a href="03_Asymptotics.html">Asymptotic notations</a></li>
+      <li><a href="04_Masters.html">Master's method</a></li>
+      <li><a href="05_Quadratic_sorting.html">Quadratic-time sorting</a></li>
+      <li><a href="06_nlogn_sorting.html">NlogN sorting (Divide-and-Conquer)</a></li>
+      <li><a href="07_Heapsort.html">Heap and Heap sort</a></li>
+      <li><a href="08_Linear_sorting.html">Lower bound and Linear-time sorting</a></li>
+      <li><a href="09_Selection.html">Selection problem</a></li>
+      <li><a href="10_Optimization_Problems.html">Optimization Problems</a></li>
+      <li><a href="11_Task_Scheduling.html">Task Scheduling</a></li>
+      <li><a href="12_Integer_Knapsack.html">Integer Knapsack</a></li>
+      <li><a href="13_LCS.html">Longest Common Subsequence</a></li>
+      <li><a href="14_LIS.html">Longest Increasing Subsequence</a></li>
+      <li><a href="15_LPS.html">Longest Palindromic Subsequence</a></li>
+      <li><a href="16_MSS.html">Maximum Subsequence Sum</a></li>    </ul>
+  </div>
+
+  <div id="extra">
+  </div>
+  <div id="footer", align="right">
+    <p>Send comments to swaminathanj@am.amrita.edu</p>
+  </div>
+</div>
+</body>
+</html>

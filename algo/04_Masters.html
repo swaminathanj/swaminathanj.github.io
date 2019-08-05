@@ -1,0 +1,244 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Masters Method</title>
+<link rel="stylesheet" type="text/css" href="../styles.css" />
+        <script type="text/javascript" src="../scripts/shCore.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushBash.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCpp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCss.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushDiff.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushJava.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushJScript.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPhp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPlain.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPython.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushRuby.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushScala.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushSql.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushVb.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushXml.js"></script>
+        <link type="text/css" rel="stylesheet" href="lecture-notes.css"/>
+        <link type="text/css" rel="stylesheet" href="../styles/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="../styles/shThemeDefault.css"/>
+        <script type="text/javascript">
+            //SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+            SyntaxHighlighter.defaults['toolbar'] = false;
+            SyntaxHighlighter.defaults['auto-links'] = false;
+ 
+            SyntaxHighlighter.all();
+        </script>
+</head>
+
+<body>
+ 
+<div id="container">
+<div id="header"><h1>Design and Analysis of Algorithms<img align="right" src="../logo-dark.png" alt="Amrita"> </h1> </div>
+  <div id="wrapper">
+    <div id="content">
+
+<table align="right">
+  <td align="left"><a href="03_Asymptotics.html">Prev</a></td>
+  <td align="right"><a href="05_Quadratic_sorting.html">Next</a></td>
+</table>
+
+<h2>Master's method</h2>
+
+<p>Master's method is used to solve the recurrence equation of an algorithm that uses Divide-and-conquer.
+Instead of using elaborate methods like recursion tree, substitution, etc., one can easily determine
+the complexity using quick computation.</p>
+
+<p>The generalized recurrence equation for an algorithm that uses divide-and-conquer technique takes the following form.</p>
+
+<p style="color: blue">
+	&emsp; &emsp; T(1) = 1<br>
+	&emsp; &emsp; T(n) = aT(n/b) + n<sup>k</sup>
+</p>
+
+<p>To solve a problem of size n, the algorithm breaks it down to a sub-problems each of size n/b, solves them 
+individually and combines the solution. Each sub-problem is solved recursively solved in the same fashion 
+until the sub-problem's size is 1. The term n<sup>k</sup> denotes the time taken to break and merge while 
+T(n/b) denotes the time taken to solve a sub-problem.</p>
+
+<p>Lets try to apply substitution to solve this.</p>
+
+<p>
+	&emsp; &emsp; T(n) = aT(n/b) + n<sup>k</sup> <br>
+  &emsp; &emsp; &emsp; = a[aT(n/b<sup>2</sup>) + (n/b)<sup>k</sup>] + n<sup>k</sup>  <br>
+  &emsp; &emsp; &emsp; = a<sup>2</sup>T(n/b<sup>2</sup>) + a(n/b)<sup>k</sup> + n<sup>k</sup> <br>
+  &emsp; &emsp; &emsp; = a<sup>3</sup>T(n/b<sup>3</sup>) + a<sup>2</sup>(n/b<sup>2</sup>)<sup>k</sup> + a(n/b)<sup>k</sup> + n<sup>k</sup> <br>
+  &emsp; &emsp; &emsp; = &emsp; &emsp; :  <br>
+  &emsp; &emsp; &emsp; = &emsp; &emsp; :  <br>
+  &emsp; &emsp; &emsp; = a<sup>log<sub>b</sub>n</sup>T(1) + ... + a<sup>3</sup>(n/b<sup>3</sup>)<sup>k</sup> + a<sup>2</sup>(n/b<sup>2</sup>)<sup>k</sup> + a(n/b)<sup>k</sup> + n<sup>k</sup> <br>
+  &emsp; &emsp; &emsp; = n<sup>log<sub>b</sub>a</sup> + n<sup>k</sup> [a<sup>logn-1</sup>/b<sup>(logn-1)k</sup>... + a<sup>3</sup>/b<sup>3k</sup> + a<sup>2</sup>/b<sup>2k</sup> + a/b<sup>k</sup> + 1] <br>
+  &emsp; &emsp;  &emsp; (log rule) &emsp; &emsp; &emsp; (log<sub>b</sub>n terms) <br>
+  &emsp; &emsp; &emsp; = n<sup>log<sub>b</sub>a</sup> + n<sup>k</sup> [(a/b<sup>k</sup>)<sup>logn-1</sup>... + (a/b<sup>k</sup>)<sup>3</sup> + (a/b<sup>k</sup>)<sup>2</sup> + a/b<sup>k</sup> + 1] 
+</p>
+
+<p>The final recurrence equation is</p>
+
+<p style="color: blue">
+	&emsp; &emsp; T(n) = n<sup>log<sub>b</sub>a</sup> + n<sup>k</sup> [(a/b<sup>k</sup>)<sup>logn-1</sup>... + (a/b<sup>k</sup>)<sup>3</sup> + (a/b<sup>k</sup>)<sup>2</sup> + a/b<sup>k</sup> + 1]
+</p>
+
+<p>Looking at the above recurrence equation, we note that the rhs is the sum of two terms. There are 3 cases to consider here.
+Master's method states that:</p>
+
+<p>
+<b>Case 1</b>: If n<sup>log<sub>b</sub>a</sup> > n<sup>k</sup>, then T(n) &isin; &Theta;(n<sup>log<sub>b</sub>a</sup>) 
+since n<sup>log<sub>b</sub>a</sup> will dominate. Stated otherwise, the cost of solving the subproblems dominates the 
+cost of breaking the problem and combining the solutions of subproblems.
+</p>
+
+<p>
+<b>Case 2</b>: If n<sup>log<sub>b</sub>a</sup> < n<sup>k</sup>, then T(n) &isin; &Theta;(n<sup>k</sup>) 
+since n<sup>k</sup> will dominate. i.e. the cost of breaking the breaking the problem and combining the solutions
+of the subproblems dominates the cost of solving the subproblems.
+</p>
+
+<p>
+<b>Case 3</b>: If n<sup>log<sub>b</sub>a</sup> = n<sup>k</sup>, then T(n) &isin; &Theta;(n<sup>k</sup>.logn) since there
+are logn terms.
+</p>
+
+<p><strong>Why did we append logn to case 3?</strong></p>
+
+<p>n<sup>log<sub>b</sub>a</sup> = n<sup>k</sup> implies log<sub>b</sub>a = k <br>
+	This implies b<sup>log<sub>b</sub>a</sup> = b<sup>k</sup> <br>
+	This implies a<sup>log<sub>b</sub>b</sup> = b<sup>k</sup> (applying logrithmic rule)<br>
+	This implies a = b<sup>k</sup>
+</p>
+
+<p>Now consider the second term in the rhs of the recurrence equation: [(a/b<sup>k</sup>)<sup>logn-1</sup>... + (a/b<sup>k</sup>)<sup>3</sup> + (a/b<sup>k</sup>)<sup>2</sup> + a/b<sup>k</sup> + 1]. Since a = b<sup>k</sup>, this reduces to (1 + 1 + ... + 1) = logn (as this is the sum of logn 1s). 
+Therefore, the complexity is given by &Theta;(n<sup>k</sup>.logn)</p>
+
+<p><strong>Why didn't we append logn to case 2?</strong></p>
+
+<p>Working out in the same manner, we now have a < b<sup>k</sup>. <br> 
+This implies a/b<sup>k</sup> < 1. <br>
+This further implies, the series a<sup>2</sup>/b<sup>2k</sup>, a<sup>3</sup>/b<sup>3k</sup>, ....., 
+a<sup>logn-1</sup>/b<sup>(logn-1)k</sup> goes on reducing. So, even though there are logn terms, 
+they don't sum up to logn. Instead, the quantity can be treated as a constant.</p>
+
+<p><strong>Let's work out some examples. We assume T(1) = 1 always.</strong></p>
+
+<p><strong>1) T(n) = 9T(n/3) + n</strong></p>
+	<p> a = 9, b = 3 and k = 1<br>
+	log<sub>b</sub>a = log<sub>3</sub>9 = 2 (greater than k)<br>
+	Hence,T(n) = &Theta;(n<sup>2</sup>)</p>
+
+<p><strong>2) T(n) = T(2n/3) + 1</strong></p>
+	<p> a = 1, b = 3/2  and  k = 0<br>
+	log<sub>b</sub>a = log<sub>3/2</sub>1 = 0 (equal to k)<br>
+	Hence, T(n) = &Theta;(log n)</p>
+
+<p><strong>3) T(n) = 3T(n/4) + n&radic;n</strong></p>
+	<p>a = 3, b = 4 and k = 1.5<br>
+	log<sub>b</sub>a = log<sub>4</sub>3 < 1 (less than k)<br>
+	Hence, T(n) = &Theta;(n<sup>1.5</sup>) </p>
+
+<p><strong>Applicability of Master's method</strong></p>
+
+<p>Master's method can be applied to determine the complexity only if the recurrence equation is of the form
+T(n) = aT(n/b) + n<sup>k</sup>. For instance, it cannot be used if we have aT(n-b) in place of aT(n/b) and/or
+instead of n<sup>k</sup> we have some function f(n) which is not a 'pure' polynomial.</p>
+
+<h3>Determining time complexity for problems solved using decrease-and-conquer</h3>
+
+<p>Master's method dealt before gave a quick way to determine the complexity of problems solved using 
+divide-and-conquer approach. i.e. a problem is solved by breaking it to a subproblems each of size n/b.
+In this section, we try to obtain a similar formula for determining the complexity of problems solved
+using decrease-and-conquer approach. A generalized recurrence equation for such a problem is given 
+as follows:</p>
+
+<p style="color: blue">
+&emsp; &emsp; T(0) = T(1) = ... = T(b) = 1<br>
+&emsp; &emsp; T(n) = aT(n-b) + n<sup>k</sup>
+</p>
+
+<p>Again, lets solve this using the substitution method.</p>
+
+<p>
+	&emsp; T(n) = aT(n-b) + n<sup>k</sup> <br>
+	&emsp; &emsp; &emsp; = a[aT(n-2b) + (n-b)<sup>k</sup>] + n<sup>k</sup> <br>
+	&emsp; &emsp; &emsp; = a<sup>2</sup>T(n-2b) + a(n-b)<sup>k</sup> + n<sup>k</sup> <br>
+	&emsp; &emsp; &emsp; = a<sup>3</sup>T(n-3b) + a<sup>2</sup>(n-2b)<sup>k</sup> + a(n-b)<sup>k</sup> + n<sup>k</sup> <br>
+	&emsp; &emsp; &emsp; &emsp; &emsp; : <br>
+	&emsp; &emsp; &emsp; &emsp; &emsp; : (takes n/b steps till it hits T(1) <br>
+	&emsp; &emsp; &emsp; &emsp; &emsp; : <br>
+	&emsp; &emsp; &emsp; = a<sup>n/b</sup>T(1) + a<sup>n/b-1</sup>(n-(n/b-1)b)<sup>k</sup> + ... + a<sup>2</sup>(n-2b)<sup>k</sup> + a(n-b)<sup>k</sup> + n<sup>k</sup> <br>
+	&emsp; &emsp; &emsp; <= a<sup>n/b</sup> + a<sup>n/b-1</sup>n<sup>k</sup> + ... + a<sup>2</sup>n<sup>k</sup> + an<sup>k</sup> + n<sup>k</sup> <br>
+	&emsp; &emsp; &emsp; = a<sup>n/b</sup> + n<sup>k</sup>[a<sup>n/b-1</sup> + .. + a<sup>2</sup> + a + 1] <br>
+	&emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; (n/b terms) <br>
+	&emsp; &emsp; &emsp; = a<sup>n/b</sup> + n<sup>k</sup>(cn) (c is the sum of the terms which is a constant) <br>
+	&emsp; &emsp; &emsp; = a<sup>n/b</sup> + c.n<sup>k+1</sup> <br>
+</p>
+
+<p>We see that the recurrence equation contains 2 terms. The first one a<sup>n/b</sup> is exponential while the 
+second one is polynomial. The second one is polynomial because we initially started with the recurrence equation
+that way. If we were to consider a more generalized recurrence equation:</p>
+
+<p style="color: blue">&emsp; T(n) = aT(n-b) + f(n)</p>
+
+<p>where f(n) can be polynomial, logarithmic or exponential, the closed form equation can be determined as</p>
+
+<p style="color: blue">&emsp; T(n) = a<sup>n/b</sup> + n.f(n)</p>
+
+<p>Here too, there are three cases to consider.</p>
+
+<p><strong>Case 1:</strong> If a<sup>n/b</sup> > n.f(n), then T(n) = O(a<sup>n</sup>).</p>
+
+<p><strong>Case 2:</strong> If a<sup>n/b</sup> < n.f(n), then T(n) = O(n.f(n)).</p>
+
+<p><strong>Special Case:</strong> If a = 1, then a<sup>n/b</sup> = 1. Hence, T(n) = O(n.f(n)).</p>
+
+<p><strong>Note:</strong> It is highly unlikely that f(n) is exponential. Usually it is a constant, logarithmic or
+at worst a polynomial. Case 2 is extremely rare.</p>
+
+<p>Recall the recurrence equations that we had worked out earlier.</p>
+
+<p>1. Computing factorial, max element and number of binary digits in an integer.</p>
+<p>&emsp; &emsp; &emsp; T(n) = T(n-1) + c</p>
+<p>Here a = 1 and f(n) is a constant (special case). Hence T(n) = O(n), same as the one we derived earlier.</p>
+
+<p>2. Tower of Hanoi</p>
+<p>&emsp; &emsp; &emsp; T(n) = 2T(n-1) + 1</p>
+<p>Here a = 2 and f(n) is a constant(case 1). Hence T(n) = O(2<sup>n</sup>), same as we derived.</p>
+
+<p><strong>Note</strong>: Recursive algorithms fall into either divide-and-conquer or decrease-and-conquer category.</p>
+
+   </div>
+  </div>
+
+  <div id="navigation">
+  <p><br><strong><a href="../index.html">Home</a></strong></p>
+    <ul>
+      <li><a href="01_Intro.html">Why algorithm design matters?</a></li>
+      <li><a href="02_Analysis.html">Analyzing algorithms</a></li>
+      <li><a href="03_Asymptotics.html">Asymptotic notations</a></li>
+      <li><a href="04_Masters.html">Master's method</a></li>
+      <li><a href="05_Quadratic_sorting.html">Quadratic-time sorting</a></li>
+      <li><a href="06_nlogn_sorting.html">NlogN sorting (Divide-and-Conquer)</a></li>
+      <li><a href="07_Heapsort.html">Heap and Heap sort</a></li>
+      <li><a href="08_Linear_sorting.html">Lower bound and Linear-time sorting</a></li>
+      <li><a href="09_Selection.html">Selection problem</a></li>
+      <li><a href="10_Optimization_Problems.html">Optimization Problems</a></li>
+      <li><a href="11_Task_Scheduling.html">Task Scheduling</a></li>
+      <li><a href="12_Integer_Knapsack.html">Integer Knapsack</a></li>
+      <li><a href="13_LCS.html">Longest Common Subsequence</a></li>
+      <li><a href="14_LIS.html">Longest Increasing Subsequence</a></li>
+      <li><a href="15_LPS.html">Longest Palindromic Subsequence</a></li>
+      <li><a href="16_MSS.html">Maximum Subsequence Sum</a></li>    </ul>
+  </div>
+
+  <div id="extra">
+  </div>
+  <div id="footer", align="right">
+    <p>Send comments to swaminathanj@am.amrita.edu</p>
+  </div>
+</div>
+</body>
+</html>

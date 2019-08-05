@@ -1,0 +1,752 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Maximum Sum Subsequence</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../styles.css" />
+        <script type="text/javascript" src="../scripts/shCore.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushBash.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCpp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCss.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushDiff.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushJava.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushJScript.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPhp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPlain.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPython.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushRuby.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushScala.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushSql.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushVb.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushXml.js"></script>
+        <link type="text/css" rel="stylesheet" href="lecture-notes.css"/>
+        <link type="text/css" rel="stylesheet" href="../styles/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="../styles/shThemeDefault.css"/>
+        <script type="text/javascript">
+            //SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+            SyntaxHighlighter.defaults['toolbar'] = false;
+            SyntaxHighlighter.defaults['auto-links'] = false;
+ 
+            SyntaxHighlighter.all();
+        </script>
+</head>
+
+<body>
+ 
+<div id="container">
+<div id="header"><h1>Design and Analysis of Algorithms<img align="right" src="../logo-dark.png" alt="Amrita"> </h1> </div>
+  <div id="wrapper">
+    <div id="content">
+
+<table align="right">
+  <td align="left"><a href="15_LPS.html">Prev</a></td>
+  <td align="right"><a href="17_TS.html">Next</a></td>
+</table>
+
+<h2>Maximum Sum Subsequence</h2>
+
+<p>Consider the string A[1..n] of both positive and negative integers. The goal is to find the subsequence in A
+with the maximum sum.</p>
+
+<h3>Example</h3>
+<p>A[1..8] = {2, -4, 1, 9, -6, 7 -5, 3}. The subsequence with maximum sum is {2, 1, 9, 7, 3} and the sum is 22.</p>
+
+<h3>(1) Brute-force solution</h3>
+<p>The brute-force way to solve this problem is to enumerate all possible subsequences and determine the one that
+has the maximum sum. For n elements, there are 2<sup>n</sup> subsequences possible.</p>
+
+<p>The brute-force solution can be implemented using recursion given as follows. Let MSS(1..n) denote the length
+of the longest palindromic subsequence for S.</p>
+
+<pre class="brush: java">
+
+	MSS(A[1..n]) {
+
+		if (n == 0)
+			return 0;
+
+		sum1 = MSS(A[1..n-1]);
+		sum2 = MSS(A[1..n-1]) + A[n];
+		return max(sum1, sum2);
+	}
+</pre>
+
+
+<p>The recursion tree is shown below. Each call path from the root to the leaf gives one of the 2<sup>n</sup> 
+possible subsequences. Let MSS(1,n) denote the maximum sum subsequence of the A[1..n].</p> 
+
+<pre>
+
+                                         MSS(1,n)
+                                            |
+                                            |
+                ---------------------------max---------------------------
+                |                                                       |
+                |                                                       |
+           MSS(1,n-1)                                              MSS(1,n-1) + A[n]
+                |                                                       | 
+                |                                                       |
+    -----------max---------                                  ----------max----------
+    |                     |                                  |                     |           
+    |                     |                                  |                     |
+MSS(1,n-2)          MSS(1,n-2) + A[n-1]                MSS(1,n-2)             MSS(1,n-2) + A[n-1]
+    :                     :                                  :                     :
+    :                     :                                  :                     :
+
+</pre>
+
+<h4>Time complexity</h4>
+<p>The recursive solution takes O(2<sup>n</sup>) time.</p>
+
+<h3>(2) Greedy Solution</h3>
+
+<p>To apply greedy strategy we need to first check if the problem exhibits (i) optimal substructure property
+and (ii) greedy choice property.</p>
+
+<p><b>Optimal substructure</b>: The recursive fomulation above reveals the optimal substructure. The problem 
+of finding maximum sum subsequence of A[1..n] contains within itself the subproblem of finding maximum sum
+subsequence of A[1..n-1].</p>
+
+<p><b>Greedy choice property</b>: To check if a greedy solution exists or not, we need to determine if greedy 
+choice property is satisfied. i.e. do we have any way to decide which of the 2 subproblems need to be solved
+at each recursive step?</p>
+
+<p>Yes. We can make a clear choice by checking if the element A[i] is positive or not. If A[i] > 0, it helps
+improve the sum. So we can take the right path which includes A[i]. Else, we can take the left path which 
+excludes A[i]. The recurrence equation for the greedy version reduces to</p>
+
+<ul>
+	<p>T(n) = T(n-1) + 1 = O(n)</p>
+</ul>
+
+<p>We initially start with sum = 0 and scan though the elements. If an element is > 0, we will add the element 
+to the sum. After scan is complete we return the sum. Checking if the element is > 0 takes O(1) time while the 
+number of iterations is n.</p>
+
+<p>There is one corner case to be dealt with. If all the elements happen to be negative, as per our strategy
+no element will be picked. In this case the answer should be  the max element.</p>
+
+<p>The greedy solution can be implemented in an iterative fashion as follows.</p>
+
+<pre class="brush: java">
+
+	GreedyMSS(A[1..n]) {
+
+		int maxsubsum = 0;
+
+		for (i = 1; i <= n; i++) {
+			if (A[i] > 0)
+				maxsubsum += A[i];
+		}
+
+		if (maxsubsum != 0)
+			return maxsubsum;
+		else   				// i.e. all elements are negative
+			return findMax(A[1..n]);
+	}
+</pre>
+
+<h3>(3) Dynamic Programming Solution</h3>
+
+<p>If the greedy solution exists, dynamic programming solution is not necessary. However, we discuss the 
+dynamic programming solution below.</p>
+
+<p>To apply dynamic programming, we need to check if the problem exhibits (i) optimal substructure and (ii)
+overlapping subproblems properties.</p> 
+<p>(i) We already saw above, that optimal substructure property holds.</p> 
+<p>(ii) The recursive formulation also reveals the existence of overlapping subproblems doubles at each step
+and therefore exponential subproblems are possible.</p>
+
+<p>The dynamic programming works in a bottom-up fashion. Subproblems are solved and their solutions are used to 
+find solutions to larger problems. Hence, we work as follows.</p>
+<ul>
+	<li>If we are allowed to pick each element individually, what is the maximum subsequence sum possible?</li>
+	<li>If we are allowed to pick two consecutive elements, what is the maximum subsequence sum possible?</li>
+	<li>So on and so forth ... until all elements are allowed to be picked.</li>
+</ul>
+
+<p>Let MSS[i,j] denote the maximum subsequence sum for array A[i..j]. Initially, j = i. In the subsequent 
+iterations, j takes the values of (i+1), (i+2), ..., (i+n-1). This can be consolidated by defining a special 
+variable 'len' which takes values 0 through n-1 denoting the length of consecutive tasks considered for that 
+iteration. And hence, j = i + len for len = 0...n-1. </p>
+
+<ul>
+	<li>In the first iteration len = 0, we find the max subsequence sum for the range [i,i]. <br>
+	i.e. MSS[1,1], MSS[2,2], ..., MSS[n,n]. &nbsp; &nbsp; &nbsp; (n computations)</li>
+	<li>In the second iteration len = 1, we find the max subsequence sum for the range [i,i+1]. <br>
+	i.e. MSS[1,2], MSS[2,3], ..., MSS[n-1,n]. &nbsp; &nbsp; (n-1 computations)</li>
+	<li>In the third iteration len = 2, we find the max subsequence sum for the range [i,i+2]. <br>
+	i.e. MSS[1,3], MSS[2,4], ..., MSS[n-2,n]. &nbsp; &nbsp; (n-2 computations)</li>
+	<li>....</li>
+	<li>....</li>
+	<li>In the last but one iteration len = n-2, we find the max subsequence sum for the range [i,i+n-2]. <br>
+	i.e. MSS[1,n-1], MSS[2,n] &nbsp; &nbsp; &nbsp; (2 computations)</li>
+	<li>In the last (n<sup>th</sup>) iteration len = n-1, we find the max subsequence sum for [i,i+n-1]. <br>
+	i.e. MSS[1,n]. &nbsp; &nbsp; &nbsp; &nbsp; (1 computation)</li>
+</ul>
+
+<p>The entire computation worked out above can be accomplished using the following nested loop.</p>
+
+<ul>
+	<p> for (len = 0; len < n; len++) { <br>
+	&nbsp; &nbsp; for (i = 1; i <= n-len; i++) { <br>
+	&nbsp; &nbsp; &nbsp; &nbsp; j = i + len <br>
+	&nbsp; &nbsp; &nbsp; &nbsp; // Determine MSS[i,j] <br>
+	&nbsp; &nbsp; &nbsp; &nbsp; ............. <br>
+	&nbsp; &nbsp; &nbsp; &nbsp; ............. <br>
+	&nbsp; &nbsp; } <br>
+	}
+	</p>
+</ul>
+
+<p>Now we will focus on the computation of MSS[i,j].</p>
+
+<p><b>Iteration 1: len = 0; i = 1 to n; j = i+len = i;</b></p>
+<p>Each element considered individually is its own sum. i.e. MSS[i,i] = A[i].</p>
+
+<p>For the given example.</p>
+<ul>
+	<p>A[1] =  2 --> MSS[1,1] = 2</p>
+	<p>A[2] = -4 --> MSS[2,2] = -4</p>
+	<p>A[3] =  1 --> MSS[3,3] = 1</p>
+	<p>A[4] =  9 --> MSS[4,4] = 9</p>
+	<p>A[5] = -6 --> MSS[5,5] = -6</p>
+	<p>A[6] =  7 --> MSS[6,6] = 7</p>
+	<p>A[7] = -5 --> MSS[6,6] = -5</p>
+	<p>A[8] =  3 --> MSS[6,6] = 3</p>
+</ul>
+
+<ul>
+	<table border="1">
+		<tr bgcolor="lightgray">
+			<td align="center"> &nbsp; <br><b>i &nbsp; \ &nbsp; j</b> &nbsp; <br><br></td>
+			<td align="center">&nbsp;<b>j = 1</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>j = 2</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>j = 3</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>j = 4</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>j = 5</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>j = 6</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>j = 7</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>j = 8</b>&nbsp;</td>
+		</tr>
+		<tr>
+			<td bgcolor="lightgray">&nbsp; &nbsp; <b>i = 1</b> &nbsp; &nbsp;</td>
+			<td align="center" bgcolor="lightblue"><br>MSS[1,1] = 2<br><br></td>
+			<td align="center" bgcolor="lightgreen"></td>
+			<td align="center" bgcolor="cyan"></td>
+			<td align="center" bgcolor="orange"></td>
+			<td align="center" bgcolor="lightyellow"></td>
+			<td align="center" bgcolor="lightpink"></td>
+			<td align="center" bgcolor="skyblue"></td>
+			<td align="center" bgcolor="gold"></td>
+		</tr>
+		<tr>
+			<td bgcolor="lightgray">&nbsp; &nbsp;<b>i = 2</b> &nbsp; &nbsp;</td>
+			<td bgcolor="gray"></td>
+			<td align="center" bgcolor="lightblue"><br>MSS[2,2] = -4<br><br></td>
+			<td align="center" bgcolor="lightgreen"></td>
+			<td align="center" bgcolor="cyan"></td>
+			<td align="center" bgcolor="orange"></td>
+			<td align="center" bgcolor="lightyellow"></td>
+			<td align="center" bgcolor="lightpink"></td>
+			<td align="center" bgcolor="skyblue"></td>
+		</tr>
+		<tr>
+			<td bgcolor="lightgray">&nbsp; &nbsp;<b>i = 3</b> &nbsp; &nbsp;</td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td align="center" bgcolor="lightblue"><br>MSS[3,3] = 1<br><br></td>
+			<td align="center" bgcolor="lightgreen"></td>
+			<td align="center" bgcolor="cyan"></td>
+			<td align="center" bgcolor="orange"></td>
+			<td align="center" bgcolor="lightyellow"></td>
+			<td align="center" bgcolor="lightpink"></td>
+		</tr>
+		<tr>
+			<td bgcolor="lightgray">&nbsp; &nbsp;<b>i = 4</b> &nbsp; &nbsp;</td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td align="center" bgcolor="lightblue"><br>MSS[4,4] = 9<br><br></td>
+			<td align="center" bgcolor="lightgreen"></td>
+			<td align="center" bgcolor="cyan"></td>
+			<td align="center" bgcolor="orange"></td>
+			<td align="center" bgcolor="lightyellow"></td>
+		</tr>
+		<tr>
+			<td bgcolor="lightgray">&nbsp; &nbsp;<b>i = 5</b> &nbsp; &nbsp;</td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td align="center" bgcolor="lightblue"><br>MSS[5,5] = -6<br><br></td>
+			<td align="center" bgcolor="lightgreen"></td>
+			<td align="center" bgcolor="cyan"></td>
+			<td align="center" bgcolor="orange"></td>
+		</tr>
+		<tr>
+			<td bgcolor="lightgray">&nbsp; &nbsp;<b>i = 6</b> &nbsp; &nbsp;</td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td align="center" bgcolor="lightblue"><br>MSS[6,6] = 7<br><br></td>
+			<td align="center" bgcolor="lightgreen"></td>
+			<td align="center" bgcolor="cyan"></td>
+		</tr>
+		<tr>
+			<td bgcolor="lightgray">&nbsp; &nbsp;<b>i = 7</b> &nbsp; &nbsp;</td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td align="center" bgcolor="lightblue"><br>MSS[7,7] = -5<br><br></td>
+			<td align="center" bgcolor="lightgreen"></td>
+		</tr>
+		<tr>
+			<td bgcolor="lightgray">&nbsp; &nbsp;<b>i = 8</b> &nbsp; &nbsp;</td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td align="center" bgcolor="lightblue"><br>MSS[8,8] = 3<br><br></td>
+		</tr>
+	</table>
+</ul>
+
+<p><b>Iteration 2: len = 1; i = 1 to n-1; j = i+len = i+1;</b></p>
+<p>Maximum subsequence sum for 2 contiguous elements MSS[i,i+1] is bigger of MSS[i,i], MSS[i+1,i+1] or sum 
+of both.</p>
+
+<p>For the given example.</p>
+<ul>
+	<p>A[1..2] = {2, -4}  --> MSS[1,2] = max{MSS[1,1], MSS[2,2], MSS[1,1]+MSS[2,2]} = max{2,-4,-2} = 2</p>
+	<p>A[2..3] = {-4, 1} --> MSS[2,3] = max{MSS[2,2], MSS[3,3], MSS[2,2]+MSS[3,3]} = max{-4,1,-3} = 1</p>
+	<p>A[3..4] = {1, 9} --> MSS[3,4] = max{MSS[3,3], MSS[4,4], MSS[3,3]+MSS[4,4]} = max{1,9,10} = 10</p>
+	<p>A[4..5] = {9, -6} --> MSS[4,5] = max{MSS[4,4], MSS[5,5], MSS[4,4]+MSS[5,5]} = max{9,-6,3} = 9</p>
+	<p>A[5..6] = {-6, 7} --> MSS[5,6] = max{MSS[5,5], MSS[6,6], MSS[5,5]+MSS[6,6]} = max{-6,7,1} = 7</p>
+	<p>A[6..7] = {7, -5} --> MSS[6,7] = max{MSS[6,6], MSS[7,7], MSS[6,6]+MSS[7,7]} = max{7,-5,2} = 7</p>
+	<p>A[7..8] = {-5, 3} --> MSS[7,8] = max{MSS[7,7], MSS[8,8], MSS[7,7]+MSS[8,8]} = max{-5,3,-2} = 3</p>
+</ul>
+
+<ul>
+	<table border="1">
+		<tr bgcolor="lightgray">
+			<td align="center"> &nbsp; <br><b>i &nbsp; \ &nbsp; j</b> &nbsp; <br><br></td>
+			<td align="center">&nbsp;<b>j = 1</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>j = 2</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>j = 3</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>j = 4</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>j = 5</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>j = 6</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>j = 7</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>j = 8</b>&nbsp;</td>
+		</tr>
+		<tr>
+			<td bgcolor="lightgray">&nbsp; &nbsp; <b>i = 1</b> &nbsp; &nbsp;</td>
+			<td align="center" bgcolor="lightblue"><br>MSS[1,1] = 2<br><br></td>
+			<td align="center" bgcolor="lightgreen"><br>MSS[1,2] = 2<br><br></td>
+			<td align="center" bgcolor="cyan"></td>
+			<td align="center" bgcolor="orange"></td>
+			<td align="center" bgcolor="lightyellow"></td>
+			<td align="center" bgcolor="lightpink"></td>
+			<td align="center" bgcolor="skyblue"></td>
+			<td align="center" bgcolor="gold"></td>
+		</tr>
+		<tr>
+			<td bgcolor="lightgray">&nbsp; &nbsp;<b>i = 2</b> &nbsp; &nbsp;</td>
+			<td bgcolor="gray"></td>
+			<td align="center" bgcolor="lightblue"><br>MSS[2,2] = -4<br><br></td>
+			<td align="center" bgcolor="lightgreen"><br>MSS[2,3] = 1<br><br></td>
+			<td align="center" bgcolor="cyan"></td>
+			<td align="center" bgcolor="orange"></td>
+			<td align="center" bgcolor="lightyellow"></td>
+			<td align="center" bgcolor="lightpink"></td>
+			<td align="center" bgcolor="skyblue"></td>
+		</tr>
+		<tr>
+			<td bgcolor="lightgray">&nbsp; &nbsp;<b>i = 3</b> &nbsp; &nbsp;</td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td align="center" bgcolor="lightblue"><br>MSS[3,3] = 1<br><br></td>
+			<td align="center" bgcolor="lightgreen"><br>MSS[3,4] = 10<br><br></td>
+			<td align="center" bgcolor="cyan"></td>
+			<td align="center" bgcolor="orange"></td>
+			<td align="center" bgcolor="lightyellow"></td>
+			<td align="center" bgcolor="lightpink"></td>
+		</tr>
+		<tr>
+			<td bgcolor="lightgray">&nbsp; &nbsp;<b>i = 4</b> &nbsp; &nbsp;</td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td align="center" bgcolor="lightblue"><br>MSS[4,4] = 9<br><br></td>
+			<td align="center" bgcolor="lightgreen"><br>MSS[4,5] = 9<br><br></td>
+			<td align="center" bgcolor="cyan"></td>
+			<td align="center" bgcolor="orange"></td>
+			<td align="center" bgcolor="lightyellow"></td>
+		</tr>
+		<tr>
+			<td bgcolor="lightgray">&nbsp; &nbsp;<b>i = 5</b> &nbsp; &nbsp;</td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td align="center" bgcolor="lightblue"><br>MSS[5,5] = -6<br><br></td>
+			<td align="center" bgcolor="lightgreen"><br>MSS[5,6] = 7<br><br></td>
+			<td align="center" bgcolor="cyan"></td>
+			<td align="center" bgcolor="orange"></td>
+		</tr>
+		<tr>
+			<td bgcolor="lightgray">&nbsp; &nbsp;<b>i = 6</b> &nbsp; &nbsp;</td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td align="center" bgcolor="lightblue"><br>MSS[6,6] = 7<br><br></td>
+			<td align="center" bgcolor="lightgreen"><br>MSS[6,7] = 7<br><br></td>
+			<td align="center" bgcolor="cyan"></td>
+		</tr>
+		<tr>
+			<td bgcolor="lightgray">&nbsp; &nbsp;<b>i = 7</b> &nbsp; &nbsp;</td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td align="center" bgcolor="lightblue"><br>MSS[7,7] = -5<br><br></td>
+			<td align="center" bgcolor="lightgreen"><br>MSS[7,8] = 3<br><br></td>
+		</tr>
+		<tr>
+			<td bgcolor="lightgray">&nbsp; &nbsp;<b>i = 8</b> &nbsp; &nbsp;</td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td align="center" bgcolor="lightblue"><br>MSS[8,8] = 3<br><br></td>
+		</tr>
+	</table>
+</ul>
+
+<p><b>Iteration 3~n: len = 2 to n-len; i = 1 to n-len; j = i+len;</b></p>
+<p>Maximum subsequence sum for MSS[i,j] is bigger of MSS[i,k], MSS[k+1,j], MSS[i,k] + MSS[k+1,j] where k = i to j-1.</p>
+
+<p>MSS[i,j] = max {   <br> &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; 
+		               MSS[i,i], MSS[i+1,j], MSS[i,i]+MSS[i+1,j], <br> &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; 
+	                   MSS[i,i+1], MSS[i+2,j], MSS[i,i+1]+MSS[i+2,j], <br> &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;
+	                   ..........., <br> &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;
+	                   ..........., <br> &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;
+	                   MSS[i,j-2], MSS[j-1,j], MSS[i,j-2]+MSS[j-1,j],  <br> &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;
+	                   MSS[i,j-1], MSS[j,j], MSS[i,j-1]+MSS[j,j]  <br> &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;
+	                 }</p>
+
+<p>To elaborate this further, consider the particular case of computing MSS[1,3]. Practically, it could be any 
+one of the following 7 possibilities: A[1], A[2], A[3], A[1]+A[2], A[2]+A[3], A[1]+A[3], A[1]+A[2]+A[3]. The 7
+possibilities can be represented using one of the following 6 options.</p>
+
+<ol>
+	<li>A[1] > 0 and A[2], A[3] < 0. MSS[1,1] represents this possibility.</li>
+	<li>A[1] < 0 and either A[2] or A[3] or both > 0. MSS[2,3] represents this possibility.</li>
+	<li>A[1] > 0 and either A[2] or A[3] or both > 0. MSS[1,1] + MSS[2,3] represents this possibility.</li>
+	<li>Either A[1] or A[2] or both > 0 and A[3] < 0. MSS[1,2] represents this possibility.</li>
+	<li>A[1], A[2] < 0 and A[3] > 0. MSS[3,3] represents this possibility.</li>
+	<li>Either A[1] or A[2] or both > 0 and A[3] > 0. MSS[1,2] + MSS[3,3] represents this possibility.</li>
+</ol>
+
+<p>Consequently,</p>
+
+<ul>
+	<li>For i = 1 and j = 3 (meaning len = 2), k assumes two values 1 and 2.</li>
+	<p>MSS[1,3] = max {  <br> &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; 
+		               MSS[1,1], MSS[2,3], MSS[1,1]+MSS[2,3], <br> &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; 
+	                   MSS[1,2], MSS[3,3], MSS[1,2]+MSS[3,3]  <br> &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;
+	                  }</p>
+</ul>
+
+<p>In a similar vein,</p>
+<ul>
+	<li>For i = 1 and j = 4 (meaning len = 3), k assumes three values 1, 2 and 3.</li>
+	<p>MSS[1,4] = max {   <br> &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; 
+		               MSS[1,1], MSS[2,4], MSS[1,1]+MSS[2,4], <br> &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; 
+	                   MSS[1,2], MSS[3,4], MSS[1,2]+MSS[3,4], <br> &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;
+	                   MSS[1,3], MSS[4,4], MSS[1,3]+MSS[4,4]  <br> &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;
+	                 }</p>
+
+	<li>For i = 1 and j = 5 (meaning len = 4), k assumes three values 1, 2, 3 and 4.</li>
+	<p>MSS[1,4] = max {   <br> &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; 
+		               MSS[1,1], MSS[2,5], MSS[1,1]+MSS[2,5], <br> &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; 
+	                   MSS[1,2], MSS[3,5], MSS[1,2]+MSS[3,5], <br> &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;
+	                   MSS[1,3], MSS[4,5], MSS[1,3]+MSS[4,5]  <br> &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;
+	                   MSS[1,4], MSS[5,5], MSS[1,4]+MSS[5,5]  <br> &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;
+	                 }</p>
+</ul>
+
+<p>It can be seen that, as len increases, the gap between i and j widens, forcing k to assume wider range of values.
+In fact, this computation can extended to iteration 2 also where k takes exactly one value i. The computation can be generalized by using an innermost loop as follows.</p>
+
+<ul>
+	<p> for (len = 1; len < n; len++) { // From iteration 2<br>
+	&nbsp; &nbsp; for (i = 1; i <= n-len; i++) { <br>
+	&nbsp; &nbsp; &nbsp; &nbsp; j = i + len <br> <b>
+	&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; for (k = i; k <= j-1; k++) <br>
+	&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &emsp; MSS[i,j] = max{ MSS[i,k], MSS[k+1,j], MSS[i,k]+MSS[k+1,j] }</b><br>
+	&nbsp; &nbsp; } <br>
+	}
+	</p>
+</ul>
+
+<p>The completed table based on the above generalization is given below.</p>
+
+
+
+<ul>
+	<table border="1">
+		<tr bgcolor="lightgray">
+			<td align="center"> &nbsp; <br><b>i &nbsp; \ &nbsp; j</b> &nbsp; <br><br></td>
+			<td align="center">&nbsp;<b>j = 1</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>j = 2</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>j = 3</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>j = 4</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>j = 5</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>j = 6</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>j = 7</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>j = 8</b>&nbsp;</td>
+		</tr>
+		<tr>
+			<td bgcolor="lightgray">&nbsp; &nbsp; <b>i = 1</b> &nbsp; &nbsp;</td>
+			<td align="center" bgcolor="lightblue"><br>MSS[1,1] = 2<br><br></td>
+			<td align="center" bgcolor="lightgreen"><br>MSS[1,2] = 2<br><br></td>
+			<td align="center" bgcolor="cyan"><br>MSS[1,3] = 3<br><br></td>
+			<td align="center" bgcolor="orange"><br>MSS[1,4] = 12<br><br></td>
+			<td align="center" bgcolor="lightyellow"><br>MSS[1,5] = 12<br><br></td>
+			<td align="center" bgcolor="lightpink"><br>MSS[1,6] = 19<br><br></td>
+			<td align="center" bgcolor="skyblue"><br>MSS[1,7] = 19<br><br></td>
+			<td align="center" bgcolor="gold"><br>MSS[1,8] = 22<br><br></td>
+		</tr>
+		<tr>
+			<td bgcolor="lightgray">&nbsp; &nbsp;<b>i = 2</b> &nbsp; &nbsp;</td>
+			<td bgcolor="gray"></td>
+			<td align="center" bgcolor="lightblue"><br>MSS[2,2] = -4<br><br></td>
+			<td align="center" bgcolor="lightgreen"><br>MSS[2,3] = 1<br><br></td>
+			<td align="center" bgcolor="cyan"><br>MSS[2,4] = 10<br><br></td>
+			<td align="center" bgcolor="orange"><br>MSS[2,5] = 10<br><br></td>
+			<td align="center" bgcolor="lightyellow"><br>MSS[2,6] = 17<br><br></td>
+			<td align="center" bgcolor="lightpink"><br>MSS[2,7] = 17<br><br></td>
+			<td align="center" bgcolor="skyblue"><br>MSS[2,8] = 20<br><br></td>
+		</tr>
+		<tr>
+			<td bgcolor="lightgray">&nbsp; &nbsp;<b>i = 3</b> &nbsp; &nbsp;</td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td align="center" bgcolor="lightblue"><br>MSS[3,3] = 1<br><br></td>
+			<td align="center" bgcolor="lightgreen"><br>MSS[3,4] = 10<br><br></td>
+			<td align="center" bgcolor="cyan"><br>MSS[3,5] = 10<br><br></td>
+			<td align="center" bgcolor="orange"><br>MSS[3,6] = 17<br><br></td>
+			<td align="center" bgcolor="lightyellow"><br>MSS[3,7] = 17<br><br></td>
+			<td align="center" bgcolor="lightpink"><br>MSS[3,8] = 20<br><br></td>
+		</tr>
+		<tr>
+			<td bgcolor="lightgray">&nbsp; &nbsp;<b>i = 4</b> &nbsp; &nbsp;</td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td align="center" bgcolor="lightblue"><br>MSS[4,4] = 9<br><br></td>
+			<td align="center" bgcolor="lightgreen"><br>MSS[4,5] = 9<br><br></td>
+			<td align="center" bgcolor="cyan"><br>MSS[4,6] = 16<br><br></td>
+			<td align="center" bgcolor="orange"><br>MSS[4,7] = 16<br><br></td>
+			<td align="center" bgcolor="lightyellow"><br>MSS[4,8] = 19<br><br></td>
+		</tr>
+		<tr>
+			<td bgcolor="lightgray">&nbsp; &nbsp;<b>i = 5</b> &nbsp; &nbsp;</td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td align="center" bgcolor="lightblue"><br>MSS[5,5] = -6<br><br></td>
+			<td align="center" bgcolor="lightgreen"><br>MSS[5,6] = 7<br><br></td>
+			<td align="center" bgcolor="cyan"><br>MSS[5,7] = 7<br><br></td>
+			<td align="center" bgcolor="orange"><br>MSS[5,8] = 10<br><br></td>
+		</tr>
+		<tr>
+			<td bgcolor="lightgray">&nbsp; &nbsp;<b>i = 6</b> &nbsp; &nbsp;</td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td align="center" bgcolor="lightblue"><br>MSS[6,6] = 7<br><br></td>
+			<td align="center" bgcolor="lightgreen"><br>MSS[6,7] = 7<br><br></td>
+			<td align="center" bgcolor="cyan"><br>MSS[6,8] = 10<br><br></td>
+		</tr>
+		<tr>
+			<td bgcolor="lightgray">&nbsp; &nbsp;<b>i = 7</b> &nbsp; &nbsp;</td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td align="center" bgcolor="lightblue"><br>MSS[7,7] = -5<br><br></td>
+			<td align="center" bgcolor="lightgreen"><br>MSS[7,8] = 3<br><br></td>
+		</tr>
+		<tr>
+			<td bgcolor="lightgray">&nbsp; &nbsp;<b>i = 8</b> &nbsp; &nbsp;</td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td align="center" bgcolor="lightblue"><br>MSS[8,8] = 3<br><br></td>
+		</tr>
+	</table>
+</ul>
+
+
+<h4>Algorithm</h4>
+
+<p>The dynamic programming algorithm for maximum subsequence sum is given as follows.</p>
+
+<pre class="brush:java">
+	int MSS[1..n][1..n];
+
+	DPMSS(int A[1..n]) {
+		for (i = 1; i <= n; i++)
+			MSS[i][i] = A[i];
+
+	  	for (len = 1; len < n; len++) {
+	  		for (i = 1; i <= n-len; i++) {
+	  			j = i + len;
+	  			for (k = i; k <= j-1; k ++)
+	  			  MSS[i,j] = max( MSS[i,k], MSS[k+1,j], MSS[i,k]+MSS[k+1,j] );
+	  		}
+		}
+		return MSS[1][n];
+	}
+</pre>
+
+<p><b>Time complexity</b></p>
+
+<p>There are 3 loops. The outerloop runs for n-1 times. The inner loop runs for at most n-1 times. The innermost
+loop runs for at most n-1 times. Thus, the time complexity is O(n<sup>3</sup>).</p>
+
+<h3>(4) Divide-and-Conquer Solution</h3>
+
+<p>This problem has a divide-and-conquer solution too. The basic idea is to split the array into almost equal 
+halves recursively until there exists only one element. While merging pick the bigger of the three quantities:
+MSS[1..n/2], MSS{n/2+1..n], MSS[1..n/2]+MSS{n/2+1..n].</p>
+
+<p>For the given example,</p>
+
+<pre>
+                                   {2, -4, 1, 9, -6, 7 -5, 3}
+                                                |
+                                                |
+                      -----------------------------------------------------
+                      |                                                   |
+                      |                                                   |
+                {2, -4, 1, 9}                                       {-6, 7, -5, 3}
+        ---------------------------                          -----------------------------        
+        |                         |                          |                           |
+        |                         |                          |                           |
+     {2, -4}                   {1, 9}                     {-6, 7}                     {-5, 3}
+        |                         |                          |                           |
+        |                         |                          |                           |
+ ---------------            --------------             --------------             ---------------
+ |             |            |            |             |            |             |             |
+ |             |            |            |             |            |             |             |
+{2}          {-4}          {1}          {9}          {-6}          {7}          {-5}           {3}
+
+..............................DIVIDE PHASE OVER....START CONQUERING...............................
+
+ 2            -4            1            9            -6            7            -5             3
+ |             |            |            |             |            |             |             |
+ |             |            |            |             |            |             |             |
+ ---------------            --------------             --------------             ---------------
+        |                         |                          |                           |
+        |                         |                          |                           |
+        2                         10                         7                           3
+        |                         |                          |                           |
+        |                         |                          |                           |
+        ---------------------------                          -----------------------------
+                      |                                                   |
+                      |                                                   |
+                     12                                                   10
+                      |                                                   |
+                      |                                                   |
+                      -----------------------------------------------------
+                                                |
+                                                |
+                                               22
+</pre>
+
+<h4>Algorithm</h4>
+
+<p>The divide-and-conquer algorithm for maximum subsequence sum is given as follows.</p>
+
+<pre class="brush:java">
+
+	DCMSS(int A[1..n]) {
+		if (n == 1)
+			return A[1];
+
+		mss1 = DCMSS(A[1..n/2]);
+		mss2 = DCMSS(A[n/2+1..n]);
+		return max(mss1, mss2, mss1+mss2);
+	}
+</pre>
+
+<p><b>Time complexity</b></p>
+
+<p>There depth of the recursion tree is logn. Divide phase requires O(1) operation. During the conquer phase, at most
+n/2 comparisons are done. Hence, the time complexity is O(nlogn).</p>
+
+   </div>
+  </div>
+
+<div id="navigation">
+	<p><br><strong><a href="../index.html" target="_blank">Home</a></strong></p>
+    <ul>
+      <li><a href="01_Intro.html" target="_blank">Why algorithm design matters?</a></li>
+      <li><a href="02_Analysis.html" target="_blank">Analyzing algorithms</a></li>
+      <li><a href="03_Asymptotics.html" target="_blank">Asymptotic notations</a></li>
+      <li><a href="04_Masters.html" target="_blank">Master&#39;s method</a></li>
+      <li><a href="05_Quadratic_sorting.html" target="_blank">Quadratic-time sorting</a></li>
+      <li><a href="06_nlogn_sorting.html" target="_blank">NlogN sorting (Divide-and-Conquer)</a></li>
+      <li><a href="07_Heapsort.html" target="_blank">Heap and Heap sort</a></li>
+      <li><a href="08_Linear_sorting.html" target="_blank">Lower bound and Linear-time sorting</a></li>
+      <li><a href="09_Selection.html" target="_blank">Selection problem</a></li>
+      <li><a href="10_Optimization_Problems.html" target="_blank">Optimization Problems</a></li>
+      <li><a href="11_Task_Scheduling.html" target="_blank">Task Scheduling</a></li>
+      <li><a href="12_Integer_Knapsack.html" target="_blank">Integer Knapsack</a></li>
+      <li><a href="13_LCS.html" target="_blank">Longest Common Subsequence</a></li>
+      <li><a href="14_LIS.html" target="_blank">Longest Increasing Subsequence</a></li>
+      <li><a href="15_LPS.html" target="_blank">Longest Palindromic Subsequence</a></li>
+      <li><a href="16_MSS.html" target="_blank">Maximum Subsequence Sum</a></li>
+    </ul>
+</div> 
+ 
+
+  <div id="extra">
+  </div>
+  <div id="footer">
+    <p>Send comments to swaminathanj@am.amrita.edu</p>
+  </div>
+</div>
+</body>
+</html>

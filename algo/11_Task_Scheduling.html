@@ -1,0 +1,629 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Task Scheduling</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../styles.css" />
+        <script type="text/javascript" src="../scripts/shCore.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushBash.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCpp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCss.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushDiff.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushJava.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushJScript.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPhp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPlain.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPython.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushRuby.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushScala.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushSql.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushVb.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushXml.js"></script>
+        <link type="text/css" rel="stylesheet" href="lecture-notes.css"/>
+        <link type="text/css" rel="stylesheet" href="../styles/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="../styles/shThemeDefault.css"/>
+        <script type="text/javascript">
+            //SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+            SyntaxHighlighter.defaults['toolbar'] = false;
+            SyntaxHighlighter.defaults['auto-links'] = false;
+ 
+            SyntaxHighlighter.all();
+        </script>
+</head>
+
+<body>
+ 
+<div id="container">
+<div id="header"><h1>Design and Analysis of Algorithms<img align="right" src="../logo-dark.png" alt="Amrita"> </h1> </div>
+  <div id="wrapper">
+    <div id="content">
+
+<table align="right">
+  <td align="left"><a href="10_Optimization_Problems.html">Prev</a></td>
+  <td align="right"><a href="12_Integer_Knapsack.html">Next</a></td>
+</table>
+
+<h2>Task Scheduling</h2>
+
+<p>Consider tasks 1, 2, ..., n with running times of t<sub>1</sub>, t<sub>2</sub>, ..., t<sub>n</sub>. What is the best
+way to schedule them in order to to minimize the completion time?</p>
+
+<h3>Example</h3>
+<p>Consider the problem stated as (i, t<sub>i</sub>) pairs: (1,15), (2,8), (3,3), (4,10).</p>
+
+<h3>(1) Brute-force solution</h3>
+<p>The brute-force way to solve this problem is to consider all possible ways to schedule them, compute the completion 
+time for each possibility and determine the minimum one. Given n tasks, there are n! ways to schedule them.
+Hence the time complexity is &Theta;(n!).</p>
+
+<p>For the above example there are 24 ways to schedule them.</p>
+<ul>
+	<li>1234, 1243, 1324, 1342, 1423, 1432</li>
+	<li>2134, 2143, 2314, 2341, 2413, 2431</li>
+	<li>3124, 3142, 3412, 3421, 3214, 3241</li>
+	<li>4123, 4132, 4213, 4231, 4312, 4321</li>
+</ul>
+
+<p>Consider the task schedule 1234. The completion time of the tasks can be determined as:  <br><br>
+&nbsp; &nbsp; = t<sub>1</sub> + (t<sub>1</sub> + t<sub>2</sub>) + (t<sub>1</sub> + t<sub>2</sub> + t<sub>3</sub>) + 
+(t<sub>1</sub> + t<sub>2</sub> + t<sub>3</sub> + t<sub>4</sub>) <br>
+&nbsp; &nbsp; = 4t<sub>1</sub> + 3t<sub>2</sub> + 2t<sub>3</sub> + t<sub>4</sub> ................(Equation 1)<br>
+&nbsp; &nbsp; = 4*15 + 3*8 + 2*3 + 10<br>
+&nbsp; &nbsp; = 60 + 24 + 6 + 10 <br>
+&nbsp; &nbsp; = 100</p>
+
+<p>The brute-force solution can be implemented using recursion.</p>
+
+<pre class="brush: java">
+	// Task scheduling
+	Schedule(Tasks 1..n) {
+		if (n == 0)
+			return
+		for (i = 1; i <= n; i++) {
+			Perform the ith task
+			Schedule(Tasks 1..i-1,i+1..n)  // excludes task i
+		}
+	}
+</pre>
+
+<p>The recursion tree for the above example is as follows. Each call path from the root to the leaf shows one
+of the 4! = 24 ways of scheduling the tasks.</p>
+
+<pre>
+
+                                                              |-- Schedule(4) -- Schedule(.)  [100]
+                                          |-- Schedule(3,4) --|
+                                          |                   |-- Schedule(3) -- Schedule(.)  [107]
+                                          |
+                                          |
+                                          |                   |-- Schedule(3) -- Schedule(.)
+                    |-- Schedule(2,3,4) --|-- Schedule(2,3) --|
+                    |                     |                   |-- Schedule(2) -- Schedule(.)
+                    |                     |
+                    |                     |
+                    |                     |                   |-- Schedule(4) -- Schedule(.)
+                    |                     |-- Schedule(2,4) --|
+                    |                                         |-- Schedule(2) -- Schedule(.)
+                    |
+                    |
+                    |
+                    |                                         |-- Schedule(4) -- Schedule(.)
+                    |                     |-- Schedule(3,4) --|
+                    |                     |                   |-- Schedule(3) -- Schedule(.)
+                    |                     |
+                    |                     |
+                    |                     |                   |-- Schedule(3) -- Schedule(.)
+                    |-- Schedule(1,3,4) --|-- Schedule(1,3) --|
+                    |                     |                   |-- Schedule(1) -- Schedule(.)
+                    |                     |
+                    |                     |
+                    |                     |                   |-- Schedule(4) -- Schedule(.)
+                    |                     |-- Schedule(1,4) --|
+                    |                                         |-- Schedule(1) -- Schedule(.)
+                    |
+Schedule(1,2,3,4)-- |
+                    |
+                    |                                         |-- Schedule(2) -- Schedule(.)
+                    |                     |-- Schedule(1,2) --|
+                    |                     |                   |-- Schedule(1) -- Schedule(.)
+                    |                     |
+                    |                     |
+                    |                     |                   |-- Schedule(4) -- Schedule(.)
+                    |-- Schedule(1,2,4) --|-- Schedule(1,4) --|
+                    |                     |                   |-- Schedule(1) -- Schedule(.)  [71] <== MINIMAL
+                    |                     |
+                    |                     |
+                    |                     |                   |-- Schedule(4) -- Schedule(.)
+                    |                     |-- Schedule(2,4) --|
+                    |                                         |-- Schedule(2) -- Schedule(.)
+                    |
+                    |
+                    |
+                    |                                         |-- Schedule(3) -- Schedule(.)
+                    |                     |-- Schedule(2,3) --|
+                    |                     |                   |-- Schedule(2) -- Schedule(.)
+                    |                     |
+                    |                     |
+                    |                     |                   |-- Schedule(2) -- Schedule(.)
+                    |-- Schedule(1,2,3) --|-- Schedule(1,2) --|
+                                          |                   |-- Schedule(1) -- Schedule(.)
+                                          |
+                                          |
+                                          |                   |-- Schedule(3) -- Schedule(.)
+                                          |-- Schedule(1,3) --|
+                                                              |-- Schedule(1) -- Schedule(.)
+
+</pre>
+
+<h4>Time complexity</h4>
+<p>Since there are n! ways of scheduling the tasks, the time complexity T(n) = &Theta;(n!).</p>
+
+
+<h3>(2) Greedy Solution</h3>
+<p>To apply greedy strategy we need to first check if the problem exhibits (i) optimal substructure property
+and (ii) greedy choice property.</p>
+
+<p><b>Optimal substructure</b>: The recursive fomulation above reveals the optimal substructure. The problem of solving 
+the task scheduling of n tasks optimally contains within itself the problem of sovling the subproblems of n-1 tasks.</p>
+
+<p><b>Greedy choice property</b>: In the above recursive solution, we reduced the problem of size 4 to four subproblems, 
+each of size 3. Solution to exactly one of these 4 subproblems ultimately led to the optimal solution for the problem.
+Is there a way to determine which of the 4 would lead to optimal solution and eliminate the other 3 subproblems?
+In other words, can we make a sequence of locally optimal choices that leads to globally optimal solution?</p>
+
+<p>Yes. As per Equation 1, if the shorter job is scheduled earlier, it reduces the overall, completion time. This can
+be made use of in deciding which task to schedule. In the above example, the optimal order is 3 -> 2 -> 4 -> 1. This is
+guaranteed to provide the minimum completion time.</p>
+
+<p>Therefore, minimum completion time = 4*3 + 3*8 + 2*10 +1*15 = 71.</p>
+
+<p>The algorithm for greedy solution is given below. Let T[1..n] denote the time taken for each task. We first sort 
+the  tasks based on the time it takes to complete each of them. We iterate through the sorted array to compute the 
+completion time.</p>
+
+<pre class="brush: java">
+	// Greedy algorithm for Task Scheduling
+	GreedySchedule(T[1..n]) {
+		T.sort()
+		completiontime = 0; weight = n;
+
+		for (i = 1; i <=n; i++) {
+			completiontime += weight * T[i]
+			weight--
+		}
+	}
+</pre>
+
+<h4>Time complexity</h4>
+<p>Sorting takes O(nlogn) and iterating through the array n times to compute the completion time takes n * O(1)
+= O(n) time. Hence, the time complexity is O(nlogn).</p>
+
+<h3>(3) Dynamic Programming Solution</h3>
+
+<p>When a greedy solution exists, dynamic programming solution is unnecessary since greedy strategy provides the 
+fastest way to solve optimization problems. However, in this section we discuss the dynamic programming solution.</p>
+
+<p>To apply dynamic programming, we need to check if the problem exhibits (i) optimal substructure and (ii)
+overlapping subproblems.</p> 
+<p>(i) We already saw above, while discussing the greedy solution, that optimal substructure property holds. i.e. 
+optimal solution to the scheduling problem contains within itself optimal solution to the subproblems.</p> 
+<p>(ii) The recursive formulation also reveals the existence of overlapping subproblems. Schedule(1,2) is repeated twice. 
+Schedule(1) is repeated 6 times. In other words, for n = 4, the subproblems of size 2 repeat twice while subproblems 
+of size 1 repeats 6 times. For large values of n, the number of overlapping subproblems are going to be far higher.
+Dynamic programming computes the subproblems exactly once.</p>
+
+<h4>Bottom-up approach</h4>
+<p>The dynamic programming works in a bottom-up fashion. Subproblems are solved and their solutions are used to find
+solutions to larger problems. Hence, we work as follows.</p>
+<ul>
+	<li>If we are allowed to schedule only one task, what is the optimal order?</li>
+	<li>Next we allow two consecutive tasks to be scheduled and find what is the optimal order.</li>
+	<li>Next we allow three consecutive tasks to be scheduled and find what is the optimal order.</li>
+	<li>So on and so forth ... until n consecutive tasks which computes the optimal order for all tasks.</li>
+</ul>
+
+<p>Let Schedule[i,j] denote the optimal order to schedule jobs from i to j. Initially, j = i. In the subsequent 
+iterations, j takes the values of (i+1), (i+2), ..., (i+n-1). This can be consolidated by defining a special 
+variable 'len' which takes values 0 through n-1 denoting the length of consecutive tasks considered for that 
+iteration. And hence, j = i + len for len = 0...n-1. </p>
+
+<ul>
+	<li>For the first iteration len = 0, we find the optimal order for the range [i,i]. <br>
+	i.e. Schedule[1,1], Schedule[2,2], ..., Schedule[n,n]. &nbsp; &nbsp; &nbsp; (n computations)</li>
+	<li>For the second iteration len = 1, we find the optimal order for the range [i,i+1]. <br>
+	i.e. Schedule[1,2], Schedule[2,3], ..., Schedule[n-1,n]. &nbsp; &nbsp; (n-1 computations)</li>
+	<li>For the third iteration len = 2, we find the optimal order for the range [i,i+2]. <br>
+	i.e. Schedule[1,3], Schedule[2,4], ..., Schedule[n-2,n]. &nbsp; &nbsp; (n-2 computations)</li>
+	<li>....</li>
+	<li>....</li>
+	<li>For the last but one iteration len = n-2, we find the optimal order for the range [i,i+n-2]. <br>
+	i.e. Schedule[1,n-1], Schedule[2,n] &nbsp; &nbsp; &nbsp; (2 computations)</li>
+	<li>For the last (n<sup>th</sup>) iteration len = n-1, we find the optimal order for [i,i+n-1]. <br>
+	i.e. Schedule[1,n]. &nbsp; &nbsp; &nbsp; &nbsp; (1 computation)</li>
+</ul>
+
+<p>The entire computation worked out above can be accomplished using the following nested loop.</p>
+
+<ul>
+	<p> for (len = 0; len < n; len++) { <br>
+	&nbsp; &nbsp; for (i = 1; i <= n-len; i++) { <br>
+	&nbsp; &nbsp; &nbsp; &nbsp; j = i + len <br>
+	&nbsp; &nbsp; &nbsp; &nbsp; // Determine Schedule[i,j] <br>
+	&nbsp; &nbsp; &nbsp; &nbsp; ............. <br>
+	&nbsp; &nbsp; &nbsp; &nbsp; ............. <br>
+	&nbsp; &nbsp; } <br>
+	}
+	</p>
+</ul>
+
+<p><b>Iteration 1: len = 0; i = 1 to n; j = i+len = i;</b></p>
+<p>Considering each task individually, there exists exactly one way to order each of them. Schedule[i,i] = { i }.</p>
+
+<p>Let us now work out for the given example.</p>
+<ul>
+	<p>Schedule[1,1] = {1}</p>
+	<p>Schedule[2,2] = {2}</p>
+	<p>Schedule[3,3] = {3}</p>
+	<p>Schedule[4,4] = {4}</p>
+</ul>
+
+<ul>
+	<table border="1">
+		<tr bgcolor="lightgray">
+			<td align="center"><br><b>i&nbsp;\&nbsp;j</b><br><br></td>
+			<td align="center">&nbsp;<b>j = 1</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>j = 2</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>j = 3</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>j = 4</b>&nbsp;</td>
+		</tr>
+		<tr>
+			<td bgcolor="lightgray">&nbsp;&nbsp;<b>i = 1</b>&nbsp;&nbsp;</td>
+			<td align="center" bgcolor="lightblue"><br>Schedule[1,1] =<br>{1}<br><br></td>
+			<td align="center" bgcolor="lightgreen"></td>
+			<td align="center" bgcolor="cyan"></td>
+			<td align="center" bgcolor="orange"></td>
+		</tr>
+		<tr>
+			<td bgcolor="lightgray">&nbsp;&nbsp;<b>i = 2</b>&nbsp;&nbsp;</td>
+			<td bgcolor="gray"></td>
+			<td align="center" bgcolor="lightblue"><br>Schedule[2,2] =<br>{2}<br><br></td>
+			<td align="center" bgcolor="lightgreen"></td>
+			<td align="center" bgcolor="cyan"></td>
+		</tr>
+		<tr>
+			<td bgcolor="lightgray">&nbsp;&nbsp;<b>i = 3</b>&nbsp;&nbsp;</td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td align="center" bgcolor="lightblue"><br>Schedule[3,3] =<br>{3}<br><br></td>
+			<td align="center" bgcolor="lightgreen"></td>
+		</tr>
+		<tr>
+			<td bgcolor="lightgray">&nbsp;&nbsp;<b>i = 4</b>&nbsp;&nbsp;</td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td align="center" bgcolor="lightblue"><br>Schedule[4,4] =<br>{4}<br><br></td>
+		</tr>
+	</table>
+</ul>
+
+
+
+
+<p><b>Iteration 2: len = 1; i = 1 to n-1; j = i+len = i+1</b></p>
+<p>In this iteration, we compute Schedule[i,i+1]. Having computed Schedule[i,i] in the previous iteration, we 
+want to insert job i+1 to the already optimal Schedule[i,i]. There exists exactly two possibilities.</p> 
+<ol>
+	<li>Schedule[i,i] o {i+1}. i.e. insert (i+1)<sup>th</sup> job after (the already optimal) Schedule[i,i].</li>
+	<li>{i+1} o Schedule[i,i]. i.e. insert (i+1)<sup>th</sup> job before (the already optimal) Schedule[i,i].</li>
+</ol>
+
+<p>The next question is how to determine which insertion is optimal. This can be determined by checking whether
+t<sub>i</sub> < t<sub>i+1</sub>.</p> 
+<ul>
+	<li>If TRUE, Schedule[i,i] o {i+1} = {i} o {i+1} = {i, i+1} is optimal.</li>
+	<li>If FALSE, {i+1} o Schedule[i,i] = {i+1} o {i} = {i+1, i} is optimal.</li>	
+</ul> 
+
+<p>Let us now work out Schedule[1,2], Schedule[2,3], Schedule[3,4] for given example.</p>
+<ul>
+	<p>Schedule[1,2] = Schedule[1,1] o {2} OR {2} o Schedule[1,1]<br>
+	Since t<sub>1</sub> &nlt; t<sub>2</sub>, Schedule[1,2] = {2} o Schedule[1,1] = {2, 1}</p>
+
+	<p>Schedule[2,3] = Schedule[2,2] o {3} OR {3} o Schedule[2,2]<br> 
+	Since t<sub>2</sub> &nlt; t<sub>3</sub>, Schedule[2,3] = {3} o Schedule[2,2] = {3, 2}</p>
+
+	<p>Schedule[3,4] = Schedule[3,3] o {4} OR {4} o Schedule[3,3]<br> 
+	Since t<sub>3</sub> < t<sub>4</sub>, Schedule[3,4] = Schedule[3,3] o {4} = {3, 4}</p>
+</ul>
+
+<ul>
+	<table border="1">
+		<tr bgcolor="lightgray">
+			<td align="center"><br><b>i&nbsp;\&nbsp;j</b><br><br></td>
+			<td align="center">&nbsp;<b>j = 1</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>j = 2</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>j = 3</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>j = 4</b>&nbsp;</td>
+		</tr>
+		<tr>
+			<td bgcolor="lightgray">&nbsp;&nbsp;<b>i = 1</b>&nbsp;&nbsp;</td>
+			<td align="center" bgcolor="lightblue"><br>Schedule[1,1] =<br>{1}<br><br></td>
+			<td align="center" bgcolor="lightgreen"><br>Schedule[1,2] =<br>{2,1}<br><br></td>
+			<td align="center" bgcolor="cyan"></td>
+			<td align="center" bgcolor="orange"></td>
+		</tr>
+		<tr>
+			<td bgcolor="lightgray">&nbsp;&nbsp;<b>i = 2</b>&nbsp;&nbsp;</td>
+			<td bgcolor="gray"></td>
+			<td align="center" bgcolor="lightblue"><br>Schedule[2,2] =<br>{2}<br><br></td>
+			<td align="center" bgcolor="lightgreen"><br>Schedule[2,3] =<br>{3,2}<br><br></td>
+			<td align="center" bgcolor="cyan"></td>
+		</tr>
+		<tr>
+			<td bgcolor="lightgray">&nbsp;&nbsp;<b>i = 3</b>&nbsp;&nbsp;</td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td align="center" bgcolor="lightblue"><br>Schedule[3,3] =<br>{3}<br><br></td>
+			<td align="center" bgcolor="lightgreen"><br>Schedule[3,4] =<br>{3,4}<br><br></td>
+		</tr>
+		<tr>
+			<td bgcolor="lightgray">&nbsp;&nbsp;<b>i = 4</b>&nbsp;&nbsp;</td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td align="center" bgcolor="lightblue"><br>Schedule[4,4] =<br>{4}<br><br></td>
+		</tr>
+	</table>
+</ul>
+
+<p><b>Iteration 3: len = 2; i = 1 to n-2; j = i+len = i+2</b></p>
+<p>In this iteration, we compute Schedule[i,j] where j = i+2. i.e. Schedule[i,i+2]. Having computed optimal
+Schedule[i,j-1] (or equivalently Schedule[i,i+1]), we want to insert the task j to the already optimal 
+Schedule[i,j-1] (or equivalently Schedule[i,i+2]). There are exactly four possibilities.</p>
+
+<ul>
+	<p>1. Insert j before Schedule[i,j-1]. i.e. {j} o Schedule[i,j-1]</p>
+	<p>2. Insert j after Schedule[i,j-1]. i.e. Schedule[i,j-1] o {j}</p>
+	<p>3. Insert j between Schedule[i,i] and Schedule[j-1,j-1]. i.e. Schedule[i,i] o {j} o Schedule[j-1,j-1]</p>
+	<p>4. Insert j between Schedule[j-1,j-1] and Schedule[i,i]. i.e. Schedule[j-1,j-1] o {j} o Schedule[i,i]</p>
+</ul>
+
+<p>One might notice that 2 is the reflection of 1 and 4 is the reflection of 3. The next question is which
+of the four insertions is optimal.</p>
+
+<ul>
+	<p>1. If t<sub>j</sub> < MIN{t<sub>i</sub>,t<sub>j-1</sub>}, Schedule[i,j] = {j} o Schedule[i,j-1]</p>
+	<p>2. If t<sub>j</sub> > MAX{t<sub>i</sub>,t<sub>j-1</sub>}, Schedule[i,j] = Schedule[i,j-1] o {j}</p>
+	<p>3. if t<sub>i</sub> < t<sub>j</sub> < t<sub>j-1</sub>, Schedule[i,j] = Schedule[i,i] o {j} o Schedule[j-1,j-1]</p>
+	<p>4. if t<sub>i</sub> > t<sub>j</sub> > t<sub>j-1</sub>, Schedule[i,j] = Schedule[j-1,j-1] o {j} o Schedule[i,i]</p>
+</ul>
+
+<p>Let us now work out Schedule[1,3] and Schedule[2,4] for the given example.</p>
+
+<ul>
+	<p>t<sub>3</sub> = 3 < MIN{t<sub>1</sub>, t<sub>2</sub>} = MIN{15, 8} = 8. 
+	Hence, Schedule[1,3] = {3} o Schedule[1,2] = {3} o {2,1} = {3,2,1}</p>
+
+	<p>t<sub>4</sub> = 10 > MAX{t<sub>2</sub>, t<sub>3</sub>} = MAX{8, 3} = 3.
+	Hence, Schedule[2,4] = Schedule[2,3] o {4} = {3,2} o {4} = {3,2,4}</p>
+</ul>
+
+
+<ul>
+	<table border="1">
+		<tr bgcolor="lightgray">
+			<td align="center"><br><b>i&nbsp;\&nbsp;j</b><br><br></td>
+			<td align="center">&nbsp;<b>j = 1</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>j = 2</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>j = 3</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>j = 4</b>&nbsp;</td>
+		</tr>
+		<tr>
+			<td bgcolor="lightgray">&nbsp;&nbsp;<b>i = 1</b>&nbsp;&nbsp;</td>
+			<td align="center" bgcolor="lightblue"><br>Schedule[1,1] =<br>{1}<br><br></td>
+			<td align="center" bgcolor="lightgreen"><br>Schedule[1,2] =<br>{2,1}<br><br></td>
+			<td align="center" bgcolor="cyan"><br>Schedule[1,3] =<br>{3,2,1}<br><br></td>
+			<td align="center" bgcolor="orange"></td>
+		</tr>
+		<tr>
+			<td bgcolor="lightgray">&nbsp;&nbsp;<b>i = 2</b>&nbsp;&nbsp;</td>
+			<td bgcolor="gray"></td>
+			<td align="center" bgcolor="lightblue"><br>Schedule[2,2] =<br>{2}<br><br></td>
+			<td align="center" bgcolor="lightgreen"><br>Schedule[2,3] =<br>{3,2}<br><br></td>
+			<td align="center" bgcolor="cyan"><br>Schedule[2,4] =<br>{3,2,4}<br><br></td>
+		</tr>
+		<tr>
+			<td bgcolor="lightgray">&nbsp;&nbsp;<b>i = 3</b>&nbsp;&nbsp;</td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td align="center" bgcolor="lightblue"><br>Schedule[3,3] =<br>{3}<br><br></td>
+			<td align="center" bgcolor="lightgreen"><br>Schedule[3,4] =<br>{3,4}<br><br></td>
+		</tr>
+		<tr>
+			<td bgcolor="lightgray">&nbsp;&nbsp;<b>i = 4</b>&nbsp;&nbsp;</td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td align="center" bgcolor="lightblue"><br>Schedule[4,4] =<br>{4}<br><br></td>
+		</tr>
+	</table>
+</ul>
+
+<p><b>Iteration 4: len = 3; i = 1 to n-3; j = i+len = i+3</b></p>
+<p>In this iteration, we compute Schedule[i,j] where j = i+3. i.e. Schedule[i,i+3]. Having computed optimal
+Schedule[i,j-1], we want to insert task j to the already optimal Schedule[i,j-1]. There are exactly six
+possibilities. Before proceeding further, note the following connection between i and j for len = 3.</p>
+
+<p>i = j - 3</p>
+<p>i + 1 = j - 2</p>
+<p>i + 2 = j - 1</p>
+<p>i + 3 = j</p>
+
+<p>The six possibilities are stated below.</p>
+
+<ul>
+	<p>1. Insert j before Schedule[i,j-1]. i.e. {j} o Schedule[i,j-1]</p>
+	<p>2. Insert j after Schedule[i,j-1]. i.e. Schedule[i,j-1] o {j}</p>
+	<p>3. Insert j between Schedule[i,i] and Schedule[i+1,j-1]. i.e. Schedule[i,i] o {j} o Schedule[i+1,j-1]</p>
+	<p>4. Insert j between Schedule[i+1,j-1] and Schedule[i,i]. i.e. Schedule[i+1,j-1] o {j} o Schedule[i,i]</p>
+	<p>5. Insert j between Schedule[i,i+1] and Schedule[i+2,j-1]. i.e. Schedule[i,i+1] o {j} o Schedule[i+2,j-1]</p>
+	<p>6. Insert j between Schedule[i+2,j-1] and Schedule[i,i+1]. i.e. Schedule[i+2,j-1] o {j} o Schedule[i,i+1]</p>
+</ul>
+
+<p>2 is the reflection of 1, 4 of 2 and 6 of 5. The next question is which of the six insertions is optimal.</p>
+
+<ul>
+	<p>1. If t<sub>j</sub> < MIN{t<sub>i</sub>, .., t<sub>j-1</sub>}, Schedule[i,j] = {j} o Schedule[i,j-1]</p>
+	<p>2. If t<sub>j</sub> > MAX{t<sub>i</sub>, .., t<sub>j-1</sub>}, Schedule[i,j] = Schedule[i,j-1] o {j}</p>
+	<p>3. If t<sub>i</sub> < t<sub>j</sub> < MIN{t<sub>i+1</sub>,t<sub>j-1</sub>}, Schedule[i,j] = 
+	Schedule[i,i] o {j} o Schedule[i+1,j-1]</p>
+	<p>4. If t<sub>i</sub> > t<sub>j</sub> > MAX{t<sub>i+1</sub>,t<sub>j-1</sub>}, Schedule[i,j] =
+	Schedule[i+1,j-1] o {j} o Schedule[i,i]</p>
+	<p>5. If MIN{t<sub>i</sub>,t<sub>i+1</sub>} < t<sub>j</sub> < t<sub>j-1</sub>, Schedule[i,j] = 
+	Schedule[i,i+1] o {j} o Schedule[i+2,j-1]</p>
+	<p>6. If MAX{t<sub>i</sub>,t<sub>i+1</sub>} > t<sub>j</sub> > t<sub>j-1</sub>, Schedule[i,j] = 
+	Schedule[i+2,j-1] o {j} o Schedule[i,i+1]</p>
+</ul>
+
+<p>Let us now work out Schedule[1,4] for the given example.</p>
+<ul>
+	<p>t<sub>1</sub> = 15 > t<sub>4</sub> = 10 > MAX{t<sub>2,3</sub>} = 8 (Case 4). Hence
+	Schedule[1,4] = Schedule[2,3] o {4} o Schedule[1,1] = {3, 2} o {4} o {1} = {3, 2, 4, 1}</p>
+</ul>
+
+
+<ul>
+	<table border="1">
+		<tr bgcolor="lightgray">
+			<td align="center"><br><b>i&nbsp;\&nbsp;j</b><br><br></td>
+			<td align="center">&nbsp;<b>j = 1</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>j = 2</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>j = 3</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>j = 4</b>&nbsp;</td>
+		</tr>
+		<tr>
+			<td bgcolor="lightgray">&nbsp;&nbsp;<b>i = 1</b>&nbsp;&nbsp;</td>
+			<td align="center" bgcolor="lightblue"><br>Schedule[1,1] =<br>{1}<br><br></td>
+			<td align="center" bgcolor="lightgreen"><br>Schedule[1,2] =<br>{2,1}<br><br></td>
+			<td align="center" bgcolor="cyan"><br>Schedule[1,3] =<br>{3,2,1}<br><br></td>
+			<td align="center" bgcolor="orange"><br>Schedule[1,4] =<br>{3,2,4,1}<br><br></td>
+		</tr>
+		<tr>
+			<td bgcolor="lightgray">&nbsp;&nbsp;<b>i = 2</b>&nbsp;&nbsp;</td>
+			<td bgcolor="gray"></td>
+			<td align="center" bgcolor="lightblue"><br>Schedule[2,2] =<br>{2}<br><br></td>
+			<td align="center" bgcolor="lightgreen"><br>Schedule[2,3] =<br>{3,2}<br><br></td>
+			<td align="center" bgcolor="cyan"><br>Schedule[2,4] =<br>{3,2,4}<br><br></td>
+		</tr>
+		<tr>
+			<td bgcolor="lightgray">&nbsp;&nbsp;<b>i = 3</b>&nbsp;&nbsp;</td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td align="center" bgcolor="lightblue"><br>Schedule[3,3] =<br>{3}<br><br></td>
+			<td align="center" bgcolor="lightgreen"><br>Schedule[3,4] =<br>{3,4}<br><br></td>
+		</tr>
+		<tr>
+			<td bgcolor="lightgray">&nbsp;&nbsp;<b>i = 4</b>&nbsp;&nbsp;</td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td bgcolor="gray"></td>
+			<td align="center" bgcolor="lightblue"><br>Schedule[4,4] =<br>{4}<br><br></td>
+		</tr>
+	</table>
+</ul>
+
+<p><b>Generalizing the computation of Schedule[i,j] for each i,j.</b></p>
+
+<p>We observed the following from the above iterations. The first iteration does not need any computation.
+While during the other iterations, we perform computations that can be summarized as follows.</p>
+<ul> 
+	<p>1. Either we insert task j before/after Schedule[i,j-1] or somewhere between Schedule[i,j-1]</p>
+	<p>2. Inserting before Schedule[i,j-1] is the reflection of inserting after Schedule[i,j-1]<br>
+	&nbsp; &nbsp; - {j} o Schedule[i,j-1] is the reflection of Schedule[i,j-1] o {j} <br>
+	&nbsp; &nbsp; - So, one can be derived from the other.</p>
+	<p>3. Inserting between Schedule[i,k] and Schedule[k+1,j-1] is the reflection of inserting between 
+	Schedule[k+1,j-1] and Schedule[i,k] <br>
+	&nbsp; &nbsp; - Schedule[i,k] o {j} o Schedule[k+1,j-1] is the reflection of Schedule[k+1,j-1] o {j} o Schedule[i,k]
+	<br> &nbsp; &nbsp; &nbsp; for some k between i and j-2 <br>
+	&nbsp; &nbsp; - So, one can be derived from the other.</p>
+	<p>4. Bullets 2 and 3 can be combined by allowing k to range from i-1 to j-2 (instead of i to j-2). 
+	And therefore one <b>if (test)</b> is sufficient. The else part takes care for the reflection case. <br>
+	&nbsp; &nbsp; - Note that when k = i-1, Schedule[i,k] = Schedule[i,i-1] which returns an empty set since i-1 < i.</p>
+	<p>5. Finding MIN{t<sub>i</sub>,t<sub>k</sub>} can be computed instantly by picking the first entry in 
+	Schedule[i,k] and finding its time. i.e. t<sub>first_entry_of_Schedule[i,k]</sub>.</p>
+	<p>6. Finding MAX{t<sub>i</sub>,t<sub>k</sub>} can be computed instantly by picking the last entry in 
+	Schedule[i,k] and finding its time. i.e. t<sub>last_entry_of_Schedule[i,k]</sub>.</p>
+</ul>
+
+<h4>Algorithm</h4>
+
+<p>The dynamic programming algorithm for task scheduling can be given as follows.</p>
+
+<pre class="brush:java">
+	int Schedule[n][n];
+
+	TaskSchedule(t[1..n]) {
+	  for (i = 1; i <= n; i++)	// Iteration 1
+		Schedule[i][i] = {i};
+
+	  for (len = 0; len < n; len++) {	// Iteration 2 through n
+		for (i = 1; i <= n-len; i++) {
+	      j = i + len;
+
+	      /* Computing Schedule[i][j] for each k - Either if ... 
+	      or else if ... condition will be true for some k */
+
+		  for (k = i-1; k < j-1; k++) {			  								
+			if ( MAX{t[i..k]} < t[j] < MIN{t[k+1..j-1]} )
+		      Schedule[i][j] = Schedule[i][k] o {j} o Schedule[k+1][j-1];
+			else if ( MIN{t[i..k]} > t[j] > MAX{t[k+1..j-1]} )
+			  Schedule[i][j] = Schedule[k+1][j-1] o {j} o Schedule[i][k];
+		  }
+		}
+	  }
+	}
+</pre>
+
+<p><b>Time complexity</b></p>
+
+<p>There are 3 loops. The outerloop runs n times. The inner loop runs at most n times. And finally, the innermost
+loop runs for at most n times. Thus, the time complexity is O(n<sup>3</sup>).</p>
+
+   </div>
+  </div>
+
+  <div id="navigation">
+  <p><br><strong><a href="../index.html">Home</a></strong></p>
+    <ul>
+      <li><a href="01_Intro.html">Why algorithm design matters?</a></li>
+      <li><a href="02_Analysis.html">Analyzing algorithms</a></li>
+      <li><a href="03_Asymptotics.html">Asymptotic notations</a></li>
+      <li><a href="04_Masters.html">Master's method</a></li>
+      <li><a href="05_Quadratic_sorting.html">Quadratic-time sorting</a></li>
+      <li><a href="06_nlogn_sorting.html">NlogN sorting (Divide-and-Conquer)</a></li>
+      <li><a href="07_Heapsort.html">Heap and Heap sort</a></li>
+      <li><a href="08_Linear_sorting.html">Lower bound and Linear-time sorting</a></li>
+      <li><a href="09_Selection.html">Selection problem</a></li>
+      <li><a href="10_Optimization_Problems.html">Optimization Problems</a></li>
+      <li><a href="11_Task_Scheduling.html">Task Scheduling</a></li>
+      <li><a href="12_Integer_Knapsack.html">Integer Knapsack</a></li>
+      <li><a href="13_LCS.html">Longest Common Subsequence</a></li>
+      <li><a href="14_LIS.html">Longest Increasing Subsequence</a></li>
+      <li><a href="15_LPS.html">Longest Palindromic Subsequence</a></li>
+      <li><a href="16_MSS.html">Maximum Subsequence Sum</a></li>
+      
+    </ul>
+  </div>
+
+  <div id="extra">
+  </div>
+  <div id="footer", align="right">
+    <p>Send comments to swaminathanj@am.amrita.edu</p>
+  </div>
+</div>
+</body>
+</html>

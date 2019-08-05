@@ -1,0 +1,478 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Asymptotic Notations</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../styles.css" />
+        <script type="text/javascript" src="../scripts/shCore.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushBash.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCpp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCss.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushDiff.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushJava.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushJScript.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPhp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPlain.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPython.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushRuby.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushScala.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushSql.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushVb.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushXml.js"></script>
+        <link type="text/css" rel="stylesheet" href="lecture-notes.css"/>
+        <link type="text/css" rel="stylesheet" href="../styles/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="../styles/shThemeDefault.css"/>
+        <script type="text/javascript">
+            //SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+            SyntaxHighlighter.defaults['toolbar'] = false;
+            SyntaxHighlighter.defaults['auto-links'] = false;
+
+            SyntaxHighlighter.all();
+        </script>
+</head>
+
+<body>
+
+<div id="container">
+<div id="header"><h1>Design and Analysis of Algorithms<img align="right" src="../logo-dark.png" alt="Amrita"> </h1> </div>
+  <div id="wrapper">
+    <div id="content">
+
+<table align="right">
+  <td align="left"><a href="02_Analysis.html">Prev</a></td>
+  <td align="right"><a href="04_Masters.html">Next</a></td>
+</table>
+
+
+<h2>Asymptotic Notations</h2>
+
+<h3>Orders of growth</h3>
+
+<p>For each if the following pairs of functions, indicate which one grows faster.</p>
+
+<p>1) n(n+1)  and  2000n^2 </p>
+<ul>
+  <li>n(n+1) = n^2 + n &rarr; order 2</li>
+  <li>2000n^2 &rarr; order 2</li>
+  <li>Both have the same order!</li>
+</ul>
+
+<p>2) 100n^2 and 0.01n^3</p>
+<ul>
+  <li>The 1st one's order is 2 while the 2nd one's order is 3.</li>
+  <li>The 2nd one grows faster than the first.</li>
+</ul>
+
+<p>3) log<sup>2</sup>n and log n<sup>2</sup></p>
+<ul>
+  <li>log<sup>2</sup>n = (log n)<sup>2</sup></li>
+  <li>log n<sup>2</sup> = 2log n</li>
+  <li>The first one grows faster.</li>
+</ul>
+
+<p>4) 2^(n-1) and 2^n</p>
+<ul>
+  <li>(1/2)2^n and 2^n</li>
+  <li>Both have the same order of growth. They differ only by constant.</li>
+</ul>
+
+<p>5) (n-1)! and n!</p>
+<ul>
+  <li>1.(n-1)! and n.(n-1)!</li>
+  <li>They differ by n which is not a constant. Hence, n! is of higher order.</li>
+</ul>
+
+<p>6) (n^2)^2 and n^3</p>
+<ul>
+  <li>(n^2)^2 = n^4 &rarr; order 4</li>
+  <li>n^3 &rarr; order 3</li>
+  <li>The first one grows faster.</li>
+</ul>
+
+<p>7) &radic;n and log n</p>
+<ul>
+  <li>For n = 1, 4, 16, 64, 256, ... &radic;n = 1, 2, 4, 8, 16, ...</li>
+  <li>For n = 1, 4, 16, 64, 256, ... log n = 0, 2, 4, 6, 8, ...</li>
+  <li>&radic;n grows faster</li>
+</ul>
+
+<p>8) 10^6 and n^0.000001</p>
+<ul>
+  <li>10^6 is a constant.</li>
+  <li>n^0.000001 grows and hence will overtake 10^6 for n = 12.</li>
+  <li>n^0.000001 grows faster</li>
+</ul>
+
+<h4>How is the above comparison of functions in terms of faster growth useful?</h4>
+
+<p>Let f(n) be the time (number of operations) taken by an algorithm where n is the input size. We want
+to characterize the algorithm based on its order of growth - upper bound, lower bound, tight bound.
+Three notations O, &Omega; and &Theta;, referred to as <b>asymptotic notations</b>, are used for this.</p>
+
+<ul>
+  <li><b>Upper bound</b> &rarr;	A function g(n) which grows faster than f(n) - denoted by <b>O</b></li>
+  <li><b>Lower bound</b> &rarr;	A function g(n) which grows slower than f(n) - denoted by <b>&Omega;</b></li>
+  <li><b>Tight bound</b> &rarr;	A function g(n) which grows more or less same as f(n) - denoted by <b>&Theta;</b></li>
+</ul>
+
+<p>More formally, we say that</p>
+<ul>
+  <li>f(n) &isin; O(g(n)) if &exist; a real constant c > 0 and a non-negative integer n<sub>0</sub> &ni;
+  f(n) &lt;= c.g(n) for n > n<sub>0</sub>.</li>
+  <li>f(n) &isin; &Omega;(g(n)) if &exist; a real constant c > 0 and a non-negative integer n<sub>0</sub> &ni;
+  f(n) &gt;= c.g(n) for n > n<sub>0</sub>.</li>
+  <li>f(n) &isin; &Theta;(g(n)) if &exist; a real constants c<sub>1</sub> > 0, c<sub>2</sub> > 0 and a non-negative
+  integer n<sub>0</sub> &ni; c<sub>1</sub>.g(n) &lt;= f(n) &lt;= c<sub>2</sub>.g(n) for
+  n > n<sub>0</sub>.</li>
+</ul>
+
+<p><b>Examples</b></p>
+
+<p><b>1) Consider f(n) = 100n^2 </b></p>
+
+<p>(a) <b>f(n) &isin; O(n^2)</b> since we can find a constant <b>c = 101</b> such that <b>100n^2 <= 101n^2</b> <br>
+and this is true for n >= 0. i.e. <b>n<sub>0</sub> = 0</b>. </p>
+
+<p> In fact, any non-negative integer above 100 can serve as c.</p>
+
+<p>(b) <b>f(n) &isin; &Omega;(n^2)</b> since we can find a constant <b>c = 99</b> such that <b>100n^2 >= 99n^2</b> <br>
+and this is true for n >= 0 i.e. <b>n<sub>0</sub> = 0</b>. </p>
+
+<p>Again, any non-negative integer below 100 can serve as c.</p>
+
+<p>(c) <b>f(n) &isin; &Theta;(n^2)</b> since we can find constants <b>c<sub>1</sub> = 99</b> and
+<b>c<sub>2</sub> = 101</b> such that <b>99n^2 <= 100n^2 <= 101n^2</b> <br>
+and this is true for n >= 0 i.e. <b>n<sub>0</sub> = 0</b>. </p>
+
+<p>In other words, just by playing with constants, c.g(n) = n^2 can be made to grow slower or faster than f(n) = 100n^2.</p>
+
+<p>Lets push this further.</p>
+
+<p>(d) <b>f(n) &isin; O(n^3)</b> since we can find a constant <b>c = 101</b> such that <b>100n^2 <= 101n^3</b> <br>
+and this is true for n >= 0 i.e. <b>n<sub>0</sub> = 0</b>. </p>
+
+<p>We can derive the same conclusion by finding another constant <b>c = 99</b> such that <b>100n^2 <= 99n^3</b>.
+However, this cannot be true for <b>n<sub>0</sub> = 0</b> as you can see below.</p>
+<ul>
+  <li>For n=0, 100n^2 = 0, 99n^3 = 0 </li>
+  <li>For n=1, 100n^2 = 100, 99n^3 = 99 </li>
+  <li>For n=2, 100n^2 = 400, 99n^3 = 792 </li>
+</ul>
+
+<p>From here on, as n increases, 100n^2 will always be less than 99n^3. Hence, n<sub>0</sub> = 2.</p>
+
+<p>The critical thing to observe is that c can be any positive real number. It could be 50, 10, 1 or
+even 10<sup>-6</sup>. We can always find an integer n<sub>0</sub> for a particular c. As c gets smaller and
+smaller, n<sub>0</sub> gets larger and larger. Essentially, however small a constant c may be, c.g(n) = n^3
+is bound to overtake f(n) = n^2 at some point n<sub>0</sub> since n^3 is a faster growing function. </p>
+
+<p>Note: It is always easier to fix n<sub>0</sub> to 0 or 1 and find an appropriate c. The other way may
+require some work.</p>
+
+<p>(e) <b>f(n) &notin; &Omega;(n^3)</b> since we can never find a constant c such that 100n^2 >= c.n^3. However
+small c may be, for some n, c.n^3 will eventually overtake 100n^2, since n^3 grows faster than n^2.</p>
+
+<p>On similar lines</p>
+
+<p>(f) <b>f(n) &isin; &Omega;(n)</b> since we can find a constant <b>c = 99</b> such that <b>100n^2 >= 99n</b> <br>
+and this is true for n >= 0 i.e. <b>n<sub>0</sub> = 0.</b></p>
+
+<p>(g) <b>f(n) &notin; O(n)</b> since we can never find a constant c such that 100n^2 <= c.n. However
+large c may be, for some n, c.n can never overtake 100n^2, since n grows slower than n^2.</p>
+
+<p><strong>2) Consider f(n) = 100n^2 + 5</strong></p>
+
+<p>(a) <b>f(n) &isin; O(n^2)</b> since we can find a constant c as follows:</p>
+<ul>
+  <li>f(n) = 100n^2 + 5 <= 100n^2 + 5n^2 = 105n^2</li>
+  <li>i.e. c = 105 and n<sub>0</sub> = 0</li>
+</ul>
+
+<p>(b) <b>f(n) &isin; &Omega;(n^2)</b> since we can find a constant c as follows: </p>
+<ul>
+  <li>f(n) = 100n^2 + 5 >= 100n^2</li>
+  <li>i.e. c = 100 and n<sub>0</sub> = 0</li>
+</ul>
+
+<p>(c) <b>f(n) &isin; &Theta;(n^2)</b> since we can find constants c<sub>1</sub> and c<sub>2</sub> as above.</p>
+<ul><li>100n^2 <= 100n^2 + 5 <= 105n^2</li></ul>
+
+<p><strong>Exercises</strong></p>
+<p>f(n) = 100n^2 + 5</p>
+<ul>
+	<li>Show that f(n) &isin; O(2^n).</li>
+	<li>Show that f(n) &isin; &Omega;(&radic;n).</li>
+	<li>Show that f(n) &notin; O(&radic;n).</li>
+	<li>Show that f(n) &notin; &Omega;(2^n).</li>
+</ul>
+
+<p><strong>3) Consider f(n) = 100n^2 - 5</strong></p>
+
+<p>(a) <b>f(n) &isin; O(n^2)</b> since we can find a constant c as follows:</p>
+<ul>
+  <li>f(n) = 100n^2 - 5 <= 100n^2</li>
+  <li>i.e. c = 100 and n<sub>0</sub> = 0</li>
+</ul>
+
+<p>(b) <b>f(n) &isin; &Omega;(n^2)</b> since we can find a constant c as follows: </p>
+<ul>
+  <li>f(n) = 100n^2 - 5 >= 100n^2 - 5n^2 = 95n^2</li>
+  <li>i.e. c = 95 and n<sub>0</sub> = 0</li>
+</ul>
+
+
+<p>(c) <b>f(n) &isin; &Theta;(n^2)</b> since we can find constants c<sub>1</sub> and c<sub>2</sub> as above.</p>
+<ul><li>95n^2 <= 100n^2 - 5 <= 100n^2</li></ul>
+
+<p><strong>Exercises</strong></p>
+<p>f(n) = 100n^2 -5</p>
+<ul>
+	<li>Show that f(n) &isin; O(n^2logn).</li>
+	<li>Show that f(n) &isin; &Omega;(logn).</li>
+	<li>Show that f(n) &notin; O(n).</li>
+	<li>Show that f(n) &notin; &Omega;(n^2logn).</li>
+</ul>
+
+<p><strong>4) Consider f(n) = 100n^2 - 10n + 7logn - 5</strong></p>
+
+<p>(a) <b>f(n) &isin; O(n^2)</b> since we can find a constant c as follows:</p>
+<ul>
+  <li>f(n) = 100n^2 - 10n + 7logn - 5 <= 100n^2 + 7logn <= 100n^2 +7n^2 = 107n^2</li>
+  <li>i.e. c = 107 and n<sub>0</sub> = 0</li>
+</ul>
+
+<p>(b) <b>f(n) &isin; &Omega;(n^2)</b> since we can find a constant c as follows: </p>
+<ul>
+  <li>f(n) = 100n^2 - 10n + 7logn - 5 >= 100n^2 - 10n - 5 >= 100n^2 - 10n^2 - 5n^2 = 85n^2</li>
+  <li>i.e. c = 85 and n<sub>0</sub> = 0</li>
+</ul>
+
+<p>(c) <b>f(n) &isin; &Theta;(n^2)</b> since we can find constants c<sub>1</sub> and c<sub>2</sub> as above.</p>
+<ul><li>85^2 <= 100n^2 - 10n + 7logn - 5 <= 107n^2</li></ul>
+
+<p><strong>Exercises</strong></p>
+<p>f(n) = 100n^2 - 10n + 7logn - 5</p>
+<ul>
+	<li>Show that f(n) &isin; O(n^3).</li>
+	<li>Show that f(n) &isin; &Omega;(n&radic;n).</li>
+	<li>Show that f(n) &notin; O(n&radic;n).</li>
+	<li>Show that f(n) &notin; &Omega;(n^3).</li>
+</ul>
+
+
+<p><strong>Properties of Asymptotic functions</strong></p>
+
+<p>1) For any polynomial of the form: f(n) = a<sub>k</sub>n<sup>k</sup> + a<sub>k-1</sub>n<sup>k-1</sup> + ... +
+a<sub>1</sub>n + a<sub>0</sub> </p>
+
+<p>
+	&emsp; &emsp; f(n) &isin; O(n<sup>k</sup>) <br>
+	&emsp; &emsp; f(n) &isin; &Omega;(n<sup>k</sup>) <br>
+	&emsp; &emsp; f(n) &isin; &Theta;(n<sup>k</sup>)
+</p>
+
+<p>2) If f(n) &isin; O(n<sup>k</sup>), then f(n) &isin; O(n<sup>k+1)</sup> for any k > 0.<br>
+&emsp; If f(n) &isin; &Omega;(n<sup>k</sup>), then f(n) &isin; &Omega;(n<sup>k-1</sup>) for any k > 0. <br>
+&emsp; If f(n) &isin; O(n<sup>k</sup>) and f(n) &isin; &Omega;(n<sup>k</sup>), then f(n) &isin; O(n<sup>k</sup>) for any k > 0.
+</p>
+
+<p>3) If f(n) &isin; O(g(n)), then g(n) &isin; &Omega;(f(n)).</p>
+
+<p>4) If f(n) &isin; O(g(n)) and g(n) &isin; O(h(n)), then f(n) &isin; O(h(n)).</p>
+
+<p>5) If f<sub>1</sub>(n) &isin; O(g<sub>1</sub>(n)) and f<sub>2</sub>(n) &isin; O(g<sub>2</sub>(n)), then
+f<sub>1</sub>(n) + f<sub>2</sub>(n) &isin; O( max{g<sub>1</sub>(n)), g<sub>2</sub>(n)} ).</p>
+
+<h4>Connecting back to algorithm analysis</h4>
+
+<p>Let us connect this back to our algorithm analysis. Any algorithm looks as follows (although it is an
+oversimplification).</p>
+
+<pre class="brush: java">
+  public retType algorithm(inputSize n) {
+  	statement1;
+  	statement2;
+  		:
+  		:
+  	statementX;
+
+  	for (i = 0; i < func(n); i++) {	// Let L(n) = number of times
+  		loop_statement1;			// the loop is executed which
+  			:						// is dependent on func(n)
+  			:
+  		loop_statementY;
+  	}
+  		:
+  		:
+  	statementZ;
+  }
+</pre>
+
+<p>Then the time taken by the algorithm in terms of number of operations</p>
+
+<p>&emsp; &emsp; f(n) = X + Y.L(n) + Z</p>
+
+<p>As n gets larger, L(n) will dominate. X, Y and Z being constants will become less and less significant. We can
+in fact find a function g(n) and a constants c<sub>1</sub> and c<sub>2</sub> such that</p>
+
+<p>&emsp; &emsp; f(n) = X + Y.f(n) + Z <= c.g(n) &isin; &Theta;(g(n))</p>
+
+<p>Since f(n) denotes the time taken by the algorithm, T(n) = f(n). T(n) is more commonly referred to as
+time complexity.</p>
+
+<p><b>Note:</b> The above algorithm is an oversimplification. There can be more than one loop and they may be nested.
+Also, there can be more than one input each with a different size. However, this structure clarifies the connection.</p>
+
+<p>To the best extent possible, for a given algorithm, time complexity is determined in term of tight bounds. i.e. &Theta;(.).
+However, this may be difficult for some algorithms. In such cases, we try to determine O(.) which is a slight
+over-estimate.</p>
+
+<p>Try determining time complexity for the following code snippets.</p>
+
+<pre class="brush: java">
+	for (i = 0; i < n; i++) {	// Loop gets executed n times
+		:						// T(n) = &Theta;(n)
+	}
+</pre>
+
+<pre class="brush: java">
+	for (i = 0; i < n; i = i+2) {	// Loop gets executed n/2 times
+		:							// T(n) = &Theta;(n)
+	}
+</pre>
+
+<pre class="brush: java">
+	for (i = 0; i < n; i = i*2) {	// i = 1, 2, 4, 8, ..., logn
+		:							// T(n) = &Theta;(logn)
+	}
+</pre>
+
+<pre class="brush: java">
+	for (i = 0; i < n; i++) {		// Nested Loop gets executed n x n times
+		for(j = 0; j < n; j++) {		// T(n) = &Theta;(n^2)
+	  		:
+	  	}
+	}
+</pre>
+
+<pre class="brush: java">
+	for (i = 0; i < n; i++) {		// Outer loop: n times,
+		for(j = 0; j < n; j = j*2) {	// Inner loop: logn times
+	  		:						// T(n) = &Theta;(nlogn)
+	  	}
+	}
+</pre>
+
+<pre class="brush: java">
+	for (i = 0; i < n; i++) {		// Inner loop executed i times
+		for(j = 0; j < i; j++) {		// i = 0, 1, 2, ..., n-1
+	  		:						// T(n) = 0 + 1 + 2 + ... + n-1
+	  	}							// = n(n-1)/2 = &Theta;(n^2)
+	}
+</pre>
+
+<pre class="brush: java">
+	for (i = 0; i < n; i++) {		// Outer loop: n times,
+		for(j = 0; j < 2^i; j++) {	// Inner loop: 2^i times
+	  		:						// T(n) = 1 + 2 + ... + 2^(n-1)
+	  	}								// = 2^n - 1 = &Theta;(2^n)
+	}
+</pre>
+
+<pre class="brush: java">
+	for (i = 0; i < n; i++) {		// Outer loop: n times,
+		for(j = 0; j < i*n; j++) {	// Inner loop: i*n times
+	  		:						// T(n) = 0n + 2n + ... + (n-1)*(n-1)
+	  	}								// = n(1 + 2 + .. + n-1) = &Theta;(n^3)
+	}
+</pre>
+
+<pre class="brush: java">
+	for (i = 0; i < n; i++) {		// Outer loop: n times,
+		for(j = 0; j < i*n; j++) {	// Inner loop: i*i times
+	  		:						// T(n) = 0.0 + 1.1 + + ... + (n-1)*(n-1)
+	  	}							// <= 0n + 1n + ... + (n-1)*(n-1) = O(n^3)
+	}								// Note: It is O(n^3) not &Theta;(n^3)
+</pre>
+
+<pre class="brush: java">
+	for (i = 0; i < n; i++) {		// Nested Loop gets executed n x m times
+		for(j = 0; j < m; j++) {		// T(n,m) = &Theta;(nm)
+	  		:
+	  	}
+	}
+</pre>
+
+<pre class="brush: java">
+	for (i = 0; i < n; i++) {		// Nested Loop takes &Theta;(n^2) time
+		for(j = 0; j < n; j++) {
+	  		:
+	  	}
+	}
+
+	for(k = 0; k < m; k++) {		// Another loop gets executed m times
+			:						// T(n,m) = &Theta;(n^2 + m)
+	}
+</pre>
+
+<p>For the last case, the complexity is determined by n and m. We assume that n and m are
+independent of each other.</p>
+
+<h4>Analytical Framework v/s Experimental Framework </h4>
+
+<p>The analytical framework described so far computes the time complexity based on the number of operations.
+An experimental framework, on the other hand, requires an implementation of the algorithm.. Both have some
+advantages and limitations.</p>
+
+<p>Experimental framework requries that the algorithm is implemented in a particular programming language and
+executed on a platform. The choice of the hardware, operating system and programming language determines the
+time taken for an algorithm. An efficient algorithm executed on a low-end hardware can run slower than a
+not-so efficient algorithm executed on a high-end hardware. Moreover, time taken by an algorithm is influenced
+by the current load on the CPU and similar dynamic factors. This can lead to different time measurement and
+hence clean correspondence between the number of instructions and time taken cannot be established.</p>
+
+<p>The main advantage of analytical framework is that it is not necessary to implement the algorithm in order to
+determine the time (and space) complexity. This is a huge advantage over experimental framework. The disadvantages
+include (i) We do not distinguish between different types of operations. We consider each operation takes one time unit.
+In practical setting this is not true. CPU bound operations are fast, memory bound operations are lot slower while the
+I/O bound operations are slowest. (ii) We ignore the constants however large it they may be. In practical settings,
+if there are constraints on input size, constants can indeed matter.</p>
+
+
+
+    </div>
+  </div>
+
+  <div id="navigation">
+  <p><br><strong><a href="../index.html">Home</a></strong></p>
+    <ul>
+      <li><a href="01_Intro.html">Why algorithm design matters?</a></li>
+      <li><a href="02_Analysis.html">Analyzing algorithms</a></li>
+      <li><a href="03_Asymptotics.html">Asymptotic notations</a></li>
+      <li><a href="04_Masters.html">Master's method</a></li>
+      <li><a href="05_Quadratic_sorting.html">Quadratic-time sorting</a></li>
+      <li><a href="06_nlogn_sorting.html">NlogN sorting (Divide-and-Conquer)</a></li>
+      <li><a href="07_Heapsort.html">Heap and Heap sort</a></li>
+      <li><a href="08_Linear_sorting.html">Lower bound and Linear-time sorting</a></li>
+      <li><a href="09_Selection.html">Selection problem</a></li>
+      <li><a href="10_Optimization_Problems.html">Optimization Problems</a></li>
+      <li><a href="11_Task_Scheduling.html">Task Scheduling</a></li>
+      <li><a href="12_Integer_Knapsack.html">Integer Knapsack</a></li>
+      <li><a href="13_LCS.html">Longest Common Subsequence</a></li>
+      <li><a href="14_LIS.html">Longest Increasing Subsequence</a></li>
+      <li><a href="15_LPS.html">Longest Palindromic Subsequence</a></li>
+      <li><a href="16_MSS.html">Maximum Subsequence Sum</a></li>    </ul>
+  </div>
+
+  <div id="extra">
+  </div>
+  <div id="footer", align="right">
+    <p>Send comments to swaminathanj@am.amrita.edu</p>
+  </div>
+</div>
+</body>
+</html>
+

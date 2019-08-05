@@ -1,0 +1,396 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Analyzing Algorithms</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../styles.css" />
+        <script type="text/javascript" src="../scripts/shCore.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushBash.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCpp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCss.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushDiff.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushJava.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushJScript.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPhp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPlain.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPython.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushRuby.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushScala.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushSql.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushVb.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushXml.js"></script>
+        <link type="text/css" rel="stylesheet" href="lecture-notes.css"/>
+        <link type="text/css" rel="stylesheet" href="../styles/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="../styles/shThemeDefault.css"/>
+        <script type="text/javascript">
+            //SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+            SyntaxHighlighter.defaults['toolbar'] = false;
+            SyntaxHighlighter.defaults['auto-links'] = false;
+ 
+            SyntaxHighlighter.all();
+        </script>
+</head>
+
+<body>
+ 
+<div id="container">
+<div id="header"><h1>Design and Analysis of Algorithms<img align="right" src="../logo-dark.png" alt="Amrita"> </h1> </div>
+  <div id="wrapper">
+    <div id="content">
+
+<table align="right">
+  <td align="left"><a href="01_Intro.html">Prev</a></td>
+  <td align="right"><a href="03_Asymptotics.html">Next</a></td>
+</table>
+
+
+<h2>Analyzing Algorithms</h2>
+
+<h3>Measuring running time of an algorithm</h3>
+
+<p>When we attempt to measure the running time of an algorithm, it seems like we need to implement it in a 
+particular programming language and execute the program to measure the time taken. However, when we do so,
+several facors come into play. Firstly, the time taken by the algorithm depends on the hardware/platform on
+which the implemented program runs. Secondly, the number and the type of applications running on the OS at
+the time of the program execution greatly influences the running time. Lastly, the programming language
+chosen to implement the algorithm may itself affect the running time.</p>
+
+<p>We need an approach to compute the running time without the dependencies on the hardware, operating system,
+programming language and dynamic factors such as the CPU load or memory load to measure the time. To overcome
+this, we measure the running time in terms of the number of operations that the algorithm performs. The algorithm
+is written in Java.</p>
+
+<p><strong>Example: Finding max element of an array A of size n.</strong></p>
+
+<pre class="brush: java">
+    int max(array A[], size n) {
+      maxSoFar = A[0];            // 2 ops (indexing + assign)
+      for (i = 1; i < n; i++) {   /* 3n-1 ops (1 assign + n compare 
+                                        + n-1 incr + n-1 assign) */
+        if (maxSoFar < A[i])      // 2(n-1) ops (indexing + compare) 
+          maxSoFar = A[i];        // 2(n-1) ops (indexing + assign)
+      }
+      return maxSoFar;            // 1 op
+    }
+ </pre>
+
+<p>Counting time in terms of the number of operations, running time</p>
+<p style="color: blue"> &emsp; T(n) = 2 + 3n-1 + 2(n-1) + 2(n-1) + 1 = 7n - 2 </p>
+
+<p>Given any 'n', one may compute the time taken readily by substituting in the equation,
+7n -2 in this case.</p>
+
+<p>Note that, this is the worst case time where Line 09 is executed during every iteration.
+  This happens when the input list is in ascending order.</p>
+
+<p>The best case happens when A[1] is the largest.</p>
+<p style="color: blue">&emsp; T(n)<sub>best</sub> = 7n-2 - 2(n-1) = 5n</p>
+
+<p>The algorithm will run faster for some inputs than it does for others. 
+Is there an average case running time?</p>
+
+<p>What is "average"? A tricky question. Need probability. Assuming that max element can occur at
+each of the n positions with equal probability, this would work out to.</p> 
+<p style="color: blue"> &emsp; T(n)<sub>average</sub> = [5n + (5n+2) + (5n+4) + ... + (7n-2)] / n </p>
+
+<p>Computing average time is not easy if probability of occurrence at each position is unknown.
+In general, except for experimental studies or when we are sure that algorithm is itself randomized, 
+we will characterize running time in terms of the worst case.</p>
+
+<p>Amortized analysis is used in special cases i.e.  when there is a high frequency of low cost operations 
+and low frequency of high cost operation.</p>
+<p>Example: An implementation of dynamic array where we double the size of the array each time 
+it fills up. (More about this later in the course).</p>
+
+<p>Some points are in order.</p>
+<ul>
+  <li> All types of operations are assumed to take the same time. 
+  i.e. indexing, assignment, increment, return take the same time. 
+  In reality, it is not so. CPU bound operations are much faster than
+  memory bound operations which in turn is faster than IO operations.</li>
+  <li> The algorithm is designed considering single CPU architecture.
+  (with infinite memory).</li>
+  <li> The algorithm is written in Java. The number of statements may vary as per
+  the programming language used.</li>
+</ul>
+
+<p>These conventions are followed through the course. To summarize, we use</p>
+<ul>
+  <li>Worst case time to characterize an algorithm</li>
+  <li>Average case for randomized algorithms</li>
+  <li>Amortization for special cases</li>
+</ul>
+
+<h4>Exercises</h4>
+
+<p> Write an algorithm and find the best case and worst case running times for the following simple problems.</p>
+<ul>
+  <li>Searching an element x in an array of size n.</li>
+  <li>Check if an array has unique elements.</li>
+  <li>Matrix multiplication.</li>
+</ul>
+
+<h2>Analyzing Recursive Algorithms</h2>
+
+<p>Let us consider the recursive version of the above algorithm.</p>
+
+<pre class="brush: java">
+  int recursiveMax(array A[], size n) {
+    if (n == 1)                        // 1 op  (assign)
+      return A[n];                    // 2 ops (indexing + return)
+    else {                            
+      maxOfRest = recursiveMax(A[], n-1);  // T(n-1) + 2 (call+incr+assign)
+      if (A[n] > maxOfRest)           // 2 ops (indexing + comparison)
+        return A[n];                  // 1 op  (return)
+      else
+        return maxOfRest;             // 1 op  (return)
+    }
+  }
+</pre>
+
+
+<p>Recursive algorithms are often quite elegant. How do we compute the
+running time of such algorithms. It takes a bit of additional work.</p>
+
+<p>We use recurrence equation which defines mathematical statements
+that the running time must satisfy. We can characterize the running
+time of recursiveMax algorithm as</p>
+
+<p style="color: blue"> &emsp;    T(n) = 3             if n = 1 <br>
+    &emsp;    T(n) = T(n-1) + 7    otherwise </p>
+
+<p>This is called a recurrence equation.</p>
+
+<p>What this equations means is that, the time taken to solve the problem of size 'n' 
+is 7 units more than the time taken to solve the subproblem of size 'n-1' (assuming
+each operation takes 1 time unit).</p>
+
+<h3>Solving recurrence equations</h3>
+
+<p>There are several ways to solve recurrence equations. The objective is to arrive at closed form equation 
+in which one may substitute the input size 'n' to readily compute the time taken.</p>
+
+<h4>Method 1: Substitution method</h4>
+
+<p>
+&emsp;               T(n) = T(n-1) + 7 <br>
+&emsp; &emsp; &emsp;      = T(n-2) + 7 + 7 = T(n-2) + 2(7) <br>
+&emsp; &emsp; &emsp;      = T(n-3) + 3(7) <br>
+&emsp; &emsp; &emsp; &emsp; &emsp; &emsp; : <br>
+&emsp; &emsp; &emsp;&emsp; &emsp; &emsp;  : <br>
+&emsp; &emsp; &emsp;      = T(1) + (n-1)(7) <br>
+&emsp; &emsp; &emsp;      = 3 + 7n - 7 <br>
+&emsp; &emsp; &emsp;      = 7n - 4 <br>
+</p>
+
+<p>In general, deteriming closed form equations from recurrence equations for an algorithm 
+may not be as straightforward.</p>
+</pre>
+
+<h4>Method 2: Guess and prove by Induction</h4>
+
+<p>Lets say we were able to guess the closed form T(n) = 7n -4 (not always easy). 
+We try to prove by induction.</p>
+
+<p>Base case: For n = 1, T(n) = 7(1) - 4 = 3 <br>
+    (matches with the recurrence equation)</p>
+
+<p>Inductive hypthesis: The equation is true for some m<br>
+&emsp; &emsp;    i.e. T(m) = 7m - 4 is true</p>
+
+<p>                       Now, T(m+1) = 7(m+1) - 4 <br>
+&emsp; &emsp; &emsp; &emsp; &emsp;    = 7m + 7 - 4 <br>
+&emsp; &emsp; &emsp; &emsp; &emsp;    = 7m + 3     ........ (1) </p>
+
+<p> &emsp;      T(m+1) = T(m) + 7 <br>
+&emsp; &emsp; &emsp; &emsp;  = (7m - 4) + 7 <br>
+&emsp; &emsp; &emsp; &emsp;  = 7m + 3 .......... (2) </p>
+
+<p>  (1) and (2) are the same. Hence proved.  </p>
+
+<h4>Method 3: Recursion Tree Method</h4>
+
+<p>We draw a recursion tree as follows. At each level, some number of operations are performed. 
+This along with the height of the recursion tree can be used to compute the total number of 
+operations by the algorithm.</p>
+
+<pre>
+                      T(n)
+                     /    \      - Height of the tree = n-1
+                 T(n-1)    7     - At each level 7 operations
+                /      \         - At the last step, 3 more ops
+             T(n-2)     7
+               :                  => T(n) = 7(n-1) + 3 = 7n - 4
+               :
+              / \
+           T(1)  7
+</pre>
+
+<h4>Exercise</h4>
+
+<p>Another way to compute max recursively is to break the array into 2 halves, find the max of each half. 
+Whichever is bigger among the two is returned as the max.</p>
+
+<ul>
+  <li>Write an algorithm for this approach.</li>
+  <li>Determine the recurrence equation.</li>
+  <li>Solve the recurrence to compute its closed form.</li>
+  <li>Is this a better algorithm? Justify.</li>
+</ul>
+
+<h3>More examples of recurrence equations</h3> 
+
+Example 2: Finding factorial of n (using recursion)
+
+<pre class="brush: java">
+  int factorial(int n) {
+      if (n == 1)                   // 1 op
+        return 1;                   // 1 op
+      else
+        return n * factorial(n-1);  // T(n-1) + 3
+  }
+</pre>
+
+<p>The recurrence equation</p>
+
+<p> &emsp; T(1) = 3 <br>
+    &emsp; T(n) = T(n-1) + 4 </p>
+
+<p>Solving by substitution method</p>
+<p>
+&emsp;           T(n) = T(n-1) + 4 <br>
+&emsp; &emsp; &emsp;  = T(n-2) + 2.4 <br>
+&emsp; &emsp; &emsp;  = T(n-3) + 3.4 <br>
+&emsp; &emsp; &emsp; &emsp; &emsp; &emsp;  : <br>
+&emsp; &emsp; &emsp; &emsp; &emsp; &emsp;  : <br>
+&emsp; &emsp; &emsp;  = T(1) + (n-1).4 <br>
+&emsp; &emsp; &emsp;  = 2 + 4n - 4 <br>
+&emsp; &emsp; &emsp;  = 4n - 2   (closed form equation) <br>
+</p>
+
+<h3>Example 3: Tower of Hanoi</h3>
+
+<p>The goal is to move discs from source needle to destination needle using a temporary needle. 
+The condition is that always ensure that larger disc is not placed over the smaller one at any 
+point of time.</p>
+
+<pre>
+          |                 |                |
+         <u> | </u>                |                |
+       <u>  |||  </u>              |                |
+     <u>  |  |  |  </u>            |                |
+   <u>  |    |    |  </u>   <u>       |       </u>  <u>       |       </u>
+
+       Source             Temp          Destination
+</pre>
+
+<pre class="brush: java">
+TowerOfHanoi(Needle src, Needle temp, Needle dest, n) {
+  if (n == 1)
+    moveDisc(src,dest);
+  else {
+    TowerOfHanoi(src,dest,temp,n-1);  // top n-1 discs from src to temp
+    moveDisc(src,dest);               // bottommost disc from src to dest
+    TowerOfHanoi(temp,src,dest,n-1);  // n-1 discs from temp to dest
+  }
+}
+</pre>
+
+<p> Recurrence equation</p>
+
+<p> &emsp; T(1) = 2 <br>
+    &emsp; T(n) = 2T(n-1) + 2 </p>
+
+<p>Solving using substitution method</p>
+
+<p> &emsp;      T(n) = 2T(n-2) + 2 <br>
+&emsp; &emsp; &emsp; = 2[2T(n-2) + 2] + 2 = 2<sup>2</sup>T(n-2) + 2<sup>2</sup> + 2 <br>
+&emsp; &emsp; &emsp; = 2<sup>3</sup>T(n-2) + 2<sup>3</sup> + 2<sup>2</sup> + 2 <br>
+&emsp; &emsp; &emsp; &emsp; &emsp; &emsp; : <br>
+&emsp; &emsp; &emsp; &emsp; &emsp; &emsp; : <br>
+&emsp; &emsp; &emsp; = 2<sup>n-1</sup>T(1) + 2<sup>n-1</sup> + ... + 2 <br>
+&emsp; &emsp; &emsp; = 2<sup>n-1</sup>.2 + 2<sup>n-1</sup> + ... + 2 <br>
+&emsp; &emsp; &emsp; = 2<sup>n</sup> + 2<sup>n-1</sup> + ... + 2 <br>
+&emsp; &emsp; &emsp; = 2<sup>n+1</sup> - 2 <br>
+&emsp; &emsp; &emsp; = 2(2<sup>n</sup> - 1)
+</p>
+
+<h3>Example 4: Number of binary digits for an integer</h3>
+
+<p>
+   0,1  &emsp;   --> Single binary digit (0 to 2<sup>1</sup>-1) <br>
+   2,3  &emsp;   --> Double binary digits (2<sup>1</sup> to 2<sup>2</sup>-1) <br>
+   4-7  &emsp;   --> Three binary digits (2<sup>2</sup> to 2<sup>3</sup>-1) <br>
+   8-15 &emsp;   --> Four binary digits (2<sup>3</sup> to 2<sup>4</sup>-1) <br>
+   .... so on and so forth
+</p>
+
+<pre class="brush: java">
+  int binary(int n) {
+    if (n == 1)                   // 1 op
+        return 1;                 // 1 op
+    else
+        return 1 + binary(n/2);   // T(n/2) + 2 ops
+  }
+</pre>
+
+<p>Recurrence equation</p>
+<p>
+  &emsp; T(1) = 2  <br>
+  &emsp; T(n) = T(n/2) + 2
+</p>
+
+<p>Solving by substitution method</p>
+<p>           
+&emsp;           T(n) = T(n/2) + 2 <br>
+&emsp; &emsp; &emsp;  = T(n/4) + 2 + 2 = T(n/2<sup>2</sup>) + 2.2 <br>
+&emsp; &emsp; &emsp;  = T(n/2<sup>3</sup>) + 3.2 <br>
+&emsp; &emsp; &emsp; &emsp; &emsp; &emsp; :  <br>
+&emsp; &emsp; &emsp; &emsp; &emsp; &emsp; :  <br>
+&emsp; &emsp; &emsp;  = T(1) + (log n).2 <br>
+&emsp; &emsp; &emsp;  = 2 + 2 log n <br>
+&emsp; &emsp; &emsp;  = 2(1 + log n)
+</p>
+
+<p>In general, T(n) takes the form <b>T(n) = a f(n) + b </b>where f(n) can be n, n^2, 
+log n, nlog n, sqrt(n), 2^n, n!. As n increases, a and b become insignificant. Hence, 
+f(n) matters for our analysis and constants are left out.</p>
+
+
+    </div>
+  </div>
+
+  <div id="navigation">
+  <p><br><strong><a href="../index.html">Home</a></strong></p>
+    <ul>
+      <li><a href="01_Intro.html">Why algorithm design matters?</a></li>
+      <li><a href="02_Analysis.html">Analyzing algorithms</a></li>
+      <li><a href="03_Asymptotics.html">Asymptotic notations</a></li>
+      <li><a href="04_Masters.html">Master's method</a></li>
+      <li><a href="05_Quadratic_sorting.html">Quadratic-time sorting</a></li>
+      <li><a href="06_nlogn_sorting.html">NlogN sorting (Divide-and-Conquer)</a></li>
+      <li><a href="07_Heapsort.html">Heap and Heap sort</a></li>
+      <li><a href="08_Linear_sorting.html">Lower bound and Linear-time sorting</a></li>
+      <li><a href="09_Selection.html">Selection problem</a></li>
+      <li><a href="10_Optimization_Problems.html">Optimization Problems</a></li>
+      <li><a href="11_Task_Scheduling.html">Task Scheduling</a></li>
+      <li><a href="12_Integer_Knapsack.html">Integer Knapsack</a></li>
+      <li><a href="13_LCS.html">Longest Common Subsequence</a></li>
+      <li><a href="14_LIS.html">Longest Increasing Subsequence</a></li>
+      <li><a href="15_LPS.html">Longest Palindromic Subsequence</a></li>
+      <li><a href="16_MSS.html">Maximum Subsequence Sum</a></li>      </ul>
+  </div>
+
+  <div id="extra">
+  </div>
+  <div id="footer", align="right">
+    <p>Send comments to swaminathanj@am.amrita.edu</p>
+  </div>
+</div>
+</body>
+</html>
+
+</body>

@@ -1,1 +1,279 @@
-Aum Amma
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Why Algorithm Design Matters</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../styles.css" />
+        <script type="text/javascript" src="../scripts/shCore.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushBash.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCpp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCss.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushDiff.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushJava.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushJScript.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPhp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPlain.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPython.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushRuby.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushScala.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushSql.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushVb.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushXml.js"></script>
+        <link type="text/css" rel="stylesheet" href="lecture-notes.css"/>
+        <link type="text/css" rel="stylesheet" href="../styles/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="../styles/shThemeDefault.css"/>
+        <script type="text/javascript">
+            //SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+            SyntaxHighlighter.defaults['toolbar'] = false;
+            SyntaxHighlighter.defaults['auto-links'] = false;
+ 
+            SyntaxHighlighter.all();
+        </script>
+</head>
+
+<body>
+ 
+<div id="container">
+<div id="header"><h1>Design and Analysis of Algorithms<img align="right" src="../logo-dark.png" alt="Amrita"> </h1> </div>
+  <div id="wrapper">
+    <div id="content">
+
+<table align="right">
+  <td align="left"><a href="../index.html">Prev</a></td>
+  <td align="right"><a href="02_Analysis.html">Next</a></td>
+</table>
+
+<h2>Why Algorithm Design Matters?</h2>
+
+<p>This course focuses on designing "good" algorithms and data structures. Basic knowledge of one programming language such as C, C++ or Java is assumed.</p>
+
+<h3>A warm up</h3>
+
+<p><strong>1) How much time does an HelloWorld program take to run?</strong></p>
+
+<p>Best case time = Worst case time = Average case time = c<br>
+ for some constant c. More specifically 1 time unit.</p>
+
+<p><strong>2) Given an array A[] of size n finding out if a number x exists in A[]?</strong></p>
+<p>Linear search.</p>
+<ul>
+  <li> Best case time = 1 (The first element equals x)</li>
+  <li> Worst case time = n (Last element or no element equals x)</li>
+  <li> Average case time = (1 + 2 + ... + n)/n = n(n+1)/2n = (n+1)/2<br>
+   (i.e. assuming the x can be present in each of the n positions
+    with equal probability)</li>
+</ul>
+
+<p><strong>3) Will it help if the array is sorted?</strong></p>
+
+<p>It won't if we start searching from the beginning. We need to use a different strategy.</p>
+
+<p>What is the strategy?</p>
+<p>Binary search!</p>
+<ul>
+  <li>Step 1: Check x against the middle element of the array A[]</li>
+  <li>Step 2: If successful, return true</li>
+  <li>Step 3: If not, check</li>
+      <ul>    
+        <li>if x < middle element, search for x in 1st half of A[]</li>
+        <li>if x > middle element, search for x in 2nd half of A[]</li>
+      </ul>
+  <li>Repeat the steps until x is found or no A[] cannot be divided further.</li>
+</ul>
+
+<p><strong>Advantage</strong>: At every state/iteration, the search space is reduced
+by half. So the worst case time reduces to log n. </p>
+
+<p>To summarize, </p>
+<ul>
+  <li>Best case time = 1</li>
+  <li>Worst case time = log n (base 2)</li>
+  <li>Average case time = (log n + 1)/2  (approximately)</li>
+</ul>
+
+<p><strong>What difference does it make?</strong></p>
+
+<p>Consider the case when n = 10^9 (which is common in today's real-life applications.</p>
+<p>Worst case time = 10^9 with first strategy (linear search)</p>
+
+<p>Worst case time = log 10^9 with second one (binary search)<br>
+&emsp; &emsp; = log (10^3)^3<br>
+&emsp; &emsp; = log (2^10)^3  (approximately 10^3 = 2^10)<br>
+&emsp; &emsp; = log (2^30) <br>
+&emsp; &emsp; = 30 log 2 <br>
+&emsp; &emsp; = 30</p>
+
+<p><b>10^9 vs 30. Algorithm design matters!!!</b></p>
+
+<p><strong>4) Given an array of size n, how do you find the max element?</strong></p>
+
+<p>We have to make n-1 comparisons to find the max element.</p>
+<ul>
+  <li>    Step 1: Assume max = A[1]</li>
+  <li>    Step 2: Iteratively check if A[2], ..., A[n] is > max<br>
+              If so, reassign max = A[i]</li>
+</ul>
+
+<p>Best case time = Worst case time = Average case time = n</p>
+
+<p><strong>5) Does it help if the array is sorted?</strong></p>
+
+<p>Yes. We can pick the last element right away.</p>
+
+<p>Best case time = Worst case time = Average case time = 1</p>
+
+<p><strong>6) How long does it take to pick the max 2 elements?</strong></p>
+
+<p>If the list is sorted, pick the last and second last.</p>
+
+<p>Best case time = Worst cast time = Average case time = 2</p>
+
+<p><strong>7) What if the list is not sorted?</strong></p>
+<ul>
+    <li>To pick the max element : n-1 comparisons</li>
+    <li>Remove the max element from the list.</li>
+    <li>To pick the second max  : n-2 comparisons</li>
+</ul>
+
+<p>Total time taken = (n-1) + (n-2) = 2n-3 comparisons</p>
+
+<p><strong>8) Can we do better?</strong></p>
+
+<p>Yes. With a different strategy. See the example below.</p>
+
+<p>Consider the list {8, 4, 6, 2, 1, 7, 5, 3}. Find the max element as follows.</p>
+<pre>
+   8       4       6       2       1       7       5       3 
+   |       |       |       |       |       |       |       | 
+   |_______|       |_______|       |_______|       |_______| 
+       |               |               |               |       
+       |               |               |               |       
+       8               6               7               5       
+       |               |               |               |     
+       |_______________|               |_______________|     
+              |                                |             
+              |                                |             
+              8                                7             
+              |                                |             
+              |________________________________|             
+                               |                             
+                               |                             
+                               8
+</pre>
+
+<p>Now, to find the second max, we don't have to do n-2 comparisons.
+   It is enough we compare the numbers 4, 6 and 7. Why?</p>
+
+<p>Because, second max would have only lost to max at some stage.
+   Max was compared to other elements only in 3 stages. So, pick
+   only those 3 elements and find the largest among them. In other
+   words, we make only log n (i.e. log 8 = 3) comparisons to find
+   the second max instead of the n-2 comparisons.</p>
+
+        <p>Total comparisons = (n - 1) + log n = n + log n - 1</p>
+
+        <p>Certainly better than 2n - 3 !!</p>
+
+<p><strong>9) How long does it take to compute GCD? Lets take an example: 
+GCD(96,60)</strong></p>
+
+<p>School book approach:</p>
+<pre>
+        2|<u>96</u>             2|<u>60</u>   
+        2|<u>48</u>             2|<u>30</u>   
+        2|<u>24</u>             3|<u>15</u>   
+        2|<u>12</u>                5          
+         2|<u>6</u>                                
+           3                                  </pre>
+<p>Common prime divisors = 2, 2, 3 </p>
+<p>    GCD = 2 x 2 x 3 = 12      </p>
+
+<p>Well, what exactly was our algorithm?</p>
+<ul>
+  <li>Break the first number into its prime factors</li>
+  <li>Break the second number into its prime factors</li>
+  <li>Find the common factors</li>
+  <li>Multiply them</li>
+</ul>  
+
+<p><strong>10) Is there a better approach?</strong></p>
+
+<p>    Yes. The 2000 year old Euclid algorithm.</p>
+<pre>
+    ----------------------------------
+     Step    m    n    m%n (reminder)
+    ----------------------------------
+       1     96   60        36          Note: Stop when reminder is 0
+       2     60   36        24                
+       3     36   24       <b>[12]</b>
+       4     24   12         0 [STOP]
+    ----------------------------------
+</pre>
+
+<p>The reminder of the last-but-one step is the GCD.</p>
+
+<p> Note, that the number of steps required varies and is not 
+    a constant. But certainly it is faster than school book 
+    approach by several fold.</p>
+
+<p><strong>So what is the conclusion?</strong></p>
+
+<p>It is important to design "good" algorithms. And we also need a framework to analyze and 
+judge objectively what is "good". In this course, we foucs on common design strategies that 
+are proved to be applicable to many scenarios (but not all). Primary basis for analytical 
+framework would be <blue>time taken</blue> and <blue>space (memory) consumed</blue> by a 
+given algorithm. More emphasises is given to time over memory.</p>
+
+
+<p><strong>Important Problem Types</strong>: sorting, selection, searching, string processing,
+task scheduling, optimization problems, graph problems, combinatorial, numerical and geometric 
+problems.</p>
+
+<p><strong>Algorithm Design Strategies</strong>: brute-force, divide-and-conquer, greedy technique
+dynamic programming, backtracking, branch-and-bound, randomized approaches, specialized strategies.
+
+<p><strong>Data structures</strong>: Stack, Queue, List, Trees, Priority queues, Set, Map, 
+Binary Search Trees, Graphs.</p>
+
+<p><strong>Analysis framework</strong> Asymptotic notations, worst case analysis, average case
+analysis, solving recurrence equations, Proof techniques, Amortization, NP completeness.</p>
+
+
+
+    </div>
+  </div>
+
+  <div id="navigation">
+  <p><br><strong><a href="../index.html">Home</a></strong></p>
+    <ul>
+      <li><a href="01_Intro.html">Why algorithm design matters?</a></li>
+      <li><a href="02_Analysis.html">Analyzing algorithms</a></li>
+      <li><a href="03_Asymptotics.html">Asymptotic notations</a></li>
+      <li><a href="04_Masters.html">Master's method</a></li>
+      <li><a href="05_Quadratic_sorting.html">Quadratic-time sorting</a></li>
+      <li><a href="06_nlogn_sorting.html">NlogN sorting (Divide-and-Conquer)</a></li>
+      <li><a href="07_Heapsort.html">Heap and Heap sort</a></li>
+      <li><a href="08_Linear_sorting.html">Lower bound and Linear-time sorting</a></li>
+      <li><a href="09_Selection.html">Selection problem</a></li>
+      <li><a href="10_Optimization_Problems.html">Optimization Problems</a></li>
+      <li><a href="11_Task_Scheduling.html">Task Scheduling</a></li>
+      <li><a href="12_Integer_Knapsack.html">Integer Knapsack</a></li>
+      <li><a href="13_LCS.html">Longest Common Subsequence</a></li>
+      <li><a href="14_LIS.html">Longest Increasing Subsequence</a></li>
+      <li><a href="15_LPS.html">Longest Palindromic Subsequence</a></li>
+      <li><a href="16_MSS.html">Maximum Subsequence Sum</a></li>    </ul>
+  </div>
+
+  <div id="extra">
+  </div>
+  <div id="footer", align="right">
+    <p>Send comments to swaminathanj@am.amrita.edu</p>
+  </div>
+</div>
+</body>
+</html>
+
+</body>

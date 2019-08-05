@@ -1,0 +1,183 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>CSE at Amrita: Swaminathan J</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../styles.css" />
+        <script type="text/javascript" src="../scripts/shCore.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushBash.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCpp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCss.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushDiff.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushJava.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushJScript.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPhp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPlain.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPython.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushRuby.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushScala.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushSql.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushVb.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushXml.js"></script>
+        <link type="text/css" rel="stylesheet" href="lecture-notes.css"/>
+        <link type="text/css" rel="stylesheet" href="../styles/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="../styles/shThemeDefault.css"/>
+        <script type="text/javascript">
+            //SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+            SyntaxHighlighter.defaults['toolbar'] = false;
+            SyntaxHighlighter.defaults['auto-links'] = false;
+ 
+            SyntaxHighlighter.all();
+        </script>
+</head>
+
+<body>
+ 
+<div id="container">
+<div id="header"><h1>Design and Analysis of Algorithms<img align="right" src="../logo-dark.png" alt="Amrita"> </h1> </div>
+  <div id="wrapper">
+    <div id="content">
+
+<table align="right">
+  <td align="left"><a href="08_Linear_sorting.html">Prev</a></td>
+  <td align="right"><a href="10_Optimization_Problems.html">Next</a></td>
+</table>
+
+<h2>Selection</h2>
+
+<p>The selection problem is concerned with finding the k<sup>th</sup> ranked element in a given array A of size n.
+Selection is trivial if the array is already sorted accessing the element at index k gives the k<sup>th</sup>
+ranked element instantly. We assume that the array is not sorted already.</p>
+
+<ul>
+  <li><b>k = 1</b>: Minimum</li>
+  <li><b>k = 2</b>: 2nd Minimum</li>
+  <li><b>k = n/2</b>: Median</li>
+  <li><b>k = n-1</b>: 2nd Maximum</li>
+  <li><b>k = n</b>: Max element</li>
+  <li>In general, k could be any value between 1 and n</li>
+</ul>
+
+<p>In <a href="01_Intro.html">Why algorithm design matters?</a> we already saw how to use divide-and-conquer technique
+to find the max and 2nd max element. We found that although divide-and-conquer did not help in determining the max any
+faster than the brute-force approach (of scanning left to right), it did help in reducing the the time taken to find the 
+2nd max. i.e. from 2n - 3 to n + logn - 1. Finding min and 2nd min are analogous.</p>
+
+<h3>Finding max and min</h3>
+
+<p>Consider the problem of finding max and min. As noted previously, max takes n-1 comparisons. However, this information
+cannot be used find the min faster (unlike determining 2nd max). Hence, it takes n-2 comparisons again to find the min, 
+so making it an overall 2n-3 comparisons. Is it possible to do better?</p>
+
+<p>Yes. 2n-3 can be reduced to 1.5n-2. Although, both are linear, the latter is better than the former.</p>
+<p><b>Key idea</b>: Divide the array recursively until the size is 2 (base case). At this stage, by making a single 
+comparison, both max and min can be determined. From this point onwards, as the recursion reverts, max of left subarray
+ is compared with the max of the right subarray. Similarly, min of left and right subarray can be determined. Whichever 
+is bigger (or smaller) is the new max (or min). Thus, two comparisons between the left and right subarrays (regardless 
+of their size).</p>
+
+<pre>
+           {5     3     8     4     1     7     2     6}          n = 8
+                   /                           \
+                  /                             \
+        {5    3    8    4}               {1    7    2    6}       n = 4
+           /          \                     /          \
+          /            \                   /            \
+      {5   3}        {8   4}           {1   7}        {2   6}     n = 2 (base case)
+    -----------------------------------------------------------
+      (5 < 3)?       (8 < 4)?          (1 < 7)        (2 < 6)?    4 * 1 = 4 comparisons
+    max=5,min=3    max=8,min=4       max=7,min=1    max=6,min=2
+            \         /                    \         /
+             \       /                      \       /
+         (5 < 8)?  (3 < 4)?              (7 < 6)?  (1 < 2)?       2 * 2 = 4 comparisons
+          max=8     min=3                 max=7     min=1
+                         \               /
+                          \             /
+                        (8 < 7)?  (3 < 1)?                        1 * 2 = 2 comparisons
+                         max=8     min=1
+</pre>
+
+<p>Total number of comparisons made is 4 + 4 + 2 = 10 = 12 - 2 = 1.5n - 2</p>
+
+<h3>Finding the median</h3>
+
+<p>To find the max it is sufficient to make one comparison at any point. This was possible since max has a special property 
+that it is larger than every other element of the array. But for computing the median, it is not easy since it is smaller 
+than one half of the elements and larger than the rest. So, one comparison will not suffice. We need a different strategy.
+Hence, we try to solve the general problem of finding the k<sup>th</sup> ranked element and use it for median too.</p>
+
+<h3>Finding the k<sup>th</sup> ranked element</h3>
+
+<p>A brute-force approach to find the k<sup>th</sup> element is to sort the array and pick the element at index k. This 
+takes O(nlogn) time. But wait! Do we really need to sort the entire array? Can't we stop after some iterations? If we 
+were to do so, which sorting algorithms would be suitable?</p>
+
+<p><b>Bubble sort & Selection sort</b>: After each iteration of the outer loop, the i<sup>th</sup> largest element comes to 
+(n-i)<sup>th</sup> position. To determine k<sup>th</sup> (smallest) element, bubble sort can be stopped after n-k iterations 
+and (n-k)<sup>th</sup> element can be returned. This results in O(kn) time complexity. Since k can be any value from 1 to n,
+it is still O(n<sup>2</sup>).</p>
+
+<p><b>Insertion sort</b>: After each iteration of the outer loop, insertion sort ensures that the first i+1 elements are
+in a sorted state. However, these elements need not the smallest i+1 elements. Hence, the iterations cannot be stopped
+until the entire sorting completes. The time complexity is O(n<sup>2</sup>).</p>
+
+<p><b>Merge sort</b>: In merge sort there is no guarantee that the k<sup>th</sup> element will come to its position 
+after certain number iterations. The entire sorting has to complete to pick the k<sup>th</sup> element resuling in
+the time complexity of O(nlogn).
+
+<p><b>Heap sort</b>: Since max element is at the root of the heap, the heap sort algorithm can be stopped after n-k-1 
+iterations and the root can be picked to get the k<sup>th</sup> element. This takes O(klogn) time making it the most
+suited among the algorithms discussed thus far.</p>
+
+<p><b>Quick sort</b>: It is worthwhile to explore quick sort since it has got some magical properties. Firstly, it has
+some 'randomness' in its way of working. Secondly, the size of the partitions can indicate where we need to search.</p>
+<ul>
+  <li>Lets say after the first iteration, the size of left partition is k-1, then we are done. The pivot is the
+k<sup>th</sup> element and can be returned.</li>
+  <li>If the size of the left partition is greater than k-1, then we need to search for k<sup>th</sup> element in
+the left partition.</li>
+  <li>If the size of the left partition is less than k-1, say m, then we need to search (k-m-1)<sup>th</sup> element
+in the right partition.</li>
+</ul> 
+
+<p>Determining the time complexity is not straightforward. The best case is n if pivot were to be that element. The
+worst case, of course, can be n<sup>2</sup> if we were to pick a bad pivot k or n-k times, whichever is bigger.
+As noted in quick sort, worst case happens very rarely. Hence, we are interested in finding the average case. It
+turns out that the average case works out to O(n). For the actual work out of the average case, standard books on
+algorithms can be referred.</p>
+
+   </div>
+  </div>
+
+  <div id="navigation">
+  <p><br><strong><a href="../index.html">Home</a></strong></p>
+    <ul>
+      <li><a href="01_Intro.html">Why algorithm design matters?</a></li>
+      <li><a href="02_Analysis.html">Analyzing algorithms</a></li>
+      <li><a href="03_Asymptotics.html">Asymptotic notations</a></li>
+      <li><a href="04_Masters.html">Master's method</a></li>
+      <li><a href="05_Quadratic_sorting.html">Quadratic-time sorting</a></li>
+      <li><a href="06_nlogn_sorting.html">NlogN sorting (Divide-and-Conquer)</a></li>
+      <li><a href="07_Heapsort.html">Heap and Heap sort</a></li>
+      <li><a href="08_Linear_sorting.html">Lower bound and Linear-time sorting</a></li>
+      <li><a href="09_Selection.html">Selection problem</a></li>
+      <li><a href="10_Optimization_Problems.html">Optimization Problems</a></li>
+      <li><a href="11_Task_Scheduling.html">Task Scheduling</a></li>
+      <li><a href="12_Integer_Knapsack.html">Integer Knapsack</a></li>
+      <li><a href="13_LCS.html">Longest Common Subsequence</a></li>
+      <li><a href="14_LIS.html">Longest Increasing Subsequence</a></li>
+      <li><a href="15_LPS.html">Longest Palindromic Subsequence</a></li>
+      <li><a href="16_MSS.html">Maximum Subsequence Sum</a></li>    </ul>
+  </div>
+
+  <div id="extra">
+  </div>
+  <div id="footer", align="right">
+    <p>Send comments to swaminathanj@am.amrita.edu</p>
+  </div>
+</div>
+</body>
+</html>

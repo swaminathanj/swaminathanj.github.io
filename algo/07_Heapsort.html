@@ -1,0 +1,520 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Heap and Heap Sort</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../styles.css" />
+        <script type="text/javascript" src="../scripts/shCore.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushBash.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCpp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCss.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushDiff.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushJava.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushJScript.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPhp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPlain.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPython.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushRuby.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushScala.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushSql.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushVb.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushXml.js"></script>
+        <link type="text/css" rel="stylesheet" href="lecture-notes.css"/>
+        <link type="text/css" rel="stylesheet" href="../styles/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="../styles/shThemeDefault.css"/>
+        <script type="text/javascript">
+            //SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+            SyntaxHighlighter.defaults['toolbar'] = false;
+            SyntaxHighlighter.defaults['auto-links'] = false;
+ 
+            SyntaxHighlighter.all();
+        </script>
+</head>
+
+<body>
+ 
+<div id="container">
+<div id="header"><h1>Design and Analysis of Algorithms<img align="right" src="../logo-dark.png" alt="Amrita"> </h1> </div>
+  <div id="wrapper">
+    <div id="content">
+
+<table align="right">
+  <td align="left"><a href="06_nlogn_sorting.html">Prev</a></td>
+  <td align="right"><a href="08_Linear_sorting.html">Next</a></td>
+</table>
+
+<h2>Heap and Heap sort</h2>
+
+<p>Certain problems can be efficiently solved by use of an appropriate data structure. The sorting problem too can be
+solved efficiently using the data structure: (Binary) Heap.</p>
+		
+<p>Note: The 'Heap' data structure has nothing to do with 'Heap' concept in Operating systems.</p>
+
+<p><b>What is a binary heap?</b></p>
+
+<p>A binary heap, more simply a heap, is a binary tree where parent and children are related by a specific property 
+based on whether it is a max-heap and min-heap.</p>
+
+<p><ul>
+  <li>In a max heap, the parent is greater than the children.</li>
+  <li>In a min heap, the parent is smaller than the children.</li>
+  <li>Siblings don't share any relation between each other.</li>
+</ul></p>
+
+<table border="1">
+  <td align="center">
+    A min heap
+  	<img src="images/minheap.png"</img>
+  </td>
+  <td align="center">
+  	A max heap
+  	<img src="images/maxheap.png"</img>
+  </td>
+  <td align="center">
+  	Not a max heap - 44 violates
+  	<img src="images/notamaxheap.png"</img>
+  </td>
+</table>
+
+
+
+<p><b>Note</b>: We will be concerned only with Max-Heap. Working with min-heap is analogous.</p>
+
+<p><b>What makes 'heap' special?</b></p>
+<ul>
+<li>It is complete. Elements are added level-by-level and violation of heap property is fixed by exchanges.</li>
+<li>Max element is sitting at the root and hence it take &Theta;(1) time to access it.</li>
+<li>It takes &Theta;(logn) time to perform insert and delete operations. In a sorted array it is &Theta;(n).</li>
+<li>An array can be used to represent the heap. Consider the max heap given above. They can be stored as: 
+{44,8,20,3,7,10,9}.</li>
+
+  <table border="1" align="center">
+    <tr>
+      <td align="center">i</td>	
+      <td align="center">0</td>
+      <td align="center">1</td>
+      <td align="center">2</td>
+      <td align="center">3</td>
+      <td align="center">4</td>
+      <td align="center">5</td>
+      <td align="center">6</td>
+    <tr>
+    <tr>
+      <td align="center">A[i]</td>
+      <td align="center">44</td>	
+      <td align="center">8</td>
+      <td align="center">20</td>
+      <td align="center">3</td>
+      <td align="center">7</td>
+      <td align="center">10</td>
+      <td align="center">9</td>
+    <tr>
+  </table>   
+
+<br>
+<li>Assuming 0-based array indexing, given a number at index i</li>
+    <ul>
+      <li>its children can be found at locations 2i+1 and 2i+2</li>
+      <li>its parent can be found at location (i-1)/2 (floor value)</li>
+    </ul> 
+</ul>   
+
+
+<p><b>Inserting into a heap: An example</b></p>
+
+<p>An insert operation adds the new element to the end of the heap.</p>
+
+<table border="1">
+  <td align="center">
+    Initial <br> Start state of heap
+  	<img src="images/insert1.png"</img>
+  </td>
+  <td align="center">
+  	Insert 30 <br> No more a heap
+  	<img src="images/insert2.png"</img>
+  </td>
+  <td align="center">
+  	Fix heap <br> Exchange 11 and 30
+  	<img src="images/insert3.png"</img>
+  </td>
+  <td align="center">
+  	Fix heap <br> Exchange 20 and 30
+  	<img src="images/insert4.png"</img>
+  </td>
+</table>
+
+<p>Before we can exchange, at most 2 comparisons may be necessary. Whenever the heap property gets broken, the bigger of the left, right will be interchanged with the parent.<p>
+<ul>
+  <li>Two comparisons + one exchange = O(1) time</li>
+  <li>At most log n comparisons + exchanges are necessary to fix the heap since the height of a heap is log n.</li>
+  <li>In the above case, n = 5 and hence we did floor[log 5] = 2 comparisons.</li>
+</ul>
+
+<p><b>Deleting from a heap: An example</b></p>
+
+<p>A delete operation in a heap always removes the root.</p>
+
+<table border="1">
+  <td align="center">
+    Initial <br> Start state of heap
+  	<img src="images/delete1.png"</img>
+  </td>
+  <td align="center">
+  	Delete root <br> Root is empty
+  	<img src="images/delete2.png"</img>
+  </td>
+  <td align="center">
+  	Bring last element <br> 7 to the root
+  	<img src="images/delete3.png"</img>
+  </td>
+  <td align="center">
+  	Fix heap <br> Exchange 7 and 14
+  	<img src="images/delete4.png"</img>
+  </td>
+  <td align="center">
+  	Fix heap <br> Exchange 7 and 8
+  	<img src="images/delete5.png"</img>
+  </td>
+</table>
+
+<p>Again, the number of comparisons + exchanges done is log n since the height of the tree is log n.</p>
+
+<h3>Sorting using Heap</h3>
+
+<p>Sorting can be done by using heap in 2 steps.</p>
+
+<ol>
+  <li><b>Build Max Heap</b>: Given a list of elements, construct max heap (also referred to as Heapify)</li>
+  <li><b>Heap Sort</b>: Repeatedly remove max element and fixing the heap every time. This step can be done 
+  in-place by exchanging the max element with the last and discounting the last from heap.</li>
+</ol>
+
+<p>We describe both the steps using an example. Consider the array: {7, 4a, 3, 8, 12, 18, 4b, 20, 1}. 4a and 4b
+represent the same number 4. a and b are used to distinguish one from the other.</p>
+
+<h3>1. Build Max Heap</h3> 
+<h4>Step 0: Create a binary tree by adding the array members in a level-order fashion.</h4>
+
+<table align="center" border="1">
+  <td align="center">
+  	<img src="images/heapify1.png" width="250">
+  </td>
+</table>
+
+<p>Clearly, the binary tree does not satisfy the heap property. Our objective is to turn this tree into a heap
+by fixing the nodes that violate the property. For this we have to decide from which node we have to start fixing. 
+Clearly, the leaf nodes don't need any correction since they do not violate the heap property. Hence, we start 
+from n/2<sup>th</sup> node (floor). One may start fixing the heap from root to n/2<sup>th</sup> node or in the 
+reverse direction. Here, we fix the heap in the reverse direction and making appropriate exchanges.</p>
+
+<h4>Step 1: i = (n-1)/2 = 3</h4>
+
+<p>The subtree under 8 violates. Exchange 8 and 20. Note that we need to make two comparisons (i.e. 8 vs 20 and 
+8 vs 11) to decide if we need to make an exchange  and if so, which node (20 or 11) should become the new parent.</p>
+
+<table align="center" border="1">
+  <td align="center">
+  	<img src="images/heapify2.png" width="250">
+  </td>
+</table>
+
+<p><center>The subtree rooted under the index i = 3 satisfies the heap property.</center></p>
+
+<h4>Step 2: i = (n-1)/2 - 1 = 2</h4>
+
+<p>The subtree under 3 violates. Exchange 3 and 18.</p>
+
+<table align="center" border="1">
+  <td align="center">
+  	<img src="images/heapify3.png" width="250">
+  </td>
+</table>
+
+<p><center>The subtree rooted under the index i = 2 satisfies the heap property.</center></p>
+
+<h4>Step 3: i = (n-1)/2 - 2 = 1</h4>
+
+<p>The subtree under 4a violates. Exchange 4a and 20. Notice that this exchange causes violation underneath
+its left subtree. Hence, one more exchange is required. Exchange 4a and 11. </h4>
+
+<table align="center" border="1">
+  <td align="center">
+  	<img src="images/heapify4.png" width="250">
+  </td>
+  <td align="center">
+  	<img src="images/heapify5.png" width="250">
+  </td>
+</table>
+
+<p><center>The subtree rooted under the index i = 1 satisfies the heap property.</center></p>
+
+<h4>Step 4: i = (n-1)/2 - 3 = 0</h4>
+
+<p>The subtree under 7 violates. Exchange 7 and 20. Notice that this exchange causes violation underneath
+its left subtree. Hence, one more exchange is required. Exchange 7 and 12.</p>
+
+<table align="center" border="1">
+  <td align="center">
+  	<img src="images/heapify6.png" width="250">
+  </td>
+  <td align="center">
+  	<img src="images/heapify7.png" width="250">
+  </td>
+</table>
+
+<p><center>The subtree rooted under the index i = 0 satisfies the heap property.</center></p>
+
+<p><b>NOTE</b>: In the above step two exchanges were enough. However, in the worst case one more exchange may have 
+been required (had the second exchange happened in the left subtree and caused violation with its children).</p>
+
+<p><b>A word about 'stability' property</b>: When we started to build max heap 4a was relatively ahead of 4b. However,
+at the end of BuildMaxHeap step it ended up after 4b. Since, heap is non-linear it is not possible to guarantee the
+stability property.</p>
+
+<h4>Time complexity of Build Max Heap</h4>
+
+<p>We consider the 2 comparisons + 1 exchange as single operation taking O(1) time.</p>
+
+<p>Total number of nodes = 9</p>
+
+<p>Actual number of operations from steps 1 ~ 4 = 1 + 1 + 2 + 2 = 6</p>
+
+<p>Number of operations in the worst case = 1 + 1 + 2 + 3 = 7 (considering the reasoning at the end of Step 4)</p>
+
+<p>In general, the number of operations at any index i is equivalent to the height of the subtree rooted at i.
+Considering a complete binary tree of 2<sup>k</sup> - 1 nodes,
+<ul>
+  <li>n/2 (ceil) nodes will need 0 operation (as they are leaves and at height 0)</li>
+  <li>n/4 nodes will need 1 operation (as they are at height 1)</li>
+  <li>n/8 nodes will need 2 operations (as they are at height 2)</li>
+  <li>.... so on and so forth</li>
+  <li>1 node will need log n operations (as they are at height log n)</li>
+ </ul>
+
+<p>Therefore, (n/2).0 + (n/4).1 + (n/8).2 + .... + 2.(logn-1) + 1.logn = O(n)</p>
+
+<p>For detailed proof of time complexity, standard textbooks on algorithms can be referenced.</p>
+
+<h3>2. Heap Sort</h3> 
+
+<p>In this phase, the max element (at the root) is exchanged with the last element of the heap in an iterative fashion. 
+The heap size is decremented and henceforth, the last element is no more considered part of the heap. There are two 
+consequences due to this.</p>
+
+<ol>
+  <li>The violation of heap property caused due to the exchange of last element with root needs to be fixed.
+  This takes log n time.</li>
+  <li>As the Exchange-FixHeap cycle repeats, the initial part (denoting the heap) keeps shrinking in its size 
+  while the latter part (containing the sorted elements) keeps increasing in its size.  In the illustration below, 
+  the circled nodes denote the initial heap part while the square nodes denote the latter sorted part.</li>
+</ol>
+
+<p>As n-1 iterations complete, the entire heap turns into a sorted sequence when read in the level order.</p>
+
+<h4>Iteration i = 7</h4>
+
+<table align="center" border="1">
+  <td align="center">
+    Initial heap
+  	<img src="images/heapsort1.png" width="200">
+  </td>
+  <td align="center">
+    Exchange; size--
+  	<img src="images/heapsort2.png" width="200">
+  </td>
+  <td align="center">
+    Fix heap
+  	<img src="images/heapsort3.png" width="200">
+  </td>
+</table>
+
+<h4>Iteration i = 6</h4>
+
+<table align="center" border="1">
+  <td align="center">
+    Exchange; size--
+  	<img src="images/heapsort5.png" width="200">
+  </td>
+  <td align="center">
+    Fix heap
+  	<img src="images/heapsort6.png" width="200">
+  </td>
+  <td align="center">
+    Fix heap
+  	<img src="images/heapsort7.png" width="200">
+  </td>
+</table>
+
+<h4>Iteration i = 5</h4>
+
+<table align="center" border="1">
+  <td align="center">
+    Exchange; size--
+  	<img src="images/heapsort8.png" width="200">
+  </td>
+  <td align="center">
+    Fix heap
+  	<img src="images/heapsort9.png" width="200">
+  </td>
+  <td align="center">
+    Fix heap
+  	<img src="images/heapsort10.png" width="200">
+  </td>
+</table>
+
+<h4>Iteration i = 4</h4>
+
+<table align="center" border="1">
+  <td align="center">
+    Exchange; size--
+  	<img src="images/heapsort11.png" width="200">
+  </td>
+  <td align="center">
+    Fix heap
+  	<img src="images/heapsort12.png" width="200">
+  </td>
+  <td align="center">
+    Fix heap
+  	<img src="images/heapsort13.png" width="200">
+  </td>
+</table>
+
+<h4>Iteration i = 3</h4>
+
+<table align="center" border="1">
+  <td align="center">
+    Exchange; size--
+  	<img src="images/heapsort14.png" width="200">
+  </td>
+  <td align="center">
+    Fix heap
+  	<img src="images/heapsort15.png" width="200">
+  </td>
+  <td align="center">
+    Fix heap
+  	<img src="images/heapsort16.png" width="200">
+  </td>
+</table>
+
+<h4>Iteration i = 2</h4>
+
+<table align="center" border="1">
+  <td align="center">
+    Exchange; size-- <br>
+  	<img src="images/heapsort17.png" width="200">
+  </td>
+  <td align="center">
+    Fix heap <br>
+  	<img src="images/heapsort18.png" width="200">
+  </td>
+</table>
+
+<h4>Iteration i = 1</h4>
+
+<table align="center" border="1">
+  <td align="center">
+    Exchange; size-- <br>
+  	<img src="images/heapsort19.png" width="200">
+  </td>
+  <td align="center">
+    Fix heap <br>
+  	<img src="images/heapsort20.png" width="200">
+  </td>
+</table>
+
+<h4>Iteration i = 0</h4>
+
+<table align="center" border="1">
+  <td align="center">
+    Exchange; size-- <br>
+  	<img src="images/heapsort21.png" width="200">
+  </td>
+  <td align="center">
+    Fix heap not necessary<br>
+  	<img src="images/heapsort22.png" width="200">
+  </td>
+</table>
+
+<br><br>
+
+<p>It can be observed that, as the iterations proceed the number of exchanges reduce as the heap is continuously
+shrinking in size.</p>
+
+<p>The pseudo-code of the algorithm is given below.</p>
+
+<ul>
+<pre class="brush: java">
+
+    int[] HeapSort(int A[0..n-1]) {
+
+      BuildMaxHeap(A[0..n-1])  // O(n) time
+      i = n-2;           
+      while (i >= 0) {         // Loop runs n-1 times
+        Exchange(root, A[i])   // O(1)
+        i--;                   // O(1)
+        FixHeap(A[1..i])       // O(logn)                                
+      }                        // Overall O(nlogn)
+      return A[0..n-1]
+    }
+</pre>
+</ul>
+
+<p><b>1. Time complexity</b></p>
+
+<p>There are totally n-1 iterations. i.e. i goes from n-2 to 0. In each iteration i, at most log i exchanges are
+necessary as the size of the tree is log i.</p>
+
+<p>Number of operations = (n-1) exchanges + [log n-1 + log n-2 + .... + 1] FixHeaps <br>
+&emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; <= (n-1) exchanges + [log n + log n + .... + log n] FixHeaps<br>
+&emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; = n-1 + (n-1)logn<br>
+&emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; = O(nlogn).</p>
+
+<p>Since the BuildMaxHeap step takes linear time, the overall time complexity is O(n + nlogn) = O(nlogn).</p>
+
+<p><b>2. Space complexity</b></p>
+
+<p>It is easy to see that the space complexity S(n) = &Theta;(n) since we never used extra space beyond the heap size.
+For the same reason, we can conclude that the heap sort algorithm is in-place.</p>
+
+<p><b>Heap sort is not stable since the tree is non-linear and the way the elements will be shuffled during the run is
+unpredictable.</b></p>
+
+<p><b>Exercise</b>: Will Heap Sort work faster if the input sequence was already sorted? Why or why not?</p>
+
+
+
+   </div>
+  </div>
+
+  <div id="navigation">
+  <p><br><strong><a href="../index.html">Home</a></strong></p>
+    <ul>
+      <li><a href="01_Intro.html">Why algorithm design matters?</a></li>
+      <li><a href="02_Analysis.html">Analyzing algorithms</a></li>
+      <li><a href="03_Asymptotics.html">Asymptotic notations</a></li>
+      <li><a href="04_Masters.html">Master's method</a></li>
+      <li><a href="05_Quadratic_sorting.html">Quadratic-time sorting</a></li>
+      <li><a href="06_nlogn_sorting.html">NlogN sorting (Divide-and-Conquer)</a></li>
+      <li><a href="07_Heapsort.html">Heap and Heap sort</a></li>
+      <li><a href="08_Linear_sorting.html">Lower bound and Linear-time sorting</a></li>
+      <li><a href="09_Selection.html">Selection problem</a></li>
+      <li><a href="10_Optimization_Problems.html">Optimization Problems</a></li>
+      <li><a href="11_Task_Scheduling.html">Task Scheduling</a></li>
+      <li><a href="12_Integer_Knapsack.html">Integer Knapsack</a></li>
+      <li><a href="13_LCS.html">Longest Common Subsequence</a></li>
+      <li><a href="14_LIS.html">Longest Increasing Subsequence</a></li>
+      <li><a href="15_LPS.html">Longest Palindromic Subsequence</a></li>
+      <li><a href="16_MSS.html">Maximum Subsequence Sum</a></li>  </ul>
+  </div>
+
+  <div id="extra">
+  </div>
+  <div id="footer", align="right">
+    <p>Send comments to swaminathanj@am.amrita.edu</p>
+  </div>
+</div>
+</body>
+</html>

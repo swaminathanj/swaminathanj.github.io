@@ -1,0 +1,370 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Divide-and-Conquer Sorting</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../styles.css" />
+        <script type="text/javascript" src="../scripts/shCore.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushBash.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCpp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCss.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushDiff.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushJava.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushJScript.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPhp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPlain.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPython.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushRuby.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushScala.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushSql.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushVb.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushXml.js"></script>
+        <link type="text/css" rel="stylesheet" href="lecture-notes.css"/>
+        <link type="text/css" rel="stylesheet" href="../styles/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="../styles/shThemeDefault.css"/>
+        <script type="text/javascript">
+            //SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+            SyntaxHighlighter.defaults['toolbar'] = false;
+            SyntaxHighlighter.defaults['auto-links'] = false;
+ 
+            SyntaxHighlighter.all();
+        </script>
+</head>
+
+<body>
+ 
+<div id="container">
+<div id="header"><h1>Design and Analysis of Algorithms<img align="right" src="../logo-dark.png" alt="Amrita"> </h1> </div>
+  <div id="wrapper">
+    <div id="content">
+
+<table align="right">
+  <td align="left"><a href="05_Quadratic_sorting.html">Prev</a></td>
+  <td align="right"><a href="07_Heapsort.html">Next</a></td>
+</table>
+
+<h2>nlogn Sorting</h2>
+
+<p>In this section we discuss two sorting algorithms that takes &Theta;(nlogn) time. Both use divide-and-conquer
+technique.</p>
+<ul>
+  <li>4. Merge sort</li>
+  <li>5. Quick sort</li>
+</ul>
+
+<h3>4. Merge sort</h3>
+
+<p>The merge sort algorithm recursively divides the given array into two (almost) equal parts, sorts each half and merges 
+the sorted partition into one. The recursion stops once the partition is small enough (i.e has exactly one element)
+at which point the recursion rolls back and merging of the sorted lists happen. It is easy to infer that the recursion
+depth is logn. The algorithm is given below.</p>
+
+<pre class="brush: java">
+  // Algorithm: Merge sort
+
+  mergesort(Input A[low..high]) {	// Initially low = 1, high = n
+  	if (low == high)				// Array index starts from 1 to n
+  	  return A[low];
+  	mid = (low+high)/2;
+  	B[1..mid] = mergsort(A[low..mid]);
+  	C[1..mid] = mergesort(A[mid+1..high]);
+  	return merge(B[0..mid], C[0..mid]);
+  }
+</pre>
+
+<p>The following example demonstrates the working of merge sort for the example: {24, 13, 26, 1, 2, 27, 38, 15}</p>
+
+<p>
+<ul><h4>Divide</h4></ul>
+<ul>{24  13  26  1  2  27  38  15}</ul>
+<ul>{24  13  26  1} {2   27  38  15}</ul>
+<ul>{24  13}  {26   1}  {2   27}  {38  15}</ul>
+<ul>{24}  {13}  {26}  {1}  {2}  {27}  {38}  {15}</ul>
+
+<ul style="color: blue">Small enough to conquer now</ul>
+
+<ul><h4>Conquer (merge)</h4></ul>
+<ul>{13  24}  {1  26}   {2   27}  {15  38}</ul>
+<ul>{1   13   24   26}  {2   15   27  38} </ul>
+<ul>{1   2   13   15   24  26  27  38}</ul>
+
+<p>Since this is a recursive algorithm, we need to solve the recurrence equation. Before writing out the recurrence
+equation, we need to get a sense of how long does it take to merge two sorted lists. This can be done in linear time.
+This is achieved by using two pointers one pointing to the start of each sorted list and advancing them appropriately
+as the elements are compared.</p>
+
+<p>To see that consider the sorted lists B[] = {1,13,24,26} and C[] = {2,15,27,28}. The pointed elements are denoted
+by bold.</p>
+
+<p>B[] = {<b>1</b>,13,24,26} &emsp; C[] = {<b>2</b>,15,27,28} &emsp; 1 < 2, add 1 to A[], B-ptr++ &emsp; A[] = {1}</p>
+<p>B[] = {1,<b>13</b>,24,26} &emsp; C[] = {<b>2</b>,15,27,28} &emsp; 13 > 2, add 2 to A[], C-ptr++ &emsp; A[] = {1,2}</p>
+<p>B[] = {1,<b>13</b>,24,26} &emsp; C[] = {2,<b>15</b>,27,28} &emsp; 13 < 15, add 13 to A[], B-ptr++ &emsp; A[] = {1,2,13}</p>
+<p>B[] = {1,13,<b>24</b>,26} &emsp; C[] = {2,<b>15</b>,27,28} &emsp; 24 > 15, add 14 to A[], C-ptr++ &emsp; A[] = {1,2,13,15}</p>
+<p>B[] = {1,13,<b>24</b>,26} &emsp; C[] = {2,15,<b>27</b>,28} &emsp; 24 < 27, add 24 to A[], B-ptr++ &emsp; A[] = {1,2,13,15,24}</p>
+<p>B[] = {1,13,24,<b>26</b>} &emsp; C[] = {2,15,<b>27</b>,28} &emsp; 26 < 27, add 26 to A[], B-ptr++ &emsp; A[] = {1,2,13,15,24,26}</p>
+<p>B[] = {1,13,24,26} &emsp; C[] = {2,15,<b>27</b>,28} &emsp; B-ptr completes, add 27, 28 to A[] &emsp; A[] = {1,2,13,15,24,26,27,28}</p>
+
+<p>The number of comparisons done is at most n-1 where n is the total number of elements in both sorted lists. If all
+the elements in one list is less than any element in another list, n/2 comparisons are enough. Either way it takes O(n)
+comparisons. In addition, it takes linear time to add each element to the A[]. i.e. 2n operations. Therefore, the time
+taken to merge can be treated as n ignoring the constants.</p>
+
+<p>The algorithm for merge is given as follows. Note, array index starts from 1.</p>
+
+<pre class="brush: java">
+	merge(B[1..n/2],C[1..n/2]) {
+		i = 1; j = 1; k = 1;
+		while (i <= n/2 or j <= n/2) {
+			if (B[i] <= C[j])
+				A[i+j-1] = B[i]; i++;
+			else
+				A[i+j-1] = C[j]; j++;
+		}
+		if (i > n/2) 
+			copy C[j..n/2] to A[i+j-1..n];
+		else
+			copy B[i..n/2] to A[i+j-1..n]; 
+	}
+</pre>
+
+<h4>Analysis of merge sort</h4>
+
+<b>(a) Running Time</b>
+
+<p>The time complexity is given by the following recurrence equation.</p>
+<ul>T(1) = 1</ul>
+<ul>T(n) = 2T(n/2) + n</ul>
+<p>Applying Master's method,</p>
+<ul>log<sub>2</sub>2 = 1 and k = 1. Therefore T(n) = &Theta;(nlogn)</ul>
+
+<p>Intuitively, it takes logn steps to divide a given array of n elements into n single element array. The merging takes
+again logn steps and at each level at most n-1 comparisons are done. Thus, the time complexity is &Theta;(nlogn). 
+In the above example, the number of elements is 8 and therefore the recursion depth is log8 = 3.</p>
+
+<p><strong>Is there a benefit if input array A[] is already sorted?</strong></p>
+<p>No. Divide takes logn operations. Merge takes (n/2)* logn and hence the recurrence equation remains the same.</p>
+
+<b>(b) Memory (space) requirement</b>
+
+<p>The merging process requires another array of size n at each step. i.e. merge 2 sorted lists of n/2 size, 4 sorted 
+lists of n/4 size, ... (upto logn steps). Hence the space complexity is given by</p>
+<ul>S(n) = &Theta;(nlogn)</ul>
+
+<p>However, by managing the indices appropriately and using one temporary array of size n, merging can be done with
+2n space. Thus, space complexity can be reduced to &Theta;(n).</p>
+
+<b>(c) In-place or not</b>
+<p>No. Merge sort is not in-place. The merging step requires an extra 'n' space to combine the sorted lists. It is
+quite tedious to merge without an extra array.</p>
+
+<b>(d) Stable or not</b>
+<p>Merge sort is stable. While merging, the <b>if (B[i] <= C[j])</b> condition ensures that stability is maintained.</p>
+
+			
+<p><b>Note:</b> Though merge sort is &Theta;(nlogn) it is hardly ever used for main memory sorts, since merging and 
+the additional work spent in copying to the temporary array and back at each stage has the effect of slowing 
+down the algorithm considerably.</p>
+
+<h3>5. Quick sort</h3>
+
+<p>Quick sort is the fastest known sorting algorithm in practice. Its average running time is &Theta;(nlogn). Like
+merge sort it uses the divide-and-conquer technique, but in a slight different way. It is very fast due to a very 
+tight and highly optimized inner loop.</p>
+
+<p>In quick sort, a pivot is chosen and all the elements that are less than the pivot are moved to left of pivot while
+the rest of the elements moved to right of pivot. The quick sort is recursively invoked on the left and right partitions.
+Whenever a partition contains 0 or 1 element, the recursion stops. 
+The algorithm for quick sort is given below.</p>
+
+<pre class="brush: java">
+	// Algorithm: Quick Sort
+
+	quicksort(Input A[1..n]) {
+		if (A.size <= 1)
+			return A[];
+		pivot = A[1];		// Pivot is the first element		
+		for (i = 2; i <= n; i++) {
+			if (A[i] < pivot)
+				Move A[i] to L[]
+			else 
+				Move A[i] to R[]
+		}
+		return ( quicksort(L[]), A[1], quicksort(R[]) );
+	}
+</pre>
+
+<p>The following example demonstrates the working of the algorithm for {65,13,81,92,43,31,57,26,75,0}.</p>
+
+<center>
+<ul>{<b>65</b>,13,81,92,43,31,57,26,75,0}</ul>
+<ul><u>{<b>13</b>,43,31,26,57,0} &emsp; {65} &emsp; {<b>81</b>,92,75}</u></ul>
+<ul><u>{0} &emsp; {13} &emsp; {<b>43</b>,31,26,57}</u> &emsp; {65} &emsp; <u>{75} &emsp; {81} &emsp; {92}</u></ul>
+<ul>{0} &emsp; {13} &emsp; <u>{<b>31</b>,26} &emsp; {43} &emsp; {57}</u> &emsp; {65} &emsp; {75} &emsp; {81} &emsp; {92}</ul>
+<ul>{0} &emsp; {13} &emsp; <u>{26} &emsp; {31} &emsp; {}</u> &emsp; {43} &emsp; {57} &emsp; {65} &emsp; {75} &emsp; {81} &emsp; {92}</ul>
+<ul style="color: blue">Divide is done. Now conquer by merging the lists in left-to-right order.</ul>
+<ul>{0,13,26,31,43,57,65,75,81,92}</ul>
+</center>
+
+<p>In contrast to merge sort, quick sort does the comparison workduring the 'Divide' phase rather than the 'Conquer' 
+phase. In the 'Divide' phase, the pivot is compared with every other element to decide which partition it has to go.</p>
+
+<p>Some questions arise with respect to the algorithm.</p>
+
+<p><b>(1) How is the pivot chosen?</b></p>
+<p>The pivot can be any element in the array and can be chosen in an arbitrary manner. It could be the first, 
+last or any element of the list. It could be chosen in a random manner too. However, if we know the nature
+of the list, a better choice can be made.</p>
+
+<p><b>(2) Does the choice of pivot affect the efficiency of the algorithm?</b></p>
+<p>Yes. If the pivot chosen happens to be the median, the left and right partitions will be of almost equal size.
+Choosing the median as the pivot all the way through the recursion results in recursion depth of about logn. On
+the other hand, if the pivot chosen happens to be the smallest or the largest element of the list althrough,
+one of the partition will be empty and the other containing n-1 elements. Thus recursion depth will be n-1.</p>
+
+<p><b>(3) How many comparisions needs to be done overall?</b></p>
+<p>The number of comparisons depends on recursion depth. In the best case, when the recursion depth is logn,
+n*logn comparisons needs be done. In the worst case, when recursion depth is n-1, n*n comparions are needed.</p>
+
+<p>The running time of the algorithm for the best case is given by the recurrence equation:</p>
+<ul>T(n)<sub>bestcase</sub> = 2T([n-1]/2) + n <br>
+&emsp; &emsp; &emsp; &emsp; <= 2T(n/2) + n &emsp; (a slight overestimate)<br>
+&emsp; &emsp; &emsp; &emsp; = &Theta;(nlogn) &emsp; &emsp; (by applying Master's method)</ul>
+
+<p>The running time of the algorithm for the worst case is given by the recurrence equation:</p>
+<ul>T(n)<sub>worstcase</sub> = T(n-1) + n</ul>
+<p>Here a = 1, b = 1 and f(n) = n. Therefore,</p>
+<ul>T(n)<sub>worstcase</sub> = &Theta;(n.f(n)) = &Theta;(n<sup>2</sup>).</ul>
+
+<p><b>(4) What should be the size of left and right partitions?</b></p>
+<p>Since we don't know in advance how many elements are going to be smaller than (or larger than) the pivot,
+each partition should be of n-1 size to take care of the worst case. Hence, 2n space needs to be reserved.
+This results in the worst case space complexity of &Theta;(n<sup>2</sup>).</p>
+
+<p><b>(5) Can quick sort be done in place?</b></p>
+<p>Yes. It is possible to implement in-place quick sort. The following example demonstrates this.</p>
+
+<ul>{<b>65</b>,13,81,92,43,31,57,26,75,0} &emsp; // 65 is the pivot</ul>
+<p><b>Step 1</b>: Bring the pivot to the first position. In our case, the first element was chosen as the pivot.
+Hence this step was not necessary. Let's say the element at k<sup>th</sup> position is chosen as the
+pivot, swapping A[1] and A[k] can bring it to the first position.</p>
+
+<p><b>Step 2</b>: Find the leftmost element greater than pivot and rightmost element smaller than pivot.
+We will use 2 pointers: left and right. The use of these pointers are as follows:</p>
+<ul>
+	<li>The left pointer initially points to the second element and successively moved towards right
+	and stops at the position that contains the element greater than pivot.</li>
+	<li>The right pointer initially points to the last element and successively moved towards left
+	and stops at the position that contains the element smaller than pivot.</li>
+</ul>
+
+<ul>{<b>65</b>,<u>13</u>,81,92,43,31,57,26,75,0} &emsp; left = 2; A[left] < pivot; &emsp; left++<br>
+    {<b>65</b>,13,<u>81</u>,92,43,31,57,26,75,0} &emsp; left = 3; A[left] > pivot; &emsp; STOP</ul>
+
+Similarly,
+<ul>{<b>65</b>,13,81,92,43,31,57,26,75,<u>0</u>} &emsp; right = 10; A[right] < pivot; &emsp; STOP</ul>
+
+<p><b>Step 3</b>: Exchange the elements at the left and right position. Increment left. Decrement right.</p>
+
+Now exchange A[left] and A[right]. Increment left. Decrement right.
+<ul>{<b>65</b>,13,0,<u>92</u>,43,31,57,26,<u>75</u>,81} &emsp; left = 4; right = 9; </ul>
+
+<p>Repeat Step 2 and Step 3 until left == right.</p>
+<ul>{<b>65</b>,13,0,<u>92</u>,43,31,57,26,<u>75</u>,81} &emsp; left = 4; A[left] > pivot; &emsp; STOP &emsp; (Step 2)</ul>
+<ul>{<b>65</b>,13,0,<u>92</u>,43,31,57,26,<u>75</u>,81} &emsp; right = 9; A[right] > pivot; &emsp; right-- &emsp; (Step 2)<br>
+    {<b>65</b>,13,0,<u>92</u>,43,31,57,<u>26</u>,75,81} &emsp; right = 8; A[right] < pivot; &emsp; STOP &emsp; (Step 2)</ul>
+<ul>Swap(A[left],A[right]); left++; right-- <br>
+    {<b>65</b>,13,0,26,<u>43</u>,31,<u>57</u>,92,75,81} &emsp; left = 5; right = 7 &emsp; (Step 3)</ul>
+
+<ul>{<b>65</b>,13,0,26,<u>43</u>,31,<u>57</u>,92,75,81} &emsp; left = 5; A[left] < pivot; &emsp; left++ &emsp; (Step 2)<br>
+    {<b>65</b>,13,0,26,43,<u>31</u>,<u>57</u>,92,75,81} &emsp; left = 6; A[left] < pivot; &emsp; left++ &emsp; (Step 2)</ul>
+<ul>{<b>65</b>,13,0,26,43,31,<u>57</u>,92,75,81} &emsp; left = 7 = right; &emsp; STOP &emsp; (Step 2)</ul>
+
+<p>If you observe the state of the array, you can now observe the pivot at the first position, followed by elements
+smaller than pivot which is further followed by elements greater than pivot.</p>
+
+<p><b>Step 4</b>: Bring pivot to the middle by exchanging A[1] with A[left]. This gives the rearranged array
+with left partition, pivot and right partition.</p>
+<ul>{<u>57,13,0,26,43,31</u>,<b>65</b>,<u>92,75,81</u>} <br> Left partition - pivot - Right partition</ul>
+
+<p>The algorithm sketch is given below.</p>
+
+<pre class="brush: java">
+	// Algorithm: partition
+
+	partition(A[1..n], pivotposition) {
+
+	  swap(A[1],A[pivotposition]);		// Step 1
+
+	  while (true) {					// Steps 2 and 3
+		for (left = 2; A[left] < A[1]; left++)
+		  ; 							// do nothing
+		  if (left == right) break;		// break out of the while loop
+
+		for (right = n; A[right]) > A[1]; right--)
+		  ; 							// do nothing
+		  if (left == right) break;		// break out of the while loop
+
+			swap(A[left], A[right]); left++; right--;
+		}
+		swap(A[1], A[left])				// Step 4
+	}
+</pre>
+
+
+<p><b>(6) Is quick sort stable?</b></p>
+<p>No. It is not. To see this consider the list {3  4a  7  9  2  4b  8}.</p>
+
+<p><ul>
+<li>Let's say our Partitioning strategy is to move all elements '<=' pivot to left.</li>
+<li>Suppose we picked 4b as the pivot at any point in time,we would have<br>
+	{2	3	4a}	  {4b}	 {7	 8	 9}    <b>FINE</b></li>
+<li>However if we picked 4a as the pivot at any point in time,we would have<br>
+	{2   3   4b}  {4a}  {7   8   9}    <b>Breaks stability</b> </li>
+<li><b>Note</b> that changing the condition from '<=' to '<' does not help since picking 4a as pivot 
+would work fine now, but,picking 4b as pivot would not. Hence, Quick-Sort is Stable</li> 
+</ul></p>
+
+<p><b>(7) Why is quick sort nlogn then?</b></p>
+<p>Because, the average case running time of quick sort works out to nlogn. The pivot plays a crucial role in deciding
+the time complexity. With a fair assumption that the ordering of the elements in the array is random, it is highly
+unlikely that the algorithm picks 'bad' pivot during every iteration. Hence, in practical situations, worst case
+rarely occurs. For the actual procedure to compute the average case time complexity, standard textbooks on Algorithms 
+can be referred to.<p>
+
+
+
+   </div>
+  </div>
+
+  <div id="navigation">
+  <p><br><strong><a href="../index.html">Home</a></strong></p>
+    <ul>
+      <li><a href="01_Intro.html">Why algorithm design matters?</a></li>
+      <li><a href="02_Analysis.html">Analyzing algorithms</a></li>
+      <li><a href="03_Asymptotics.html">Asymptotic notations</a></li>
+      <li><a href="04_Masters.html">Master's method</a></li>
+      <li><a href="05_Quadratic_sorting.html">Quadratic-time sorting</a></li>
+      <li><a href="06_nlogn_sorting.html">NlogN sorting (Divide-and-Conquer)</a></li>
+      <li><a href="07_Heapsort.html">Heap and Heap sort</a></li>
+      <li><a href="08_Linear_sorting.html">Lower bound and Linear-time sorting</a></li>
+      <li><a href="09_Selection.html">Selection problem</a></li>
+      <li><a href="10_Optimization_Problems.html">Optimization Problems</a></li>
+      <li><a href="11_Task_Scheduling.html">Task Scheduling</a></li>
+      <li><a href="12_Integer_Knapsack.html">Integer Knapsack</a></li>
+      <li><a href="13_LCS.html">Longest Common Subsequence</a></li>
+      <li><a href="14_LIS.html">Longest Increasing Subsequence</a></li>
+      <li><a href="15_LPS.html">Longest Palindromic Subsequence</a></li>
+      <li><a href="16_MSS.html">Maximum Subsequence Sum</a></li>    </ul>
+  </div>
+
+  <div id="extra">
+  </div>
+  <div id="footer", align="right">
+    <p>Send comments to swaminathanj@am.amrita.edu</p>
+  </div>
+</div>
+</body>
+</html>

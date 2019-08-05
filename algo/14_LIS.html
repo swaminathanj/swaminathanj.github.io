@@ -1,0 +1,656 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Longest Increasing Subsequence</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../styles.css" />
+        <script type="text/javascript" src="../scripts/shCore.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushBash.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCpp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCss.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushDiff.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushJava.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushJScript.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPhp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPlain.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPython.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushRuby.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushScala.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushSql.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushVb.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushXml.js"></script>
+        <link type="text/css" rel="stylesheet" href="lecture-notes.css"/>
+        <link type="text/css" rel="stylesheet" href="../styles/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="../styles/shThemeDefault.css"/>
+        <script type="text/javascript">
+            //SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+            SyntaxHighlighter.defaults['toolbar'] = false;
+            SyntaxHighlighter.defaults['auto-links'] = false;
+ 
+            SyntaxHighlighter.all();
+        </script>
+</head>
+
+<body>
+ 
+<div id="container">
+<div id="header"><h1>Design and Analysis of Algorithms<img align="right" src="../logo-dark.png" alt="Amrita"> </h1> </div>
+  <div id="wrapper">
+    <div id="content">
+
+<table align="right">
+  <td align="left"><a href="13_LCS.html">Prev</a></td>
+  <td align="right"><a href="15_LPS.html">Next</a></td>
+</table>
+
+<h2>Longest Increasing Subsequence</h2>
+
+<p>Consider and integer array A[1..n] consisting of both positive and negative values in no particular order. The
+goal is to find the longest monotonically increasing subsequence.</p>
+
+
+<h3>Example</h3>
+<p>Consider the array A[] = {3, 7, -1, 2, 4, 8, 5, 6}. For this example it is 5. The subsequence is -1, 2, 4, 5, 6.</p>
+
+<h3>(1) Brute-force solution</h3>
+<p>The brute-force way to solve this problem is to enumerate all possible subsequences and determine the one that
+is longest and ordered in increasing manner. For n elements, there are 2<sup>n</sup> subsequences possible.</p>
+
+<p>The brute-force solution can be implemented using recursion. There are 2 possibilities for each element. Either
+it is part of the subsequence or it is not. For each case, the next element may or may not be part of the
+subsequence. So on and so forth. The algorithm is given below.</p>
+
+<pre class="brush: java">
+
+	int AllSubsequences[1..2^n][1..n]
+	
+	Enumerate(i..n) {
+		S1 = { } U Enumerate(i+1..n);
+		S2 = {A[ i ]} U Enumerate(i+1..n);
+		i++;
+
+		if (i > n) {
+			AllSubsequences.insert(S1);
+			AllSubsequences.insert(S2);
+		}
+		return;
+	}
+
+	main() {
+		int lis_len = 0
+		Enumerate(1..n);
+		for each S in AllSubsequences {
+			if (s is ordered AND s.size > lis_len)
+				lis_len = s.size;
+		}
+	}
+</pre>
+
+<p>The recursion tree is shown below. Each call path from the root to the leaf gives one of the 2<sup>n</sup> 
+subsequences.</p> 
+
+<ul>
+	<p>Let E(i..n), for short, denote the enumerator of subsequences for elements A[i..n]. </p>
+	<p>~A[ i ] denotes the case when it is not included in the subsequence. </p>
+	<p>+A[ i ] denotes the case when it is included in the subsequence. </p></ul>
+
+<pre>
+
+                                        E(1..n)
+                                           |
+                     ~A[1]                 |                   +A[1]                                   i = 1
+                    -------------------------------------------------
+                    |                                               |
+                    |                                               |
+                { } U E(2..n)                                {A[1]} U E(2..n)
+                    |                                               |
+         ~A[2]      |      +A[2]                         ~A[2]      |      +A[2]                       i = 2
+        -------------------------                       -------------------------
+        |                       |                       |                       |
+        |                       |                       |                       |
+    { } U E(3..n)         A[2]} U E(3..n)        {A[1]} U E(3..n)       {A[1],A[2]} U E(3..n)
+        |                       |                       |                       |
+ ~A[3]  |  +A[3]         ~A]3]  |  +A[3]        ~A[3]   |   +A[3]       ~A[3]   |   +A[3]              i = 3
+ ---------------        ---------------        -----------------       -------------------
+ |             |        |             |        |               |       |                 |
+ |             |        |             |        |               |       |                 |
+{ }          A[3]}   {A[2]}   {A[2],A[3]}   {A[1]}     {A[1],A[3]}  {A[1],A[2]}    {A[1],A[2],A[3]}
+ U             U        U          U           U            U          U                 U
+E(4..n)     E(4..n)  E(4..n)    E(4..n)     E(4..n)       E(4..n)   E(4..n)           E(4..n)
+ :             :        :             :        :               :       :                 :
+ :             :        :             :        :               :       :                 :               :
+
+</pre>
+
+<h4>Time complexity</h4>
+<p>Firstly, we have to generate 2<sup>n</sup> sequences. This takes O(2<sup>n</sup>) time. Then we need to scan 
+through each one of them to check if they are ordered. The size of each subsequence is at most n. Hence, the 
+time complexity is O(2<sup>n</sup>) + O(n2<sup>n</sup>) = O(n2<sup>n</sup>).</p>
+
+<h3>(2) Greedy Solution - Does it exist?</h3>
+
+<p>To apply greedy strategy we need to first check if the problem exhibits (i) optimal substructure property
+and (ii) greedy choice property.</p>
+
+<p><b>Optimal substructure</b>: The recursive fomulation above reveals the optimal substructure. The problem 
+of enumerating subsequences for A[1..n] contains within itself the subproblem of enumerating subsequences for 
+A[2..n].</p>
+
+<p><b>Greedy choice property</b>: To check if a greedy solution exists or not, we need to determine if greedy 
+choice property is satisfied. i.e. do we have any way to decide whether to include or exclude an item during 
+every iteration?</p>
+
+<p>Intuitively, there is no magic formula to decide an element should be included or excluded. To see this, 
+consider the following discussion.</p>
+
+<p>In the first iteration, assume A[1] = 10. Should it be included? We can't say until we see A[2]. Suppose we
+are allowed to peek A[2] which is O(1) operation.</p>
+<ul>
+	<li>If A[2] < A[1], say A[2] = 5, then A[1] shouldn't be included since we have a better chance to grow a 
+	longer subsequence with A[2] than A[1].<br>
+	- {5, ...} has a better prospect to grow longer than {10, ...}</li><br>
+	<li> If A[2] > A[1], say A[2] = 20, then there are 2 possibilities. <br>
+	(i) {A[1], ....} = {10, ....} <br>
+	(ii) {A[1], A[2], ....} = {10, 20, ....} <br><br>
+	To decide which is better, we need to look at A[3] which opens up 3 possibilities.</li> <br>
+	<ul>
+		<li>(i) A[3] < A[1] < A[2]: Lets say A[3] = 6. i.e. 6 < 10 < 20. Now we need to maintain 2 subsequences<br>
+		-- {6, ....} replaces {10, ....} Both are of size 1 with the former having better prospect.<br>
+		-- {10, 20, ....} has to be retained. Why? Multiple reasons. Firstly, if A[3] was the last element, then
+		{10, 20} is longer than {6}. Secondly, if all the elements from A[4] are  greater than 20, subsequence 
+		{10, 20, ....} will be greater than subsequence {6, ....} by length 1. So, peek further to decide.</li> <br>
+		<li>(ii) A[1] < A[3] < A[2]: Lets say A[3] = 14. i.e. 10 < 14 < 20. We need to maintain 3 subsequences. <br>
+		-- {10, ....} Why? If we get 11 next, {10, 11, ...} can grow longer than {10, 14, ...} or {10, 14, 20, ...}<br>
+		-- {10, 14, ....} Why? If we get numbers between 14 and 20 in increasing manner further down, this
+		subsequence can grow longer than other two. So peek further to decide.<br>
+		-- {10, 14, 20, ...} Why? If all further elements are > 20, this will grow to be longer than other two.</li><br>
+		<li>(iii) A[1] < A[2] < A[3]: Lets say A[3] = 25. i.e. 10 < 20 < 25.  We need to maintain 3 subsequences.<br>
+		-- {10, ....} Why? If more than 2 elements happen be between 10 and 20, this will grow longer. So peek further
+		 to decide.<br>
+		-- {10, 20, ....} Why? If more than 1 element happens to be between 20 and 25, this can grow longer. So peek
+		further to decide.<br>
+		-- {10, 20, 25, ....} Why? If either the sequence ends or all further elements are > 25, this will grow longer.
+		So, peek further to decide.</li><br>
+	</ul>
+</ul>
+
+<p style="color: blue">The bottom-line is: we have to keep peeking further and further till the end of the array, 
+which throws up ever increasing possibilities, to decide if A[1] needs to be included in the subsequence or not. 
+NO MAGIC FORMULA!!! Conclusion: <b>Greedy choice property does not exist.</b></p>
+
+<h3>(2) Dynamic Programming Solution</h3>
+
+<p>To apply dynamic programming, we need to check if the problem exhibits (i) optimal substructure and (ii)
+overlapping subproblems.</p> 
+<p>(i) We already saw above, that optimal substructure property holds.</p> 
+<p>(ii) The recursive formulation also reveals the existence of overlapping subproblems. We note that at each level
+of the recursion tree, the subproblems E(i..n) are the same.</p>
+
+<p>The dynamic programming works in a bottom-up fashion. Subproblems are solved and their solutions are used to find
+solutions to larger problems. Hence, we work as follows.</p>
+<ul>
+	<li>We first find the LIS length upto the first element.</li>
+	<li>Next, we find the LIS length upto the 2nd element.</li>
+	<li>So on and so forth ... until n iterations.</li>
+</ul>
+
+<p>Let LCS[ i ] denote the length of the longest common subsequence from A[1..i]. </p>
+
+<p><b>Initial step: i = 1</b></p>
+
+<ul>
+	<li>LCS[1] = 1. i.e. if we have seen upto first element of the array, the length of the longest increasing
+	subsequence is exactly 1.</li>
+</ul>
+
+<p>For the given example the table looks as follows after initialization.</p>
+
+<ul>
+	<table border="1">
+		<tr bgcolor="orange">
+			<td align="center"><b>&nbsp;i&nbsp;</b></td>
+			<td align="center">&nbsp;<b>1</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>2</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>3</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>4</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>5</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>6</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>7</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>8</b>&nbsp;</td>
+		</tr>
+		<tr bgcolor="lightgray">
+			<td align="center"><b>&nbsp;A[ i ]&nbsp;</b></td>
+			<td align="center">&nbsp;<b>3</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>7</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>-1</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>2</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>4</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>8</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>5</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>6</b>&nbsp;</td>
+		</tr>
+		<tr bgcolor="cyan">
+			<td align="center"><b>&nbsp;LCS[ i ]&nbsp;</b></td>
+			<td align="center">&nbsp;<b>1</b>&nbsp;</td>
+			<td align="center">&nbsp;<b> </b>&nbsp;</td>
+			<td align="center">&nbsp;<b> </b>&nbsp;</td>
+			<td align="center">&nbsp;<b> </b>&nbsp;</td>
+			<td align="center">&nbsp;<b> </b>&nbsp;</td>
+			<td align="center">&nbsp;<b> </b>&nbsp;</td>
+			<td align="center">&nbsp;<b> </b>&nbsp;</td>
+			<td align="center">&nbsp;<b> </b>&nbsp;</td>
+		</tr>
+
+	</table>
+</ul>
+
+
+<p>In order to compute LCS[ i ] for i = 2 to n, we need to determine the longest existing subsequence that A[ i ] can 
+extend without breaking the monotonic property. i.e. A[ i ] needs to be compared with A[1], ..., A[i-1] to determine 
+LCS[ j ] = max{LCS[1], ..., LCS[i-1]} such that A[ j ] < A[ i ] and increment by 1. i.e. LCS[ j ] + 1. If no such j
+exists, LCS[ i ] = 1, we need to start a new subsequence from i.</p> 
+
+<ul>
+	<p style="color: blue">LCS[ i ] = 1 + MAX<sub>j</sub> LCS[ j ]  &nbsp; &nbsp; if A[ j ] < A[ i ] for j = 1 to i-1<br>
+	&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; = 1  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+	&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if A[ j ] &nlt; A[ i ] for j = 1 to i-1</p>
+</ul>
+
+<p></p>
+
+<p><b>i = 2; j = 1</b></p>
+
+<p>A[ j ] > A[ i ]. i.e. 3 < 7. Hence, LCS[2] = 1 + LCS[1] = 2. (denotes 3, 7)</p>
+
+<ul>
+	<table border="1">
+		<tr bgcolor="orange">
+			<td align="center"><b>&nbsp;i&nbsp;</b></td>
+			<td align="center">&nbsp;<b>1</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>2</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>3</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>4</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>5</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>6</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>7</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>8</b>&nbsp;</td>
+		</tr>
+		<tr bgcolor="lightgray">
+			<td align="center"><b>&nbsp;A[ i ]&nbsp;</b></td>
+			<td align="center">&nbsp;<b>3</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>7</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>-1</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>2</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>4</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>8</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>5</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>6</b>&nbsp;</td>
+		</tr>
+		<tr bgcolor="cyan">
+			<td align="center"><b>&nbsp;LCS[ i ]&nbsp;</b></td>
+			<td align="center">&nbsp;<b>1</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>2</b>&nbsp;</td>
+			<td align="center">&nbsp;<b> </b>&nbsp;</td>
+			<td align="center">&nbsp;<b> </b>&nbsp;</td>
+			<td align="center">&nbsp;<b> </b>&nbsp;</td>
+			<td align="center">&nbsp;<b> </b>&nbsp;</td>
+			<td align="center">&nbsp;<b> </b>&nbsp;</td>
+			<td align="center">&nbsp;<b> </b>&nbsp;</td>
+		</tr>
+
+	</table>
+</ul>
+
+<p><b>i = 3; j = 1, 2</b></p>
+
+<p>j = 1 : A[ j ] &nlt; A[ i ]. i.e. 3 &nlt; -1.</p>
+<p>j = 2 : A[ j ] &nlt; A[ i ]. i.e. 7 &nlt; -1.</p>
+<p>Hence, LCS[3] = 1. i.e. start a new subsequence from this point.</p>
+
+<ul>
+	<table border="1">
+		<tr bgcolor="orange">
+			<td align="center"><b>&nbsp;i&nbsp;</b></td>
+			<td align="center">&nbsp;<b>1</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>2</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>3</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>4</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>5</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>6</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>7</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>8</b>&nbsp;</td>
+		</tr>
+		<tr bgcolor="lightgray">
+			<td align="center"><b>&nbsp;A[ i ]&nbsp;</b></td>
+			<td align="center">&nbsp;<b>3</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>7</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>-1</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>2</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>4</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>8</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>5</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>6</b>&nbsp;</td>
+		</tr>
+		<tr bgcolor="cyan">
+			<td align="center"><b>&nbsp;LCS[ i ]&nbsp;</b></td>
+			<td align="center">&nbsp;<b>1</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>2</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>1</b>&nbsp;</td>
+			<td align="center">&nbsp;<b> </b>&nbsp;</td>
+			<td align="center">&nbsp;<b> </b>&nbsp;</td>
+			<td align="center">&nbsp;<b> </b>&nbsp;</td>
+			<td align="center">&nbsp;<b> </b>&nbsp;</td>
+			<td align="center">&nbsp;<b> </b>&nbsp;</td>
+		</tr>
+
+	</table>
+</ul>
+
+<p><b>i = 4; j = 1, 2, 3</b></p>
+
+<p>j = 1 : A[ j ] &nlt; A[ i ]. i.e. 3 &nlt; 2.</p>
+<p>j = 2 : A[ j ] &nlt; A[ i ]. i.e. 7 &nlt; 2.</p>
+<p>j = 3 : A[ j ] < A[ i ]. i.e. -1 < 2.</p>
+<p>Hence, LCS[4] = 1 + LCS[3] = 2. i.e. continue to grow the subsequence starting from i = 3.</p>
+
+<ul>
+	<table border="1">
+		<tr bgcolor="orange">
+			<td align="center"><b>&nbsp;i&nbsp;</b></td>
+			<td align="center">&nbsp;<b>1</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>2</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>3</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>4</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>5</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>6</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>7</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>8</b>&nbsp;</td>
+		</tr>
+		<tr bgcolor="lightgray">
+			<td align="center"><b>&nbsp;A[ i ]&nbsp;</b></td>
+			<td align="center">&nbsp;<b>3</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>7</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>-1</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>2</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>4</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>8</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>5</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>6</b>&nbsp;</td>
+		</tr>
+		<tr bgcolor="cyan">
+			<td align="center"><b>&nbsp;LCS[ i ]&nbsp;</b></td>
+			<td align="center">&nbsp;<b>1</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>2</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>1</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>2</b>&nbsp;</td>
+			<td align="center">&nbsp;<b> </b>&nbsp;</td>
+			<td align="center">&nbsp;<b> </b>&nbsp;</td>
+			<td align="center">&nbsp;<b> </b>&nbsp;</td>
+			<td align="center">&nbsp;<b> </b>&nbsp;</td>
+		</tr>
+
+	</table>
+</ul>
+
+<p><b>i = 5; j = 1..4</b></p>
+
+<p>j = 1 : A[ j ] < A[ i ]. i.e. 3 < 4.</p>
+<p>j = 2 : A[ j ] &nlt; A[ i ]. i.e. 7 &nlt; 4.</p>
+<p>j = 3 : A[ j ] < A[ i ]. i.e. -1 < 4.</p>
+<p>j = 4 : A[ j ] < A[ i ]. i.e. 2 < 4.</p>
+<p>Hence, LCS[5] = 1 + max{LCS[1], LCS[3], LCS[4]} = 1 + max{1, 2, 2} = 3. </p>
+
+<ul>
+	<table border="1">
+		<tr bgcolor="orange">
+			<td align="center"><b>&nbsp;i&nbsp;</b></td>
+			<td align="center">&nbsp;<b>1</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>2</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>3</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>4</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>5</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>6</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>7</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>8</b>&nbsp;</td>
+		</tr>
+		<tr bgcolor="lightgray">
+			<td align="center"><b>&nbsp;A[ i ]&nbsp;</b></td>
+			<td align="center">&nbsp;<b>3</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>7</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>-1</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>2</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>4</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>8</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>5</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>6</b>&nbsp;</td>
+		</tr>
+		<tr bgcolor="cyan">
+			<td align="center"><b>&nbsp;LCS[ i ]&nbsp;</b></td>
+			<td align="center">&nbsp;<b>1</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>2</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>1</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>2</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>3</b>&nbsp;</td>
+			<td align="center">&nbsp;<b> </b>&nbsp;</td>
+			<td align="center">&nbsp;<b> </b>&nbsp;</td>
+			<td align="center">&nbsp;<b> </b>&nbsp;</td>
+		</tr>
+
+	</table>
+</ul>
+
+<p><b>i = 6; j = 1..5</b></p>
+
+<p>j = 1 : A[ j ] < A[ i ]. i.e. 3 < 8.</p>
+<p>j = 2 : A[ j ] < A[ i ]. i.e. 7 < 8.</p>
+<p>j = 3 : A[ j ] < A[ i ]. i.e. -1 < 8.</p>
+<p>j = 4 : A[ j ] < A[ i ]. i.e. 2 < 8.</p>
+<p>j = 5 : A[ j ] < A[ i ]. i.e. 4 < 8.</p>
+<p>Hence, LCS[6] = 1 + max{LCS[1], LCS[2], LCS[3], LCS[4], LCS[5]} = 1 + max{1, 2, 1, 2, 3} = 4.</p>
+
+<ul>
+	<table border="1">
+		<tr bgcolor="orange">
+			<td align="center"><b>&nbsp;i&nbsp;</b></td>
+			<td align="center">&nbsp;<b>1</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>2</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>3</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>4</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>5</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>6</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>7</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>8</b>&nbsp;</td>
+		</tr>
+		<tr bgcolor="lightgray">
+			<td align="center"><b>&nbsp;A[ i ]&nbsp;</b></td>
+			<td align="center">&nbsp;<b>3</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>7</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>-1</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>2</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>4</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>8</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>5</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>6</b>&nbsp;</td>
+		</tr>
+		<tr bgcolor="cyan">
+			<td align="center"><b>&nbsp;LCS[ i ]&nbsp;</b></td>
+			<td align="center">&nbsp;<b>1</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>2</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>1</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>2</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>3</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>4</b>&nbsp;</td>
+			<td align="center">&nbsp;<b> </b>&nbsp;</td>
+			<td align="center">&nbsp;<b> </b>&nbsp;</td>
+		</tr>
+
+	</table>
+</ul>
+
+<p><b>i = 7; j = 1..6</b></p>
+
+<p>j = 1 : A[ j ] < A[ i ]. i.e. 3 < 5.</p>
+<p>j = 2 : A[ j ] &nlt; A[ i ]. i.e. 7 &nlt; 5.</p>
+<p>j = 3 : A[ j ] < A[ i ]. i.e. -1 < 5.</p>
+<p>j = 4 : A[ j ] < A[ i ]. i.e. 2 < 5.</p>
+<p>j = 5 : A[ j ] < A[ i ]. i.e. 4 < 5.</p>
+<p>j = 6 : A[ j ] &nlt; A[ i ]. i.e. 8 &nlt; 5</p>
+<p>Hence, LCS[7] = 1 + max{LCS[1], LCS[3], LCS[4], LCS[5]} = 1 + max{1, 1, 2, 3} = 4.</p>
+
+<ul>
+	<table border="1">
+		<tr bgcolor="orange">
+			<td align="center"><b>&nbsp;i&nbsp;</b></td>
+			<td align="center">&nbsp;<b>1</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>2</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>3</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>4</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>5</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>6</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>7</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>8</b>&nbsp;</td>
+		</tr>
+		<tr bgcolor="lightgray">
+			<td align="center"><b>&nbsp;A[ i ]&nbsp;</b></td>
+			<td align="center">&nbsp;<b>3</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>7</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>-1</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>2</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>4</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>8</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>5</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>6</b>&nbsp;</td>
+		</tr>
+		<tr bgcolor="cyan">
+			<td align="center"><b>&nbsp;LCS[ i ]&nbsp;</b></td>
+			<td align="center">&nbsp;<b>1</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>2</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>1</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>2</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>3</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>4</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>4</b>&nbsp;</td>
+			<td align="center">&nbsp;<b> </b>&nbsp;</td>
+		</tr>
+
+	</table>
+</ul>
+
+<p><b>i = 8; j = 1..7</b></p>
+
+<p>j = 1 : A[ j ] < A[ i ]. i.e. 3 < 6.</p>
+<p>j = 2 : A[ j ] &nlt; A[ i ]. i.e. 7 &nlt; 6.</p>
+<p>j = 3 : A[ j ] < A[ i ]. i.e. -1 < 6.</p>
+<p>j = 4 : A[ j ] < A[ i ]. i.e. 2 < 6.</p>
+<p>j = 5 : A[ j ] < A[ i ]. i.e. 4 < 6.</p>
+<p>j = 6 : A[ j ] &nlt; A[ i ]. i.e. 8 &nlt; 6</p>
+<p>j = 7 : A[ j ] < A[ i ]. i.e. 5 < 6</p>
+<p>Hence, LCS[8] = 1 + max{LCS[1], LCS[3], LCS[4], LCS[5], LCS[7]} = 1 + max{1, 1, 2, 3, 4} = 5.</p>
+
+<ul>
+	<table border="1">
+		<tr bgcolor="orange">
+			<td align="center"><b>&nbsp;i&nbsp;</b></td>
+			<td align="center">&nbsp;<b>1</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>2</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>3</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>4</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>5</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>6</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>7</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>8</b>&nbsp;</td>
+		</tr>
+		<tr bgcolor="lightgray">
+			<td align="center"><b>&nbsp;A[ i ]&nbsp;</b></td>
+			<td align="center">&nbsp;<b>3</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>7</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>-1</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>2</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>4</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>8</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>5</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>6</b>&nbsp;</td>
+		</tr>
+		<tr bgcolor="cyan">
+			<td align="center"><b>&nbsp;LCS[ i ]&nbsp;</b></td>
+			<td align="center">&nbsp;<b>1</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>2</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>1</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>2</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>3</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>4</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>4</b>&nbsp;</td>
+			<td align="center">&nbsp;<b>5</b>&nbsp;</td>
+		</tr>
+
+	</table>
+</ul>
+
+<h4>Algorithm</h4>
+
+<p>The dynamic programming algorithm for longest increasing subsequence can be given as follows.</p>
+
+<pre class="brush:java">
+	int LCS[1..n];
+
+	DPLCS(int A[1..n]) {
+		LCS[1] = 1;
+
+	  	for (i = 2; i <= n; i++) {
+	  		LCS[i] = 1; 
+
+	  		for (j = 1; j < i; j++) {
+	  			if (A[j] < A[i] && LCS[j] >= LCS[i]) {
+	  				LCS[i] = 1 + LCS[j];
+	  			}
+	  		}
+		}
+	}
+</pre>
+
+<p><b>Time complexity</b></p>
+
+<p>There are 2 loops. The outerloop runs for n-1 times. The inner loop runs for at most n-1 times. Thus, the time 
+complexity is O(n<sup>2</sup>).</p>
+
+<h4>Exercise</h4>
+<p>How do you determine the actual subsequence from the LCS[ ] array?</p>
+
+
+   </div>
+  </div>
+
+<div id="navigation">
+	<p><br><strong><a href="../index.html">Home</a></strong></p>
+    <ul>
+      <li><a href="01_Intro.html">Why algorithm design matters?</a></li>
+      <li><a href="02_Analysis.html">Analyzing algorithms</a></li>
+      <li><a href="03_Asymptotics.html">Asymptotic notations</a></li>
+      <li><a href="04_Masters.html">Master's method</a></li>
+      <li><a href="05_Quadratic_sorting.html">Quadratic-time sorting</a></li>
+      <li><a href="06_nlogn_sorting.html">NlogN sorting (Divide-and-Conquer)</a></li>
+      <li><a href="07_Heapsort.html">Heap and Heap sort</a></li>
+      <li><a href="08_Linear_sorting.html">Lower bound and Linear-time sorting</a></li>
+      <li><a href="09_Selection.html">Selection problem</a></li>
+      <li><a href="10_Optimization_Problems.html">Optimization Problems</a></li>
+      <li><a href="11_Task_Scheduling.html">Task Scheduling</a></li>
+      <li><a href="12_Integer_Knapsack.html">Integer Knapsack</a></li>
+      <li><a href="13_LCS.html">Longest Common Subsequence</a></li>
+      <li><a href="14_LIS.html">Longest Increasing Subsequence</a></li>
+      <li><a href="15_LPS.html">Longest Palindromic Subsequence</a></li>
+      <li><a href="16_MSS.html">Maximum Subsequence Sum</a></li>
+    </ul>
+</div> 
+ 
+
+  <div id="extra">
+  </div>
+  <div id="footer", align="right">
+    <p>Send comments to swaminathanj@am.amrita.edu</p>
+  </div>
+</div>
+</body>
+</html>

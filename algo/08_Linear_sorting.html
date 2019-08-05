@@ -1,0 +1,223 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Sorting lower bounds and Linear-time sorting</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../styles.css" />
+        <script type="text/javascript" src="../scripts/shCore.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushBash.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCpp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCss.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushDiff.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushJava.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushJScript.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPhp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPlain.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPython.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushRuby.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushScala.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushSql.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushVb.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushXml.js"></script>
+        <link type="text/css" rel="stylesheet" href="lecture-notes.css"/>
+        <link type="text/css" rel="stylesheet" href="../styles/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="../styles/shThemeDefault.css"/>
+        <script type="text/javascript">
+            //SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+            SyntaxHighlighter.defaults['toolbar'] = false;
+            SyntaxHighlighter.defaults['auto-links'] = false;
+ 
+            SyntaxHighlighter.all();
+        </script>
+</head>
+
+<body>
+ 
+<div id="container">
+<div id="header"><h1>Design and Analysis of Algorithms<img align="right" src="../logo-dark.png" alt="Amrita"> </h1> </div>
+  <div id="wrapper">
+    <div id="content">
+
+<table align="right">
+  <td align="left"><a href="07_Heapsort.html">Prev</a></td>
+  <td align="right"><a href="09_Selection.html">Next</a></td>
+</table>
+
+<h2>Sorting lower bounds and Linear-time sorting</h2>
+
+<p>So far we have seen half a dozen ways to sort. A pertinent question at this stage is: can sorting be done faster 
+than O(nlogn)? The answer is yes and no. In general case, NO. In specific cases, YES.</p>
+
+<p>To understand this we need to first understand the term <b>comparison based sorting</b>. The sorting algorithms dealt 
+so far are all comparison based methods. That is, in order to sort the elements (or keys), we need to compare the elements
+in some systematic way. Some algorithms, especially the nlogn ones, allow us to minimize the number of comparisons by 
+applying efficient technique such as divide-and-conquer or efficient data structure max-heap.</p>
+
+
+<h3>Lower bounds for comparison based sorting</h3>
+
+<p>Can we miminize the number of comparisons beyond a certain extent? Stated otherwise, what is the lower bound on the 
+number of comparisons if we need to order n elements? We will answer this question first using decision trees.</p>
+
+<ul>
+<li>If we had only one element in the list, no comparisons are required to sort.</li>
+<img src="images/1dt.png" align="center"> <br> <br>
+
+<li>If we had two elements, one comparion is sufficient to order them.</li>
+<img src="images/2dt.png" align="center"> <br> <br>
+
+<li>If we had three elements, at most three comparisons are necessary. To see this consider the decision tree below.</li>
+<img src="images/3dt.png" align="center"> <br> <br>
+</ul>
+
+<p>Upon closer look at the three cases we observe that the number of leaves of the decision trees is equivalent to the number of
+ways in which the n elements can be ordered. Also, each path from root to leaf gives the number of comparisons that needs
+to be performed to decide a specific ordering. For n = 3, it takes at most 3 comparisons.</p>
+
+<p>Given n, there are n! ways of ordering them. Hence, the desicion tree would have n! leaves. Since each comparison
+divides the ordering possibilities by at least half, the height of the decision tree is at most log n!.</p>
+
+<p>log n! = log (n.n-1.n-2.....2.1) = log n + log n-1 + .... + log 2 + log 1 = &Theta;(nlogn)</p>
+
+<p>Hence we can say log n! = &Omega;(nlogn). Stated otherwise, the minimum number of comparisons required to sort
+n elements is &Omega;(nlogn). For the work out of the complexity, please refer to any standard book on algorithms.</p>
+
+<h3>Linear-time Sorting</h3>
+
+<p>In special scenarios, sorting can be done in linear-time since comparison based sorting is not necessary. 
+Bucket sort and radix sort belong to this category. </p>
+
+<h4>Bucket Sort</h4>
+
+<p>Bucket sort is used when we want to sort entities based on an attribute or kind or enumerated type. For example,
+lets say we want to sort T-shirts based on its size XS, S, M, L and XL, we can use 5 buckets, one for each type.
+While picking each T-shirt, check its size and put it in the appropriate bucket.</p>
+
+<p>This strategy can also be employed for sorting integers in the following manner. Suppose we know the numbers
+to be sorted fall within the range 1-100. We can create 10 buckets for storing them in a range of 10 numbers.</p>
+
+<table border="1" align="center">
+  <td><br><br><br><br>1-10</td>
+  <td><br><br><br><br>11-20</td>
+  <td><br><br><br><br>21-30</td>
+  <td><br><br><br><br>31-40</td>
+  <td><br><br><br><br>41-50</td>
+  <td><br><br><br><br>51-60</td>
+  <td><br><br><br><br>61-70</td>
+  <td><br><br><br><br>71-80</td>
+  <td><br><br><br><br>81-90</td>
+  <td><br><br><br><br>91-100</td>
+</table>
+
+<br><br>
+
+<p>(1) The numbers are initially scanned once and put in appropriate bucket based on the range. <br>
+(2) This is followed by another round where each bucket is individually sorted. <br> 
+(3) In the final step all the buckets are combined from left to right. </p>
+
+<p>Rounds 1 and 3 take linear time. Round 2 determines the time complexity. If the elements are distributed more or less 
+equally in each bucket after the first round, it will reduce the number of comparisons in the second round. The worst case 
+happens when all the elements end up in the same bucket in which case the second round will take O(nlogn). </p>
+
+<p>Insertion sort can be used along with bucket sort to speed up the sorting. After round 1 of bucket sort, the buckets can
+be concatenated and insertion sort can be applied as it is very effective if the elements are in an almost sorted state.</p>
+
+<h4>Radix Sort</h4>
+
+<p>Radix sort is another non-comparison based sorting algorithm that uses buckets in a different fashion to sort the elements 
+in a lexicographic fashion and putting in the appropriate bucket. The following example demonstrates this for binary numbers.
+No doubt this strategy can be extended for integers and character strings too. The number of buckets will vary.</p>
+
+<p>Suppose we want to sort 4-digit binary numbers: 1001, 0110, 1010, 1101.</p>
+
+<p><b>INIT STEP</b>: Since the number of digits is 2 (i.e. 0 and 1), we need 2 buckets. Lets initialize the buckets.</p>
+
+<table align="center" border="2">
+  <td><br><br><br><br><br>0-bucket</td>
+  <td><br><br><br><br><br>1-bucket</td>
+</table>
+
+<br>
+
+<p><b>SORT STEP</b>: Scan the numbers from left-to-right based on the least significant digit (LSD). If LSD is 0, put it 
+in the 0-bucket. If 1, put it in the 1-bucket.</p>
+
+<table align="center" border="2">
+  <td><br><br>011<u>0</u>,101<u>0</u><br><br><br>0-bucket</td>
+  <td><br><br>100<u>1</u>,110<u>1</u><br><br><br>1-bucket</td>
+</table>
+<center>Based on LSD/rightmost digit</center>
+
+<br>
+
+<p>Repeat SORT STEP based on the next digit till the most significant digit (MSD). The numbers are read from left-to-right.</p>
+
+<table align="center" border="2">
+  <td><br><br>10<u>0</u>1,11<u>0</u>1<br><br><br>0-bucket</td>
+  <td><br><br>01<u>1</u>0,10<u>1</u>0<br><br><br>1-bucket</td>
+</table>
+<center>Based on 2nd digit from right</center>
+
+<br>
+
+<table align="center" border="2">
+  <td><br><br>1<u>0</u>01,1<u>0</u>10<br><br><br>0-bucket</td>
+  <td><br><br>1<u>1</u>01,0<u>1</u>10<br><br><br>1-bucket</td>
+</table>
+<center>Based on 3rd digit from right</center>
+
+<br>
+
+<table align="center" border="2">
+  <td><br><br><u>0</u>110<br><br><br>0-bucket</td>
+  <td><br><br><u>1</u>001,<u>1</u>010,<u>1</u>101<br><br><br>1-bucket</td>
+</table>
+<center>Based on MSD/leftmost digit</center>
+
+<br>
+
+<p>Now all the elements are in sorted order (read from left-to-right): 0110, 1001, 1010, 1101.</p>
+
+<p>It takes O(1) time to initialize the buckets with the assumption that the number of digits is a known 
+constant (say k). This is followed by k iterations, where the elements are scanned from left-to-right in 
+each bucket and putting them in the appropriate bucket. It takes kn operations which results in O(n) time.</p>
+
+<p>The disadvantage with radix sort is it cannot be done in-place. At least two sets of buckets are necessary
+to move the elements back-and-forth during the iterations making it memory-intensive and slows down.</p>
+
+
+   </div>
+  </div>
+
+  <div id="navigation">
+  <p><br><strong><a href="../index.html">Home</a></strong></p>
+    <ul>
+      <li><a href="01_Intro.html">Why algorithm design matters?</a></li>
+      <li><a href="02_Analysis.html">Analyzing algorithms</a></li>
+      <li><a href="03_Asymptotics.html">Asymptotic notations</a></li>
+      <li><a href="04_Masters.html">Master's method</a></li>
+      <li><a href="05_Quadratic_sorting.html">Quadratic-time sorting</a></li>
+      <li><a href="06_nlogn_sorting.html">NlogN sorting (Divide-and-Conquer)</a></li>
+      <li><a href="07_Heapsort.html">Heap and Heap sort</a></li>
+      <li><a href="08_Linear_sorting.html">Lower bound and Linear-time sorting</a></li>
+      <li><a href="09_Selection.html">Selection problem</a></li>
+      <li><a href="10_Optimization_Problems.html">Optimization Problems</a></li>
+      <li><a href="11_Task_Scheduling.html">Task Scheduling</a></li>
+      <li><a href="12_Integer_Knapsack.html">Integer Knapsack</a></li>
+      <li><a href="13_LCS.html">Longest Common Subsequence</a></li>
+      <li><a href="14_LIS.html">Longest Increasing Subsequence</a></li>
+      <li><a href="15_LPS.html">Longest Palindromic Subsequence</a></li>
+      <li><a href="16_MSS.html">Maximum Subsequence Sum</a></li>    </ul>
+  </div>
+
+  <div id="extra">
+  </div>
+  <div id="footer", align="right">
+    <p>Send comments to swaminathanj@am.amrita.edu</p>
+  </div>
+</div>
+</body>
+</html>
