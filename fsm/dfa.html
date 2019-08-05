@@ -1,0 +1,295 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Deterministic Finite Automata</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../styles.css" />
+        <script type="text/javascript" src="../scripts/shCore.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushBash.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCpp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCss.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushDiff.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushJava.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushJScript.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPhp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPlain.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPython.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushRuby.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushScala.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushSql.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushVb.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushXml.js"></script>
+        <link type="text/css" rel="stylesheet" href="lecture-notes.css"/>
+        <link type="text/css" rel="stylesheet" href="../styles/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="../styles/shThemeDefault.css"/>
+        <script type="text/javascript">
+            //SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+            SyntaxHighlighter.defaults['toolbar'] = false;
+            SyntaxHighlighter.defaults['auto-links'] = false;
+ 
+            SyntaxHighlighter.all();
+        </script>
+</head>
+
+<body>
+ 
+<div id="container">
+<div id="header"><h1>Formal Languages and Automata<img align="right" src="../logo-dark.png" alt="Amrita"> </h1> </div>
+  <div id="wrapper">
+    <div id="content">
+
+<table align="right">
+  <td align="left"><a href="fsm.html">Prev</a></td>
+  <td align="right"><a href="dfaapplications.html">Next</a></td>
+</table>
+
+<h2>Deterministic Finite State Automata</h2>
+
+<p>A deterministic finite state automaton is a 5-tuple (Q, &Sigma;, &delta;, q<sub>0</sub>, F)
+where</p>
+<ul>
+	<li>Q denotes the finite set of states</li>
+	<li>&Sigma; represents the alphabet that consists of input symbols</li>
+	<li>&delta;: Q x &Sigma; = Q denotes the transition function the defines the transition
+	from q<sub>i</sub> &in; Q to q<sub>j</sub> &in; Q for each input symbol.</li>
+	<li>q<sub>0</sub> denotes the start state</li>
+	<li>F denotes the set of final states</li>
+</ul>
+
+<p>Given an input sequence, the DFA processes the string of symbols one at a time, moves between the states 
+as defined by the transition function &delta;. The string is said to be accepted by the DFA, if at the end
+of the processing, the final state is reached. In a DFA, there is exactly one transition from one state to 
+another for each input symbol.</p>
+
+<p>It is easier to catch the idea of a DFA with examples. We will start with some really simple ones and
+progressively do tougher ones.</p>
+
+<h3>1. DFA that accepts exactly one a. &Sigma; = {a}</h3>
+
+<p>Since the alphabet consists of only a, we need to construct a DFA which accepts only the string "a".</p>
+
+<p>We start with the initial state q<sub>0</sub>, once we read an a, move to the final state q<sub>1</sub>.</p>
+<img src="images/exactly1a.png">
+
+<p>Note that we haven't defined any transtion from q<sub>1</sub>. This implies that if any input symbol is
+read, we move to a dead state - meaning the string will never be accepted. For example, if a input string is 
+"aa", it will not be accepted by the DFA.</p>
+
+<p>Alternately, we can also choose to draw the below DFA with an explicit dead state q<sub>2</sub>.</p>
+<img src="images/exactly1a-2.png">
+
+<h3>2. DFA that accepts at least one a. &Sigma; = {a}</h3>
+
+<p>This is similar to the previous case except that we now have a self-loop at q<sub>1</sub> that denotes
+we remain in the final state henceforth upon reading any number of ways. Thus, this DFA accepts strings
+"a", "aa", "aaa", ..... Note that the acceptable strings are infinite.</p>
+<img src="images/atleast1a.png">
+
+<h3>3. DFA that accepts at most one a. &Sigma; = {a}</h3>
+
+<p>This implies the DFA can accept exactly two strings: &epsilon; and "a". Note that &epsilon; denotes the
+0-length string. This is similar to the first problem with a single change: the initial state q<sub>0</sub>
+is final too.</p>
+<img src="images/atmost1a.png">
+
+<h3>4. DFA that accepts any number of a's. &Sigma; = {a}</h3>
+
+<p>The DFA should accept zero or more a's. i.e. &epsilon;, a, aa, aaa, .... The DFA is given below. Note
+that we do not need two states now. </p>
+<img src="images/0ormoreas.png">
+
+<h3>5. DFA that accepts exactly two a's. &Sigma; = {a}</h3>
+
+<p>The DFA accepts the only string"aa".</p>
+<img src="images/exactly2as.png">
+
+<p><b>Exercise: Try drawing DFAs for accepting at least 2 a's, at most 2 a's, 5 a's.</b></p>
+
+<h3>6. DFA that accepts even number of a's. &Sigma; = {a}</h3>
+
+<p>The DFA accepts the strings &epsilon; aa, aaaa, aaaaaa, ....</p>
+<img src="images/evenas.png">
+
+<p><b>Exercise: Try drawing DFAs that accepts strings with odd number of a's</b></p>
+
+<p>Next, we look at two corner cases. A DFA that accepts anything and a DFA that rejects anything.</p>
+<h3>7. DFA that accepts anything. &Sigma; = {a}</h3>
+
+<p>This DFA is in final state without having to read any input.</p>
+<img src="images/anything.png">
+
+<h3>8. DFA that accepts nothing. &Sigma; = {a}</h3>
+
+<p>This DFA does not have a transition to the final state which implies there is no way to get there.
+So, no matter what the input string is, it will be rejected.</p>
+<img src="images/nothing.png">
+
+<p>Now, lets include one more symbol to the alphabet. &Sigma; = {a, b}.</p>
+
+<h3>9. DFA that accepts strings with exactly one a. &Sigma; = {a, b}</h3>
+<p>The DFA accepts strings such as a, ab, abb, abbb...., ba, bba, bbba, ...., bab, bbab, babb, ....
+and reject strings that contain no a's or more than one a's.</p>
+
+<p><b>Step 1</b>: We first draw the basic DFA that accepts a.</p>
+<img src="images/exactly1a.png">
+
+<p><b>Step 2</b>: Next we examine, for each state, what transition to make if symbol 'b' is read.</p>
+<ul>
+	<li>q<sub>0</sub> denotes the initial state where we have not seen an 'a' so far. So, we can remain
+	in the same state.</li>
+	<li>q<sub>1</sub> denotes the final state where we have seen exactly one 'a'. So, we can remain in
+	q<sub>1</sub>.</li>
+</ul>
+
+<img src="images/exactly1a_bs.png"><br><br>
+
+<p><b>Note</b>: We haven't defined any transition from q<sub>1</sub> for input symbol 'a'. This implies,
+if 'a' is encountered we move to a dead state.</p>
+
+<h3>10. DFA that accepts strings with at least one a. &Sigma; = {a, b}</h3>
+<p>The DFA accepts strings with all combinations of a's and b's so long it has at least one a. In other
+words, it will reject all strings that are made of only b's (b, bb, bbb, ....).</p>
+
+<p><b>Step 1</b>: We first draw the basic DFA that accepts a.</p>
+<img src="images/atleast1a.png">
+
+<p><b>Step 2</b>: Next we examine, for each state, what transition to make if symbol 'b' is read.</p>
+<ul>
+	<li>q<sub>0</sub> denotes the initial state where we have not seen an 'a' so far. So, we can remain
+	in the same state.</li>
+	<li>q<sub>1</sub> denotes the final state where we have seen one 'a'. So, we can remain in q<sub>1</sub>.</li>
+</ul>
+<img src="images/atleast1a_bs.png">
+
+<p><b>Exercises: Draw DFAs for problems 3, 4, 5, 6, 7 and 8 in a similar vein with &Sigma; = {a, b}.</b></p>
+
+<h3>11. DFA that accepts strings with at least two a's and one b. &Sigma; = {a, b}</h3>
+
+<p>Since the a's and b's can appear in any order in the input, the DFA can be given as follows.</p>
+<img src="images/atleast2as1b.png">
+
+<h3>12. DFA that accepts even number of a's and odd number of b's. &Sigma; = {a, b}</h3>
+<p><b>Hint</b>: The DFA can be consolidated into four states.</p>
+<ol>
+	<li>Even number of a's, even number of b's (say q<sub>0</sub>)</li>
+	<li>Even number of a's, odd number of b's (say q<sub>1</sub>)</li>
+	<li>Odd number of a's, even number of b's (say q<sub>2</sub>)</li>
+	<li>Odd number of a's, odd number of b's (say q<sub>3</sub>)</li>
+</ol>
+<p>q<sub>1</sub> must be the final state. First, try on your own. Check
+<a href="images/evenasoddbs.png">here</a> for answer.</p>
+
+<p><b>Exercise: Draw DFA that accepts either even number of a's and b's OR odd number of a's and b's.</b></p>
+
+<h3>13. DFA that accepts strings that starts with a. &Sigma; = {a, b}</h3>
+
+<p>Try on your own first. Check <a href="images/startswitha.png">here</a> for answer.</p>
+
+<h3>14. DFA that accepts strings that ends with a. &Sigma; = {a, b}</h3>
+
+<p>Try on your own first. Check <a href="images/endswitha.png">here</a> for answer.</p>
+
+<h3>15. DFA that accepts strings that starts and ends with a. &Sigma; = {a, b}</h3>
+
+<p>Try on your own first. Check <a href="images/startsandendswitha-p1.png">here</a> for partial answer
+which you can enhance OR <a href="images/startsandendswitha.png">here</a> for complete answer.</p>
+
+<h3>16. DFA that accepts strings that starts with a and ends with b. &Sigma; = {a, b}</h3>
+
+<p>Try on your own first. Check <a href="images/startswithaendswithb-p1.png">here</a> for partial answer
+which you can enhance OR <a href="images/startswithaendswithb.png">here</a> for complete answer.</p>
+
+<h3>17. DFA that accepts strings that start and end with same symbol. &Sigma; = {a, b}</h3>
+
+<p>The DFA should accept strings that starts and ends with 'a' OR starts and ends with b.</p>
+
+<p>This is left as an exercise.</p>
+
+<h3>18. DFA that accepts strings that start and end with different symbols. &Sigma; = {a, b}</h3>
+
+<p>The DFA should accept strings that starts with 'a' and ends with 'b' OR starts with 'b' and
+ends with 'a'.</p>
+
+<p>This is left as an exercise.</p>
+
+<h3>19. DFA that accepts strings that ends with abb. &Sigma; = {a, b}</h3>
+
+<p><b>Step 1</b>: Draw the DFA for the basic string abb.</p>
+<img src="images/endswithabb-p1.png">
+
+<p><b>Step 2</b>: Draw out remaining transitions from each state.</p>
+<p>Try on your own first. In case you aren't sure, check out for the hint below. Decide the transitions 
+appropriately. You don't need to add any new states!</p>
+<ul>
+	<li>At q<sub>0</sub>, if you encounter 'b', you need too look for the whole pattern "abb".</li>
+	<li>At q<sub>1</sub>, if you encounter 'a' again, you just need to look for "bb" to end with.</li>
+	<li>At q<sub>2</sub>, if you encounter 'a', you need to look for "bb" again to end with.</li>
+	<li>At q<sub>3</sub>, you may encounter 'a' or 'b'. </li>
+	<p>- If you get 'a', you have to look for "bb" next to end with.<br>
+	   - If you get 'b', you have to look for the whole pattern "abb" to end with.</p>
+</ul>
+
+<p>Try again. Check <a href="images/endswithabb.png">here</a> for thes answer.</p>
+
+<h3>20. DFA that accepts strings that DO NOT end with abb. &Sigma; = {a, b}</h3>
+
+<p>Although you can design a DFA for this directly, an easier way to solve this is to design the DFA
+for strings ending with "abb" and change flip the final states to non-final states and vice-versa. 
+Check <a href="images/doesnotendwithabb.png">here</a> for the answer.</p>
+
+<h3>21. DFA that accepts strings that contains abb. &Sigma; = {a, b}</h3>
+
+<p>This should be easier than "ends with abb" problem. This is left as exercise.</p>
+
+<h3>22. DFA that accepts strings that does not contain abb. &Sigma; = {a, b}</h3>
+
+<p>This is left as exercise.</p>
+
+<h3>23. DFA that accepts strings that does not contain two consecutive a's. &Sigma; = {a, b}</h3>
+
+<p>This is left as exercise.</p>
+
+<h3>24. DFA that accepts strings that starts with two a's and ends with two a's. &Sigma; = {a, b}</h3>
+
+<p>This is left as exercise.</p>
+
+
+
+
+
+
+    </div>
+  </div>
+
+  <div id="navigation">
+  <p><br><strong><a href="../index.html">Home</a></strong></p>
+    <ul>
+      <li><a href="fsm.html">Finite State Machines</a></li>
+      <li><a href="dfa.html">Deterministic Finite Automata (DFA)</a></li>
+      <li><a href="dfaapplications.html">DFA Applications</a></li>
+      <li><a href="dfaminimization.html">DFA Minimization</a></li>
+      <li><a href="nfa.html">Non-deterministic Finite Automata (NFA)</a></li>
+      <li><a href="nfadfa.html">NFA - DFA Equivalence</a></li>
+      <li><a href="regex.html">Regular Expressions</a></li>
+      <li><a href="regexnfa.html">Regexp - NFA Equivalence</a></li>
+      <li><a href="regulargrammar.html">Regular Grammar (RG)</a></li>
+      <li><a href="rgnfa.html">RG - NFA Equivalence</a></li>
+      <li><a href="rlproperties.html">Properties of Regular Languages</a></li>
+      <li><a href="pumpinglemma.html">Pumping Lemma for Regular Languages</a></li>
+      <li><a href="lexer.html">FSM Application: Lexical Analysis</a></li>
+      <li><a href="jlex.pdf">JLex: A Lexical Analyzer Generator</a></li>
+  </div>
+
+  <div id="extra">
+  </div>
+  <div id="footer", align="right">
+    <p>Send your suggestions/comments to swaminathanj@am.amrita.edu</p>
+  </div>
+</div>
+</body>
+</html>
+
+</body>

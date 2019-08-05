@@ -1,0 +1,358 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Regular Grammar</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../styles.css" />
+        <script type="text/javascript" src="../scripts/shCore.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushBash.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCpp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCss.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushDiff.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushJava.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushJScript.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPhp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPlain.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPython.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushRuby.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushScala.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushSql.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushVb.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushXml.js"></script>
+        <link type="text/css" rel="stylesheet" href="lecture-notes.css"/>
+        <link type="text/css" rel="stylesheet" href="../styles/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="../styles/shThemeDefault.css"/>
+        <script type="text/javascript">
+            //SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+            SyntaxHighlighter.defaults['toolbar'] = false;
+            SyntaxHighlighter.defaults['auto-links'] = false;
+ 
+            SyntaxHighlighter.all();
+        </script>
+</head>
+
+<body>
+ 
+<div id="container">
+<div id="header"><h1>Formal Languages and Automata<img align="right" src="../logo-dark.png" alt="Amrita"> </h1> </div>
+  <div id="wrapper">
+    <div id="content">
+
+<table align="right">
+  <td align="left"><a href="regexnfa.html">Prev</a></td>
+  <td align="right"><a href="rgnfa.html">Next</a></td>
+</table>
+
+<h2>Regular Grammar</h2>
+
+<p>A regular language can also be described using regular grammar which is basically a set of 
+rules using a set of terminals and non-terminals. The terminals are basically the elements of
+the alphabet &Sigma; and the non-terminals, also referred to as variables, are a composition of 
+terminals and non-terminals. More formally,</p>
+
+<p><b>Definition</b>: A regular grammar G is a 4-tuple (V, T, P, S).</p>
+<ul>
+  <li>V &rarr; Variables/Non-terminals that correspond to states Q</li>
+  <li>T &rarr; Terminals that correspond to the alphabet &Sigma;</li>
+  <li>P &rarr; Productions/rules that correspond to transitions &delta;</li>
+  <li>S &rarr; Start rule that corresponds to the initial state.</li>
+</ul>
+
+
+<h3>Regular expressions and their equivalent grammar</h3>
+
+<p>
+  <b style="color: blue">a?</b> 
+  &rarr; Strings with 0 or 1 a. L = {&epsilon;, a}
+</p>
+<p>S &rarr; a | &epsilon;</p>
+
+<p>
+  <b style="color: blue">a*</b> 
+  &rarr; Strings with 0 or more a's. L = {&epsilon;, a, aa, aaa, ...}
+</p>
+<p>S &rarr; aS | &epsilon; &emsp; &emsp; OR alternately, &emsp; &emsp; S &rarr; Sa | &epsilon;</p>
+
+<p>
+  <b style="color: blue">a<sup>+</sup></b> 
+  &rarr; Strings with 1 or more a's. L = {a, aa, aaa, ...}
+</p>
+<p>S &rarr; aS | a </p>
+
+<p>
+  <b style="color: blue">a+b</b> 
+  &rarr; Either a or b. L = {a, b}
+</p>
+<p>S &rarr; a | b</p>
+
+<p>
+  <b style="color: blue">(a+b)(a+b)</b> 
+  &rarr; Combination of a or b of length 2. L = {aa, ab, ba, bb}
+</p>
+<p>S &rarr; aA | bA <br>
+  A &rarr; a | b </p>
+
+<p>
+  <b style="color: blue">(a+b)*</b> 
+  &rarr; Strings with any combination of a's and b's. L = {&epsilon;, a, b, aa, ab, ba, bb, aaa, ...}
+</p>
+<p>S &rarr; aS | bS | &epsilon;</p>
+
+<p>
+  <b style="color: blue">(a+b)*abb</b> 
+  &rarr; Strings ending with abb. L = {abb, aabb, babb, aaabb, ababb, baabb, bbabb, ...}
+</p>
+<p>S &rarr; aS | bS | aB<br>
+B &rarr; bA <br>
+A &rarr; b</p>
+
+<p>
+  <b style="color: blue">ab(a+b)*</b> 
+  &rarr; Strings starting with ab. L = {ab, aba, abb, abaa, abab, abba, abbb, ...}
+</p>
+<p>S &rarr; aB<br>
+B &rarr; bA<br>
+A &rarr; aA | bA | &epsilon;</p>
+
+<p>
+  <b style="color: blue">(a+b)*aa(a+b)*</b>
+  &rarr; Strings that contains aa. L = {aa, aaa, baa, aab, ...}
+</p> 
+<p style="color: rgb(230,230,230)">
+  S &rarr; aS | bS | aA<br>
+  A &rarr; aB<br>
+  B &rarr; aB | bB | &epsilon;
+</p>
+
+<p>
+  <b style="color: blue">a*b*c*</b> 
+  &rarr; 0 or more a's, followed by 0 or more b's, followed by 0 or more c's. 
+  L = {&epsilon;, a, b, c, aa, ab, ac, ba, bb, bc, ca, cb, cc, aaa, ...}
+</p>
+<p style="color: rgb(230,230,230);">
+  S &rarr; aS | bB | cC | &epsilon;<br>
+  B &rarr; bB | cC | &epsilon;<br>
+  C &rarr; cC | &epsilon;<br>
+</p>
+
+<p>
+  <b style="color: blue">a<sup>+</sup>b<sup>+</sup>c<sup>+</sup> / aa*bb*cc*</b> 
+  &rarr; 1 or more a's, followed by 1 or more b's, followed by 1 or more c's. 
+  L = {abc, aabc, abbc, abcc, aabbc, aabcc, abbcc, ...}
+</p>
+<p style="color: rgb(230,230,230)">
+  S &rarr; aA<br>
+  A &rarr; aA | bB<br>
+  B &rarr; bB | cC<br>
+  C &rarr; cC | &epsilon;<br>
+</p>
+
+<p>
+  <b style="color: blue">(a+b)*(a+bb)</b> 
+  &rarr; Strings that end with a or bb. L = {a, bb, aa, abb, ba, bbb, ...}
+</p>
+<p style="color: rgb(230,230,230);">
+  S &rarr; aS | bS | a | bB<br>
+  B &rarr; b
+</p>
+
+<p>
+  <b style="color: blue">(aa)*(bb)*b</b> 
+  &rarr; Strings with even number of a's followed by odd number of b's.
+  L = {b, aab, bbb, aabbb, ...}
+</p>
+<p style="color: rgb(230,230,230)">
+  S &rarr; aA | bB | &epsilon;<br>
+  A &rarr; aC<br>
+  C &rarr; aA | bB | &epsilon;<br>
+  B &rarr; bD | &epsilon;<br>
+  D &rarr; bB<br>
+</p>
+
+<p>
+  <b style="color: blue">(0+1)*000</b> 
+  &rarr; Binary strings ending with 3 0's. L = {000, 0000, 1000, 00000, 01000, 10000, 11000, ...}
+</p>
+<p style="color: rgb(230,230,230)">
+  S &rarr; 0S | 1S | 0A<br>
+  A &rarr; 0B<br>
+  B &rarr; 0<br>  
+<p>
+  
+</p>
+
+<p>
+  <b style="color: blue">(11)*</b> 
+  &rarr; Strings with even number of 1's. L = {&epsilon;, 11, 1111, 111111, ...}
+</p>
+<p style="color: rgb(230,230,230)">
+  S &rarr; 1A | &epsilon;<br>
+  A &rarr; 1S
+</p>
+
+<p>
+  <b style="color: blue">01* + 1</b> 
+  &rarr; {1} U Strings the start with 0 followed by zero or more 1's. L = {1, 0, 01, 011, ...}
+</p>
+<p style="color: rgb(230,230,230)">
+  S &rarr; 0A | 1<br>
+  A &rarr; 1A | &epsilon;<br>
+</p>
+
+<p>
+  <b style="color: blue">(01)* + 1</b> 
+  &rarr; {1} U Strings with zero or more 01's. L = {1, &epsilon;, 01, 0101, 010101, ...}
+</p>
+<p style="color: rgb(230,230,230)">
+  S &rarr; 0A | 1 | &epsilon; <br>
+  A &rarr; 1B<br>
+  B &rarr; 0A | &epsilon;<br>
+</p>
+
+<p>
+  <b style="color: blue">0(1* + 1)</b> 
+  &rarr; 0 followed by any number of 1's. L = {0, 01, 011, 0111, ...}
+</p>
+<p style="color: rgb(230,230,230)">
+  S &rarr; 0A<br>
+  A &rarr; 1A | &epsilon;<br>
+</p>
+
+<p>
+  <b style="color: blue">(1+&epsilon;)(00*1)*0*</b> 
+  &rarr; Strings with no consecutive 1's. 
+  L = {&epsilon;, 1, 10, 101, 1001, 1010, 10101, 101001, 101010, ...}
+</p>
+<p style="color: rgb(230,230,230)">
+  S &rarr; 1A | 0B<br>
+  A &rarr; 0B<br>
+  B &rarr; 0B | 1C<br>
+  C &rarr; 0B | 0D | &epsilon;<br>
+  D &rarr; 0D | &epsilon;
+</p><br><br>
+
+
+<h2>Exercises </h2>
+
+Hopefully you got the hang now. For the regular expressions given below try to come up with the grammar.
+
+<h3>1. a's and b's of length 2</h3>
+<p>aa + ab + ba + bb OR (a+b)(a+b)</p>
+
+<h3>2. a's and b's of length &le; 2</h3>
+<p>&epsilon; + a + b + aa + ab + ba + bb OR (&epsilon; + a + b)(&epsilon; + a + b)
+OR (a+b)? (a+b)?</p>
+
+<h3>3. a's and b's of length &le; 10</h3>
+<p>(&epsilon; + a + b)<sup>10</sup></p>
+
+<h3>4. Even-lengthed strings of a's and b's</h3>
+<p>(aa + ab + ba + bb)* OR ((a+b)(a+b))*</p>
+
+<h3>5. Odd-lengthed strings of a's and b's</h3>
+<p>(a+b) ((a+b)(a+b))*</p>
+
+<h3>6. L(R) = { w : w &in; {0,1}* with at least three consecutive 0's }</h3>
+<p>(0+1)* 000 (0+1)*</p>
+
+<h3>7. Strings of 0's and 1's with no two consecutive 0's</h3>
+<p>(1<sup>+</sup> 0 1*)* OR (11* 0 1*)* OR (1 + 01)* (0 + &epsilon;)</p>
+
+<h3>8. Strings of a's and b's starting with a and ending with b.</h3>
+<p>a (a+b)* b</p>
+
+<h3>9. Strings of a's and b's whose second last symbol is a.</h3>
+<p>(a+b)* a (a+b)</p>
+
+<h3>10. Strings of a's and b's whose third last symbol is a and fourth last symbol is b.</h3>
+<p>(a+b)* b a (a+b) (a+b)</p>
+
+<h3>11. Strings of a's and b's whose first and last symbols are the same.</h3>
+<p>(a (a+b)* a) + (b (a+b)* a)</p>
+
+<h3>12. Strings of a's and b's whose first and last symbols are different.</h3>
+<p>(a (a+b)* b) + (b (a+b)* a)</p>
+
+<h3>13. Strings of a's and b's whose last and second last symbols are same.</h3>
+<p>(a+b)* (aa + bb)</p>
+
+<h3>14. Strings of a's and b's whose length is even or a multiple of 3 or both.</h3>
+<p>R1 + R2 where R1 = ((a+b)(a+b))* &emsp; and &emsp; R2 = ((a+b)(a+b)(a+b))*</p>
+
+<h3>15. Strings of a's and b's such that every block of 4 consecutive symbols has at least 2 a's.</h3>
+<p>(aaxx + axax + axxa + xaax + xaxa + xxaa)* where x = (a+b)</p>
+
+<h3>16. L = {a<sup>n</sup>b<sup>m</sup> : n &ge; 0, m &ge; 0}</h3>
+<p>a* b*</p>
+
+<h3>17. L = {a<sup>n</sup>b<sup>m</sup> : n > 0, m > 0}</h3>
+<p>aa* bb* OR a<sup>+</sup>b<sup>+</sup></p>
+
+<h3>18. L = {a<sup>n</sup>b<sup>m</sup> : n + m is even}</h3>
+<p>aa* bb* + a(aa)* b(bb)*</p>
+
+<h3>19. L = {a<sup>2n</sup>b<sup>2m</sup> : n &ge; 0, m &ge; 0}</h3>
+<p>(aa)* (bb)*</p>
+
+<h3>20. Strings of a's and b's containing not more than three a's.</h3>
+<p>b* (&epsilon; + a) b* (&epsilon; + a) b* (&epsilon; + a) b*</p>
+
+<h3>21. L = {a<sup>n</sup>b<sup>m</sup> : n &ge; 3, m &le; 3}</h3>
+<p>aaa a* (&epsilon; + b) (&epsilon; + b) (&epsilon; + b)</p>
+
+<h3>22. L = { w : |w| mod 3 = 0 and w &in; {a,b}* }</h3>
+<p>( (a+b)(a+b)(a+b) )*</p>
+
+<h3>23. L = { w : n<sub>a</sub>(w) mod 3 = 0 and w &in; {a,b}* }</h3>
+<p>b* a b* a b* a b*</p>
+
+<h3>24. Strings of 0's and 1's that do not end with 01</h3>
+<p">(0+1)* (00 + 10 + 11)</p>
+
+<h3>25. L = { vuv : u, v &in; {a,b}* and |v| = 2}</h3>
+<p>(aa + ab+ ba + bb) (a+b)* (aa + ab + ba + bb)</p>
+
+<h3>26. Strings of a's and b's that end with ab or ba.</h3>
+<p>(a+b)* (ab + ba)</p>
+
+<h3>27. L = {a<sup>n</sup>b<sup>m</sup> : m,n &ge; 1 and mn &ge; 3}</h3>
+<p>a bbb b* + aaa a* b + aa a* bb b*</p>
+
+
+
+
+    </div>
+  </div>
+
+  <div id="navigation">
+  <p><br><strong><a href="../index.html">Home</a></strong></p>
+    <ul>
+      <li><a href="fsm.html">Finite State Machines</a></li>
+      <li><a href="dfa.html">Deterministic Finite Automata (DFA)</a></li>
+      <li><a href="dfaapplications.html">DFA Applications</a></li>
+      <li><a href="dfaminimization.html">DFA Minimization</a></li>
+      <li><a href="nfa.html">Non-deterministic Finite Automata (NFA)</a></li>
+      <li><a href="nfadfa.html">NFA - DFA Equivalence</a></li>
+      <li><a href="regex.html">Regular Expressions</a></li>
+      <li><a href="regexnfa.html">Regexp - NFA Equivalence</a></li>
+      <li><a href="regulargrammar.html">Regular Grammar (RG)</a></li>
+      <li><a href="rgnfa.html">RG - NFA Equivalence</a></li>
+      <li><a href="rlproperties.html">Properties of Regular Languages</a></li>
+      <li><a href="pumpinglemma.html">Pumping Lemma for Regular Languages</a></li>
+      <li><a href="lexer.html">FSM Application: Lexical Analysis</a></li>
+      <li><a href="jlex.pdf">JLex: A Lexical Analyzer Generator</a></li>
+  </div>
+
+  <div id="extra">
+  </div>
+  <div id="footer", align="right">
+    <p>Send your suggestions/comments to swaminathanj@am.amrita.edu</p>
+  </div>
+</div>
+</body>
+</html>
+
+</body>

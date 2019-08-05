@@ -1,0 +1,355 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Regular Grammar - NFA Equivalence</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../styles.css" />
+        <script type="text/javascript" src="../scripts/shCore.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushBash.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCpp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCss.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushDiff.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushJava.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushJScript.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPhp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPlain.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPython.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushRuby.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushScala.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushSql.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushVb.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushXml.js"></script>
+        <link type="text/css" rel="stylesheet" href="lecture-notes.css"/>
+        <link type="text/css" rel="stylesheet" href="../styles/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="../styles/shThemeDefault.css"/>
+        <script type="text/javascript">
+            //SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+            SyntaxHighlighter.defaults['toolbar'] = false;
+            SyntaxHighlighter.defaults['auto-links'] = false;
+ 
+            SyntaxHighlighter.all();
+        </script>
+</head>
+
+<body>
+ 
+<div id="container">
+<div id="header"><h1>Formal Languages and Automata<img align="right" src="../logo-dark.png" alt="Amrita"> </h1> </div>
+  <div id="wrapper">
+    <div id="content">
+
+<table align="right">
+  <td align="left"><a href="regulargrammar.html">Prev</a></td>
+  <td align="right"><a href="rlproperties.html">Next</a></td>
+</table>
+
+
+<h2>Regular Grammar - NFA Equivalence</h2>
+
+<p>In the last section, we saw how regular languages can be specified using regular grammar. The 
+grammar was written in a particular fashion. For instance, </p>
+
+<ul>
+  <p>We wrote the grammar for (a+b)(a+b) as <b>S &rarr; aA | bA ; A &rarr; a | b</b>. This is not the only 
+  way to write the grammar. We could write as <b>S &rarr; aa | ab | ba | bb</b> which is equally correct.</p>
+
+  <p>Similarly, we could have written the grammar for (a+b)*abb as <b>S &rarr; aS | bS | abb</b>. But we 
+  chose to write it as <b>S &rarr; aS | bS | aB ; B &rarr; bC ; C &rarr; b</b>.</p>
+</ul>
+
+<p>There is a definite advantage with this way of specifying the grammar. This is called as right-linear 
+grammar. It can be easily turned into an NFA. In a right-linear grammar, the right-hand side of a production 
+(or rule) is either a terminal or a terminal followed by a non-terminal.</p>
+
+<p>We will now demonstrate the construction of NFA with few examples.</p>
+
+<h3>Example 1: The grammar for the regex (a+b)(a+b)</h3>
+
+<ul>
+  <p>
+    S &rarr; aA<br>
+    S &rarr; bA<br>
+    A &rarr; a<br> 
+    A &rarr; b<br>
+  </p>
+</ul>
+
+<p>Lets convert the grammar to an equivalent NFA step-by-step.</p>
+
+<ul>
+  <table border="1">
+    <tr style="background: lightgray">
+      <td align="center">&emsp;<b>Regular grammar</b>&emsp;</td>
+      <td align="center"><b>Equivalent NFA</b></td>
+    </tr>
+    <tr>
+      <td><b>S</b> &rarr; aA<br>S &rarr; bA<br>A &rarr; a<br>A &rarr; b</td>
+      <td><img src="images/rgaplusbaplusb1.png"</td>
+    </tr>
+      <td><b>S &rarr; aA</b><br>S &rarr; bA<br>A &rarr; a<br>A &rarr; b</td>
+      <td><img src="images/rgaplusbaplusb2.png"</td>
+    </tr>
+    <tr>
+      <td>S &rarr; aA<br><b>S &rarr; bA</b><br>A &rarr; a<br>A &rarr; b</td>
+      <td><img src="images/rgaplusbaplusb3.png"</td>
+    </tr>
+    <tr>
+      <td>S &rarr; aA <br>S &rarr; bA<br><b>A &rarr; a</b><br>A &rarr; b</td>
+      <td><img src="images/rgaplusbaplusb4.png"</td>
+    </tr>
+    <tr>
+      <td>S &rarr; aA <br>S &rarr; bA<br>A &rarr; a<br><b>A &rarr; b</b></td>
+      <td><img src="images/rgaplusbaplusb5.png"</td>
+    </tr>  
+  </table>
+</ul>
+
+<h3>Example 2: Grammar for (a+b)*abb</h3>
+
+<ul>
+  S &rarr; aS<br>
+  S &rarr; bS<br>
+  S &rarr; aB<br>
+  B &rarr; bC<br>
+  C &rarr; b<br>
+</ul>
+
+<p>This grammar is converted to equivalent NFA as follows:</p>
+
+<ul>
+  <table border="1">
+    <tr style="background: lightgray">
+      <td align="center"><b>Regular grammar</b></td>
+      <td align="center"><b>Equivalent NFA</b></td>
+    </tr>
+    <tr>
+      <td><b>S</b> &rarr; aS<br>S &rarr; bS<br>S &rarr; aB<br>B &rarr; bC<br>C &rarr; b</td>
+      <td><img src="images/rgendswithabb1.png"></td>
+    </tr>
+    <tr>
+      <td><b>S &rarr; aS</b><br>S &rarr; bS<br>S &rarr; aB<br>B &rarr; bC<br>C &rarr; b</td>
+      <td><img src="images/rgendswithabb2.png"></td>
+    </tr>
+    <tr>
+      <td>S &rarr; aS<br><b>S &rarr; bS</b><br>S &rarr; aB<br>B &rarr; bC<br>C &rarr; b</td>
+      <td><img src="images/rgendswithabb3.png"></td>
+    </tr>
+    <tr>
+      <td>S &rarr; aS<br>S &rarr; bS<br><b>S &rarr; aB</b><br>B &rarr; bC<br>C &rarr; b</td>
+      <td><img src="images/rgendswithabb4.png"></td>
+    </tr>
+    <tr>
+      <td>S &rarr; aS<br>S &rarr; bS<br>S &rarr; aB<br><b>B &rarr; bC</b><br>C &rarr; b</td>
+      <td><img src="images/rgendswithabb5.png"></td>
+    </tr>
+    <tr>
+      <td>S &rarr; aS<br>S &rarr; bS<br>S &rarr; aB<br>B &rarr; bC<br><b>C &rarr; b</b></td>
+      <td><img src="images/rgendswithabb6.png"></td>
+    </tr>
+  </table>
+</ul>
+
+<h3>Example 3: Grammar for a*b*c*</h3>
+
+<ul>
+  <b>S</b> &rarr; aS<br>
+  S &rarr; bB<br>
+  S &rarr; cC<br>
+  S &rarr; &epsilon;<br>
+  B &rarr; bB<br>
+  B &rarr; cC<br>
+  B &rarr; &epsilon;<br>
+  C &rarr; cC<br>
+  C &rarr; &epsilon;<br>
+</ul>
+
+<p>This grammar is converted to equivalent NFA as follows:</p>
+
+<ul>
+  <table border="1">
+    <tr style="background: lightgray">
+      <td align="center">&emsp;<b>Regular grammar</b>&emsp;</td>
+      <td align="center"><b>Equivalent NFA</b></td>
+    </tr>
+    <tr>
+      <td>
+        <b>S</b> &rarr; aS<br>
+        S &rarr; bB<br>
+        S &rarr; cC<br>
+        S &rarr; &epsilon;<br>
+        B &rarr; bB<br>
+        B &rarr; cC<br>
+        B &rarr; &epsilon;<br>
+        C &rarr; cC<br>
+        C &rarr; &epsilon;<br>
+      </td>
+      <td><img src="images/rgastarbstarcstar1.png"></td>
+    </tr>    
+    <tr>
+      <td>
+        <b>S &rarr; aS</b><br>
+        S &rarr; bB<br>
+        S &rarr; cC<br>
+        S &rarr; &epsilon;<br>
+        B &rarr; bB<br>
+        B &rarr; cC<br>
+        B &rarr; &epsilon;<br>
+        C &rarr; cC<br>
+        C &rarr; &epsilon;<br>
+      </td>
+      <td><img src="images/rgastarbstarcstar2.png"></td>
+    </tr>    
+    <tr>
+      <td>
+        S &rarr; aS<br>
+        <b>S &rarr; bB</b><br>
+        S &rarr; cC<br>
+        S &rarr; &epsilon;<br>
+        B &rarr; bB<br>
+        B &rarr; cC<br>
+        B &rarr; &epsilon;<br>
+        C &rarr; cC<br>
+        C &rarr; &epsilon;<br>
+      </td>
+      <td><img src="images/rgastarbstarcstar3.png"></td>
+    </tr>    
+    <tr>
+      <td>
+        S &rarr; aS<br>
+        S &rarr; bB<br>
+        <b>S &rarr; cC</b><br>
+        S &rarr; &epsilon;<br>
+        B &rarr; bB<br>
+        B &rarr; cC<br>
+        B &rarr; &epsilon;<br>
+        C &rarr; cC<br>
+        C &rarr; &epsilon;<br>
+      </td>
+      <td><img src="images/rgastarbstarcstar4.png"></td>
+    </tr>    
+    <tr>
+      <td>
+        S &rarr; aS<br>
+        S &rarr; bB<br>
+        S &rarr; cC<br>
+        <b>S &rarr; &epsilon;</b><br>
+        B &rarr; bB<br>
+        B &rarr; cC<br>
+        B &rarr; &epsilon;<br>
+        C &rarr; cC<br>
+        C &rarr; &epsilon;<br>
+      </td>
+      <td><img src="images/rgastarbstarcstar5.png"></td>
+    </tr>    
+    <tr>
+      <td>
+        S &rarr; aS<br>
+        S &rarr; bB<br>
+        S &rarr; cC<br>
+        S &rarr; &epsilon;<br>
+        <b>B &rarr; bB</b><br>
+        B &rarr; cC<br>
+        B &rarr; &epsilon;<br>
+        C &rarr; cC<br>
+        C &rarr; &epsilon;<br>
+      </td>
+      <td><img src="images/rgastarbstarcstar6.png"></td>
+    </tr>    
+    <tr>
+      <td>
+        S &rarr; aS<br>
+        S &rarr; bB<br>
+        S &rarr; cC<br>
+        S &rarr; &epsilon;<br>
+        B &rarr; bB<br>
+        <b>B &rarr; cC</b><br>
+        B &rarr; &epsilon;<br>
+        C &rarr; cC<br>
+        C &rarr; &epsilon;<br>
+      </td>
+      <td><img src="images/rgastarbstarcstar7.png"></td>
+    </tr>    
+    <tr>
+      <td>
+        S &rarr; aS<br>
+        S &rarr; bB<br>
+        S &rarr; cC<br>
+        S &rarr; &epsilon;<br>
+        B &rarr; bB<br>
+        B &rarr; cC<br>
+        <b>B &rarr; &epsilon;</b><br>
+        C &rarr; cC<br>
+        C &rarr; &epsilon;<br>
+      </td>
+      <td><img src="images/rgastarbstarcstar8.png"></td>
+    </tr>    
+    <tr>
+      <td>
+        S &rarr; aS<br>
+        S &rarr; bB<br>
+        S &rarr; cC<br>
+        S &rarr; &epsilon;<br>
+        B &rarr; bB<br>
+        B &rarr; cC<br>
+        B &rarr; &epsilon;<br>
+        <b>C &rarr; cC</b><br>
+        C &rarr; &epsilon;<br>
+      </td>
+      <td><img src="images/rgastarbstarcstar9.png"></td>
+    </tr>    
+    <tr>
+      <td>
+        S &rarr; aS<br>
+        S &rarr; bB<br>
+        S &rarr; cC<br>
+        S &rarr; &epsilon;<br>
+        B &rarr; bB<br>
+        B &rarr; cC<br>
+        B &rarr; &epsilon;<br>
+        C &rarr; cC<br>
+        <b>C &rarr; &epsilon;</b><br>
+      </td>
+      <td><img src="images/rgastarbstarcstar10.png"></td>
+    </tr>    
+  </table>
+</ul>
+
+
+
+
+
+    </div>
+  </div>
+
+  <div id="navigation">
+  <p><br><strong><a href="../index.html">Home</a></strong></p>
+    <ul>
+      <li><a href="fsm.html">Finite State Machines</a></li>
+      <li><a href="dfa.html">Deterministic Finite Automata (DFA)</a></li>
+      <li><a href="dfaapplications.html">DFA Applications</a></li>
+      <li><a href="dfaminimization.html">DFA Minimization</a></li>
+      <li><a href="nfa.html">Non-deterministic Finite Automata (NFA)</a></li>
+      <li><a href="nfadfa.html">NFA - DFA Equivalence</a></li>
+      <li><a href="regex.html">Regular Expressions</a></li>
+      <li><a href="regexnfa.html">Regexp - NFA Equivalence</a></li>
+      <li><a href="regulargrammar.html">Regular Grammar (RG)</a></li>
+      <li><a href="rgnfa.html">RG - NFA Equivalence</a></li>
+      <li><a href="rlproperties.html">Properties of Regular Languages</a></li>
+      <li><a href="pumpinglemma.html">Pumping Lemma for Regular Languages</a></li>
+      <li><a href="lexer.html">FSM Application: Lexical Analysis</a></li>
+      <li><a href="jlex.pdf">JLex: A Lexical Analyzer Generator</a></li>
+  </div>
+
+  <div id="extra">
+  </div>
+  <div id="footer", align="right">
+    <p>Send your suggestions/comments to swaminathanj@am.amrita.edu</p>
+  </div>
+</div>
+</body>
+</html>
+
+</body>

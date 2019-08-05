@@ -1,0 +1,194 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Non-deterministic Finite Automata</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../styles.css" />
+        <script type="text/javascript" src="../scripts/shCore.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushBash.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCpp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCss.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushDiff.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushJava.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushJScript.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPhp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPlain.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPython.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushRuby.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushScala.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushSql.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushVb.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushXml.js"></script>
+        <link type="text/css" rel="stylesheet" href="lecture-notes.css"/>
+        <link type="text/css" rel="stylesheet" href="../styles/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="../styles/shThemeDefault.css"/>
+        <script type="text/javascript">
+            //SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+            SyntaxHighlighter.defaults['toolbar'] = false;
+            SyntaxHighlighter.defaults['auto-links'] = false;
+ 
+            SyntaxHighlighter.all();
+        </script>
+</head>
+
+<body>
+ 
+<div id="container">
+<div id="header"><h1>Formal Languages and Automata<img align="right" src="../logo-dark.png" alt="Amrita"> </h1> </div>
+  <div id="wrapper">
+    <div id="content">
+
+<table align="right">
+  <td align="left"><a href="dfaminimization.html">Prev</a></td>
+  <td align="right"><a href="nfadfa.html">Next</a></td>
+</table>
+
+<h2>Non-deterministic Finite State Automata</h2>
+
+<p>Designing a DFA can turn out to be a little tricky in certain cases (as you would have observed 
+in a few problems). DFA has to be carefully designed since we should accept only strings that are 
+to be accepted. No more or no less. The difficulty is due to the restriction that, from each state 
+we can make a transition to exactly one state for each input symbol. Non-determinstic Finite state 
+Automata (NFA) removes this restriction and thereby simplifying the design.</p>
+
+<p>We will first show how to construct an NFA, step-by-step, with an example. We will later show 
+the equivalence of NFA and DFA. i.e. Every NFA can be turned into a DFA in an algorithmic fashion.</p>
+
+<p>A non-deterministic finite state automaton is a 5-tuple (Q, &Sigma;, &delta;, q<sub>0</sub>, F)
+where</p>
+<ul>
+	<li>Q denotes the finite set of states</li>
+	<li>&Sigma; represents the alphabet that consists of input symbols</li>
+	<li>&delta;: Q x &Sigma; = Q denotes the transition function the defines the transition	from 
+  q<sub>i</sub> &in; Q to {q<sub>j</sub> &in;, ..., q<sub>k</sub>} Q for each input symbol.</li>
+	<li>q<sub>0</sub> denotes the start state</li>
+	<li>F denotes the set of final states</li>
+</ul>
+
+<p>Given an input sequence, the NFA processes the string of symbols one at a time, moves between the 
+states in a non-determinstic fashion, as defined by the transition function &delta;. The string is 
+said to be accepted by the NFA, if at the end of the processing, a final state is reached. </p>
+
+<p>Let's do some examples.</p>
+
+<h3>1. NFA that accepts strings that end with abb. &Sigma; = {a, b}</h3>
+
+<p>This can be done in a straight-forward fashion as shown below. Read any number of a's and b's
+and remain in q<sub>0</sub> until you "abb" at the end.</p>
+<img src="images/nendswithabb.png">
+
+<p>As an example, consider the string: aaaaabb. i.e. Five a's followed by two b's. The NFA remains in
+q<sub>0</sub> while reading the first four a's. When it reads the fifth a, it jumps to q<sub>1</sub>.</p>
+
+<p>&delta;(q<sub>0</sub>,aaaaabb) &rarr; &delta;({q<sub>0</sub>,q<sub>1</sub>},aaaabb)
+&rarr; &delta;({q<sub>0</sub>,q<sub>1</sub>},aaabb)
+&rarr; &delta;({q<sub>0</sub>,q<sub>1</sub>},aabb)
+&rarr; &delta;({q<sub>0</sub>,q<sub>1</sub>},abb)
+&rarr; &delta;({q<sub>0</sub>,q<sub>1</sub>},bb)
+&rarr; &delta;({q<sub>0</sub>,q<sub>2</sub>},b)
+&rarr;{q<sub>0</sub>,q<sub>3</sub>}
+
+<p><b>How does the NFA "magically" know ahead which transition to make?</b></p>
+<p>It doesn't have to. All it does is, it makes both transitions by maintaining a set of states it could
+possibly be in, as it reads and processes the input string. After the entire string is read, if at least
+one of the states in the set is final, the input string is accepted. If none of the states are final, the
+input string is rejected.</p>
+
+<p>Note that there are two transitions possible from q<sub>0</sub> for the input symbol 'a' in the
+above example. i.e. &delta;(q<sub>0</sub>,a) = {q<sub>0</sub>, q<sub>1</sub>}. In other words, a 
+transition in an NFA is a movement from one state to a set of states.</p>
+
+<p><b>Contrast this with the DFA directly constructed (shown below for convenience)</b></p>
+<img src="images/endswithabb.png">
+
+<p>You can observe that the NFA is far simpler to construct than the original DFA. It doesn't however 
+imply, NFA is more powerful compared to DFA. i.e. if a NFA can be designed for a problem, it can easily 
+be converted to an equivalent DFA.</p>
+
+<h3>2. NFA that accepts strings that contains abb. &Sigma; = {a, b}</h3>
+
+<p>This is left as exercise.</p>
+
+<h3>3. NFA that accepts strings that does not contain abb. &Sigma; = {a, b}</h3>
+
+<p>This is left as exercise.</p>
+
+<h3>4. NFA that accepts strings that starts with two a's and ends with two a's. &Sigma; = {a, b}</h3>
+
+<p>Try on your own first. Check <a href="images/nstartswith2asendswith2as.png">here</a> for the NFA.</p>
+
+<h3>5. NFA that accepts strings that end with "ab" or "ba". &Sigma; = {a, b}</h3>
+
+<p>This is left as exercise.</p>
+
+<h3>6. NFA that accepts strings that starts and ends with different symbols &Sigma; = {a, b}</h3>
+
+<p>This is left as an exercise.</p>
+
+<h2>&epsilon;-Non deterministic Finite Automata</h2>
+
+<p>&epsilon;-NFA is a form of NFA that allows a greater degree of freedom in its construction. More 
+specifically, it allows for &epsilon;-transitions. i.e. the NFA can move to another state without
+having to read a symbol (or by reading an &epsilon;.</p>
+
+<p><b>Of what use is this "extra" freedom?</b></p>
+
+<p>This freedom is valuable when we have to combine multiple NFAs into one. For example, consider 
+problems 4 and 5 above. Both of them can be broken down into two subproblems. It makes sense to
+design separate NFAs for the subproblems and combine them. We will demonstrate this for problem 4.
+Let's call this problem 4A.</p>
+
+<h3>4A. &epsilon;-NFA that accepts strings that end with "ab" or "ba". &Sigma; = {a, b}</h3>
+
+<p>Subproblem 1. The NFA that accepts strings ending with "ab" is given by</p>
+<img src="images/nendswithab.png">
+
+<p>Subproblem 2. The NFA that accepts strings ending with "ba" is given by</p>
+<img src="images/nendswithba.png">
+
+<p>These two machines can be combined as follows:</p>
+<ul>
+  <li>Add a new start state q<sub>0</sub>, with two epsilon transitions to the start states of the two 
+  NFAs q<sub>1</sub> and q<sub>4</sub>. Now q<sub>0</sub> is the new start state of the combined 
+  &epsilon;-NFA.</li><br>
+  <li>Add a new final state q<sub>7</sub>, with two epsilon transtions from the final states of the two 
+  NFAs q<sub>3</sub> and q<sub>6</sub>. Now q<sub>7</sub> is the new final state of the combined 
+  &epsilon;-NFA.</li>
+</ul>
+<img src="images/nendswithaborba.png">
+
+    </div>
+  </div>
+
+  <div id="navigation">
+  <p><br><strong><a href="../index.html">Home</a></strong></p>
+    <ul>
+      <li><a href="fsm.html">Finite State Machines</a></li>
+      <li><a href="dfa.html">Deterministic Finite Automata (DFA)</a></li>
+      <li><a href="dfaapplications.html">DFA Applications</a></li>
+      <li><a href="dfaminimization.html">DFA Minimization</a></li>
+      <li><a href="nfa.html">Non-deterministic Finite Automata (NFA)</a></li>
+      <li><a href="nfadfa.html">NFA - DFA Equivalence</a></li>
+      <li><a href="regex.html">Regular Expressions</a></li>
+      <li><a href="regexnfa.html">Regexp - NFA Equivalence</a></li>
+      <li><a href="regulargrammar.html">Regular Grammar (RG)</a></li>
+      <li><a href="rgnfa.html">RG - NFA Equivalence</a></li>
+      <li><a href="rlproperties.html">Properties of Regular Languages</a></li>
+      <li><a href="pumpinglemma.html">Pumping Lemma for Regular Languages</a></li>
+      <li><a href="lexer.html">FSM Application: Lexical Analysis</a></li>
+      <li><a href="jlex.pdf">JLex: A Lexical Analyzer Generator</a></li>
+  </div>
+
+  <div id="extra">
+  </div>
+  <div id="footer", align="right">
+    <p>Send your suggestions/comments to swaminathanj@am.amrita.edu</p>
+  </div>
+</div>
+</body>
+</html>
+
+</body>

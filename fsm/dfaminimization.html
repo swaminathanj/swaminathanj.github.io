@@ -1,0 +1,273 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>DFA Minimization</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../styles.css" />
+        <script type="text/javascript" src="../scripts/shCore.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushBash.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCpp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCss.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushDiff.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushJava.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushJScript.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPhp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPlain.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPython.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushRuby.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushScala.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushSql.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushVb.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushXml.js"></script>
+        <link type="text/css" rel="stylesheet" href="lecture-notes.css"/>
+        <link type="text/css" rel="stylesheet" href="../styles/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="../styles/shThemeDefault.css"/>
+        <script type="text/javascript">
+            //SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+            SyntaxHighlighter.defaults['toolbar'] = false;
+            SyntaxHighlighter.defaults['auto-links'] = false;
+ 
+            SyntaxHighlighter.all();
+        </script>
+</head>
+
+<body>
+ 
+<div id="container">
+<div id="header"><h1>Formal Languages and Automata<img align="right" src="../logo-dark.png" alt="Amrita"> </h1> </div>
+  <div id="wrapper">
+    <div id="content">
+
+<table align="right">
+  <td align="left"><a href="dfaapplications.html">Prev</a></td>
+  <td align="right"><a href="nfa.html">Next</a></td>
+</table>
+
+<h2>DFA Minimization</h2>
+
+<p>The DFAs designed for a given problem need not be unique. There can be more than one ways to construct
+them. For instance, in one of the DFA applications that we saw two ways of constructing DFA to find if a 
+binary string is divisible by 4.</p>
+
+<ul>
+  <li>Approach 1. By maintaining a state for each reminder: 0, 1, 2 and 3. This DFA had 4 states.</li>
+  <img src="images/divby4.png">
+
+  <li>Approach 2. By constructing DFA to accept binary strings that end with 00. This DFA had 3 states.</li>
+  <img src="images/endswith00.png">
+</ul>
+
+<h3>Question 1: How can we ascertain that both the DFAs are fundamentally same?</h3>
+
+<p>If we can reduce both the DFAs to its minimal size set of states and transitions and show that they 
+are identical, we can indeed prove this fact.</p>
+
+<h3>Question 2: Is it possible?</h3>
+
+<p>Yes. It is possible. DFA minimization is a key to answering this question.</p>
+
+<h3>Question 3: How do we go about it?</h3>
+<p>If two DFAs accept the same set of strings, but have different number of states (and transitions), 
+it means that the additional states are redundant. Stated otherwise, more than one state is doing the 
+same job and hence they can be merged.</p>
+
+<p>In the above DFA's for divisibility by 4 - one with four states and the other with 3 states - can
+you recognize which two states do the same job?</p>
+
+<ul>
+  <li>Firstly, there is exactly one final state in each DFA. So they must be identical.</li><br>
+  <p>
+    - In fact, Rem 0 and q<sub>0</sub> are indeed identical. <br>
+    - On input 0, both remain in the same state.<br>
+    - On input 1, they move to Rem 1 and q<sub>1</sub> respectively.
+  </p>
+
+  <li>Now, let's look at Rem 1 and q<sub>1</sub>. Are they identical?</li><br>
+  <p>
+    - On input 0, Rem 1 moves to Rem 2 and q<sub>0</sub> moves to q<sub>1</sub>. <br>
+    - But, on input 1, Rem 1 moves to Rem 3 while q<sub>1</sub> stays in the same state. 
+    Apparently different. <br>
+    - However, on closer examination, we note that Rem 3 remains in the same state on input 1. <br>
+    - Moreover, Rem 1 and Rem 3 move to Rem 2 on input 0. Behavior on input 0 seems consistent. <br>
+    - Hence, Rem 1 and Rem 3 are seemingly doing the same job and hence they can be merged.<br>
+  </p>
+
+  <li>Next, we compare Rem 2 and q<sub>2</sub>. Are they identical?</li><br>
+  <p>
+    - Yes. They are identical.<br>
+    - On input 0, Rem 2 moves to Rem 0 and q<sub>2</sub> moves to q<sub>0</sub>.<br>
+    - On input 1, Rem 2 moves to Rem 1 and q<sub>2</sub> moves to q<sub>1</sub>.
+  </p>
+</ul>
+
+<h3>Hopcroft's Algorithm for DFA minimization</h3>
+<p>Hopcroft's algorithm is based on Myhill-Nerode equivalence relation that splits the states into a 
+group of equivalent classes. A set of states belong to the same class provided they exhibit the same
+behavior. </p>
+
+<p><b>Step 1</b>: To start with, we partition the states into two classes.</p>
+<ul>
+  <li>Partition 1 groups all states that are final.</li>
+  <li>Partition 2 groups all states that a non-final.</li>
+</ul>
+<p>In other words, we hypothesize that all the final states may possibly exhibit same behavior and
+all non-final states may exhibit same behavior.</p>
+
+<p><b>Step 2</b>: Next, we check if all the states in the same paritition exhibit the same behavior.</p>
+
+<p style="color: blue"><b>Definition</b>: Two states are said to be exhibiting the same behavior if and 
+only if for each input, both the states makes transitions to the <u>same partition</u> (not necessarily 
+the same state).</p>
+
+<p>If it is not so, the partition needs to be broken down further and the states are reassigned to different
+partitions according to their behavior.</p>
+
+<p><b>Step 3</b>: Re-compute the transitions with respect to the modified partition set.</p>
+
+<p>Steps 2 and 3 are repeated until </p>
+<ul>
+  <li>Either the states in each partition exhibit consistent behavior or </li>
+  <li>The partitions have exactly one state and cannot be broken further</li>
+</ul>
+
+<h3>Example: Let us minimize the first DFA of divisibility by 4.</h3>
+
+<p><b>Step 1</b></p>
+
+<table border="1" align="center">
+  <tr align="center">
+    <td>&emsp; &emsp; <b>Partition</b> &emsp; &emsp;</td>
+    <td>&emsp; &emsp; <b>States</b> &emsp; &emsp;</td>
+    <td>&emsp; &emsp; <b>Input 0</b> &emsp; &emsp;</td>
+    <td>&emsp; &emsp; <b>Input 1</b> &emsp; &emsp;</td>
+  </tr>
+  <tr align="center">
+    <td>P1</td>
+    <td>Rem 0</td>
+    <td>P1 (Rem 0)</td>
+    <td>P2 (Rem 1)</td>
+  </tr>
+  <tr align="center">
+    <td>P2</td>
+    <td>Rem 1<br>Rem 2<br>Rem 3</td>
+    <td>P2 (Rem 2)<br>P1 (Rem 0)<br>P2 (Rem 2)</td>
+    <td>P2 (Rem 3)<br>P2 (Rem 1)<br>P2 (Rem 3)</td>
+  </tr>
+</table><br><br>
+
+<p><b>Step 2</b></p>
+
+<p>- Partition P1 has only one state and hence there is no chance of inconsistency in behavior.</p>
+<p>- In Partition P2, Rem 1 and Rem 3 show a consistent behavior.  However, Rem 2 is not consistent 
+with Rem 1 and Rem 3 for input 0. Hence, Rem 2 needs to be moved to a new partition (say P3).</p>
+
+<table border="1" align="center">
+  <tr align="center">
+    <td>&emsp; &emsp; <b>Partition</b> &emsp; &emsp;</td>
+    <td>&emsp; &emsp; <b>States</b> &emsp; &emsp;</td>
+    <td>&emsp; &emsp; <b>Input 0</b> &emsp; &emsp;</td>
+    <td>&emsp; &emsp; <b>Input 1</b> &emsp; &emsp;</td>
+  </tr>
+  <tr align="center">
+    <td>P1</td>
+    <td>Rem 0</td>
+    <td>P1 (Rem 0)</td>
+    <td>P2 (Rem 1)</td>
+  </tr>
+  <tr align="center">
+    <td>P2</td>
+    <td>Rem 1<br>Rem 3</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr align="center">
+    <td>P3</td>
+    <td>Rem 2</td>
+    <td></td>
+    <td></td>
+  </tr>
+</table> <br><br>
+
+<p><b>Step 3</b></p>
+<p>- Re-computing the transitions for P2 and P3 we get the following table.</p>
+
+<table border="1" align="center">
+  <tr align="center">
+    <td>&emsp; &emsp; <b>Partition</b> &emsp; &emsp;</td>
+    <td>&emsp; &emsp; <b>States</b> &emsp; &emsp;</td>
+    <td>&emsp; &emsp; <b>Input 0</b> &emsp; &emsp;</td>
+    <td>&emsp; &emsp; <b>Input 1</b> &emsp; &emsp;</td>
+  </tr>
+  <tr align="center">
+    <td>P1</td>
+    <td>Rem 0</td>
+    <td>P1 (Rem 0)</td>
+    <td>P2 (Rem 1)</td>
+  </tr>
+  <tr align="center">
+    <td>P2</td>
+    <td>Rem 1<br>Rem 3</td>
+    <td>P3 (Rem 2)<br>P3 (Rem 2)</td>
+    <td>P2 (Rem 3)<br>P2 (Rem 3)</td>
+  </tr>
+  <tr align="center">
+    <td>P3</td>
+    <td>Rem 2</td>
+    <td>P1 (Rem 0)</td>
+    <td>P2 (Rem 1)</td>
+  </tr>
+</table> <br><br>
+
+<p>We now note that the states within each partition exhibit consistent behavior and no more partitioning
+is necessary. The algorithm ends. The minimal DFA can now be drawn as follows.</p>
+<img src="images/divby4min.png">
+
+<h3>Exercises</h3>
+
+<h3>1. Divisibility by 8: Design DFA using reminder method, minimize the DFA and check if it is same as the 
+one ending with 000.</h3>
+
+<h3>2. Minimize the following DFA.</h3>
+<img src="images/minimize1.png">
+
+<h3>3. Minimize the following DFA.</h3>
+<img src="images/minimize2.png">
+
+<h3>4. Minimize the following DFA.</h3>
+<img src="images/minimize3.png">
+
+    </div>
+  </div>
+
+  <div id="navigation">
+  <p><br><strong><a href="../index.html">Home</a></strong></p>
+    <ul>
+      <li><a href="fsm.html">Finite State Machines</a></li>
+      <li><a href="dfa.html">Deterministic Finite Automata (DFA)</a></li>
+      <li><a href="dfaapplications.html">DFA Applications</a></li>
+      <li><a href="dfaminimization.html">DFA Minimization</a></li>
+      <li><a href="nfa.html">Non-deterministic Finite Automata (NFA)</a></li>
+      <li><a href="nfadfa.html">NFA - DFA Equivalence</a></li>
+      <li><a href="regex.html">Regular Expressions</a></li>
+      <li><a href="regexnfa.html">Regexp - NFA Equivalence</a></li>
+      <li><a href="regulargrammar.html">Regular Grammar (RG)</a></li>
+      <li><a href="rgnfa.html">RG - NFA Equivalence</a></li>
+      <li><a href="rlproperties.html">Properties of Regular Languages</a></li>
+      <li><a href="pumpinglemma.html">Pumping Lemma for Regular Languages</a></li>
+      <li><a href="lexer.html">FSM Application: Lexical Analysis</a></li>
+      <li><a href="jlex.pdf">JLex: A Lexical Analyzer Generator</a></li>
+  </div>
+
+  <div id="extra">
+  </div>
+  <div id="footer", align="right">
+    <p>Send your suggestions/comments to swaminathanj@am.amrita.edu</p>
+  </div>
+</div>
+</body>
+</html>
+
+</body>

@@ -1,0 +1,236 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Finite State Machines</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../styles.css" />
+        <script type="text/javascript" src="../scripts/shCore.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushBash.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCpp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushCss.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushDiff.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushJava.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushJScript.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPhp.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPlain.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushPython.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushRuby.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushScala.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushSql.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushVb.js"></script>
+        <script type="text/javascript" src="../scripts/shBrushXml.js"></script>
+        <link type="text/css" rel="stylesheet" href="lecture-notes.css"/>
+        <link type="text/css" rel="stylesheet" href="../styles/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="../styles/shThemeDefault.css"/>
+        <script type="text/javascript">
+            //SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+            SyntaxHighlighter.defaults['toolbar'] = false;
+            SyntaxHighlighter.defaults['auto-links'] = false;
+ 
+            SyntaxHighlighter.all();
+        </script>
+</head>
+
+<body>
+ 
+<div id="container">
+<div id="header"><h1>Formal Languages and Automata<img align="right" src="../logo-dark.png" alt="Amrita"> </h1> </div>
+  <div id="wrapper">
+    <div id="content">
+
+<table align="right">
+  <td align="left"><a href="../index.html">Prev</a></td>
+  <td align="right"><a href="dfa.html">Next</a></td>
+</table>
+
+<h2>Finite State Machines</h2>
+
+<h3>Definitions</h3>
+
+<p>Finite state machine is an abstract machine that is used to mathematically model computation. It is
+popularly knows by its acronym: FSM. A FSM is defined by a finite set of states and rules that govern
+the movement between the states based on inputs, referred to as transitions. More formally,</p>
+
+<p>A <b>finite state machine</b> is a 5-tuple (Q, &Sigma;, &delta;, q<sub>0</sub>, F) where</p>
+<ul>
+	<li>Q denotes the finite set of states</li>
+	<li>&Sigma; represents the alphabet that consists of input symbols</li>
+	<li>&delta;: Q x &Sigma; = Q denotes the transition function the defines the transition
+	from q<sub>i</sub> to q<sub>j</sub> Q for each input symbol &sigma; &in; &Sigma; where
+  q<sub>i</sub>, q<sub>j</sub> &in; Q.</li>
+	<li>q<sub>0</sub> denotes the start state</li>
+	<li>F denotes the set of final states</li>
+</ul>
+
+<p>Given an input sequence, the FSM reads the string of symbols, one at a time, moves between the states 
+as defined by the transition function &delta;. The string is said to be accepted by the FSM, if at the end
+of the processing, a final state is reached.</p>
+
+<p>Finite State Machines are modeled as graphs or specified as two-dimensional tables. Graphs are intuitive
+to humans while tables serve for easy implementation.</p>
+<ul>
+  <p>In the graphical notation, the start state is represented by an incoming arrow from nowhere. The final
+  states are denoted by a nodes with two circles.</p>
+  <p>In the tabular notation, the start state is denoted by preceding "->" while the final state is denoted
+  by *.</p>
+</ul>
+
+<h3>Types of Finite State Machines</h3>
+
+<p>In the automata theory, finite state machines can be categorized as deterministic or non-deterministic.</p>
+<ul>
+  <p><b>1. Deterministic FSMs</b>, also referred to as Deterministic Finite Automata (DFA) are machines in 
+  which transitions between the states are deterministic. i.e. from each state there exists exactly one 
+  transition for each input. &delta;(q<sub>i</sub>, &sigma;) = q<sub>j</sub>.</p>
+
+  <p>The following diagrams depicts the DFA that accepts all input strings ending with "abb" modeled as graphs. 
+  The alphabet &Sigma; is defined as a set of two symbols {a, b}.</p>
+  <img src="images/endswithabb.png">
+
+  <p>The same DFA specified in the form of a table is given below. Both representations are equivalent.</p>
+
+  <table border="1" align="center">
+    <tr align="center">
+      <td>&emsp;<b>Input</b>&emsp;</td>   <td>&emsp;<b> a </b>&emsp;</td>   <td>&emsp;<b> b </b>&emsp;</td>
+    </tr>
+    <tr align="center">
+      <td>-> q<sub>0</sub></td>  <td>q<sub>1</sub></td>  <td>q<sub>0</sub></td>
+    </tr>
+    <tr align="center">
+      <td>q<sub>1</sub></td>  <td>q<sub>1</sub></td>  <td>q<sub>2</sub></td>
+    </tr>
+    <tr align="center">
+      <td>q<sub>2</sub></td>  <td>q<sub>1</sub></td>  <td>q<sub>3</sub></td>
+    </tr>
+    <tr align="center">
+      <td>q<sub>3</sub><sup>*</sup></td>  <td>-</td>               <td>-</td>
+    </tr>
+  </table> <br><br>
+
+  <p><b>Example 1</b>: Consider the string: <b>abababb</b>. Note that this ends with abb. The DFA can be 
+  used to establish this fact by running the string over the DFA. This is shown as follows.</p>
+  <ul>
+  <li>&delta;(q<sub>0</sub>, abababb) 
+  = &delta;(q<sub>1</sub>, bababb) <br> &emsp; &emsp; &emsp; &emsp; &emsp; &nbsp;
+  = &delta;(q<sub>2</sub>, ababb) <br> &emsp; &emsp; &emsp; &emsp; &emsp; &nbsp;
+  = &delta;(q<sub>1</sub>, babb) <br> &emsp; &emsp; &emsp; &emsp; &emsp; &nbsp; 
+  = &delta;(q<sub>2</sub>, abb) <br> &emsp; &emsp; &emsp; &emsp; &emsp; &nbsp;
+  = &delta;(q<sub>1</sub>, bb) <br> &emsp; &emsp; &emsp; &emsp; &emsp; &nbsp;
+  = &delta;(q<sub>2</sub>, b) <br> &emsp; &emsp; &emsp; &emsp; &emsp; &nbsp;
+  = &delta;(q<sub>3</sub>, &epsilon;) <br> &emsp; &emsp; &emsp; &emsp; &emsp; &nbsp;
+  = q<sub>3</sub> <b>[ACCEPT]</b></li>
+  </ul><br>
+
+  <p>Since, at the end of processing the string, the final state q<sub>3</sub>, is reached, this string
+  is accepted by the DFA.</p>
+
+  <p><b>Example 2</b>: Consider the string: <b>abababa</b>. Note that this does not end with abb. The DFA 
+  can be used to establish this fact by running the string over the DFA. This is shown as follows.</p>
+  <ul>
+  <li>&delta;(q<sub>0</sub>, abababa) 
+  = &delta;(q<sub>1</sub>, bababa) <br> &emsp; &emsp; &emsp; &emsp; &emsp; &nbsp;
+  = &delta;(q<sub>2</sub>, ababa) <br> &emsp; &emsp; &emsp; &emsp; &emsp; &nbsp;
+  = &delta;(q<sub>1</sub>, baba) <br> &emsp; &emsp; &emsp; &emsp; &emsp; &nbsp; 
+  = &delta;(q<sub>2</sub>, aba) <br> &emsp; &emsp; &emsp; &emsp; &emsp; &nbsp;
+  = &delta;(q<sub>1</sub>, ba) <br> &emsp; &emsp; &emsp; &emsp; &emsp; &nbsp;
+  = &delta;(q<sub>2</sub>, a) <br> &emsp; &emsp; &emsp; &emsp; &emsp; &nbsp;
+  = &delta;(q<sub>1</sub>, &epsilon;) <br> &emsp; &emsp; &emsp; &emsp; &emsp; &nbsp;
+  = q<sub>1</sub> <b>[REJECT]</b></li>
+  </ul><br>
+
+  <p>Since, at the end of processing the string, the final state q<sub>3</sub>, is NOT reached, this string
+  is rejected by the DFA.</p>
+
+  <p><b>2. Non-deterministic FSMs</b>, also referred to as Non-deterministic Finite Automata (NFA) are machines 
+  in which transtions between states are not deterministic. i.e. from each state there exists more than one 
+  transition for the same input. &delta;(q<sub>i</sub>, &sigma;) = {q<sub>j1</sub>, ..., q<sub>jK</sub>}.</p>
+
+  <p>The following diagram depicts the NFA that accepts all input strings ending with "abb". &Sigma; = {a, b}.</p>
+  <img src="images/nendswithabb.png">
+</ul>
+
+<p>The same NFA specified in the form of a table is given below. Both representations are equivalent.</p>
+
+  <table border="1" align="center">
+    <tr align="center">
+      <td>&emsp;<b>Input</b>&emsp;</td>   <td>&emsp;<b> a </b>&emsp;</td>   <td>&emsp;<b> b </b>&emsp;</td>
+    </tr>
+    <tr align="center">
+      <td>-> q<sub>0</sub></td>  <td>{q<sub>0</sub>, q<sub>1</sub>}</td>  <td>{q<sub>0</sub>}</td>
+    </tr>
+    <tr align="center">
+      <td>q<sub>1</sub></td>  <td>{q<sub>1</sub>}</td>  <td>{q<sub>2</sub>}</td>
+    </tr>
+    <tr align="center">
+      <td>q<sub>2</sub></td>  <td>{q<sub>1</sub>}</td>  <td>{q<sub>3</sub>}</td>
+    </tr>
+    <tr align="center">
+      <td>q<sub>3</sub><sup>*</sup></td>  <td>&phi;</td>               <td>&phi;</td>
+    </tr>
+  </table> <br><br>
+
+<p>Notice that a transition in an NFA leads to a set of states instead of one state.</p>
+
+<p>In practice, NFAs are easier to construct compared to DFAs due to the extra degree of freedom in defining 
+transitions. However, this doesn't mean NFAs are any more powerful machines than DFAs. An NFA can be converted
+into a DFA in a mechanical fashion.</p>
+
+<h3>Finite State Machines and Regular Languages</h3>
+
+<p>DFAs/NFAs accept strings generated by a special class of languages called as Regular Languages. A regular
+language is a language which can be expressed using Regular Expressions or Regular Grammar.</p> 
+
+<p>A <b>regular expression</b> for generating all strings that end with "abb" is given by (a+b)*abb. Here,</p>
+<ul>
+  <li>(a+b) denotes either a or b.</li>
+  <li>(a+b)* denotes any number and of a's and b's of any combination.</li>
+  <li>(a+b)*abb denotes any number and any combination of a's and b's followed by "abb" at the end.</li>
+</ul>
+
+<p>The <b>regular language</b> can be formally defined as: <b>L = { w | w &in; (a+b)*abb }</b>. Equivalently, 
+the same language can also be defined by the following regular grammar.</p>
+
+<ul>
+  <li>S &rarr; aS | bS | aB</li>
+  <li>B &rarr; bC</li>
+  <li>C &rarr; b</li>
+</ul>
+
+<p>Languages are usually referred to as generator of strings while the machines are referred to as acceptor 
+of the strings.</p>
+
+    </div>
+  </div>
+
+  <div id="navigation">
+  <p><br><strong><a href="../index.html">Home</a></strong></p>
+    <ul>
+      <li><a href="fsm.html">Finite State Machines</a></li>
+      <li><a href="dfa.html">Deterministic Finite Automata (DFA)</a></li>
+      <li><a href="dfaapplications.html">DFA Applications</a></li>
+      <li><a href="dfaminimization.html">DFA Minimization</a></li>
+      <li><a href="nfa.html">Non-deterministic Finite Automata (NFA)</a></li>
+      <li><a href="nfadfa.html">NFA - DFA Equivalence</a></li>
+      <li><a href="regex.html">Regular Expressions</a></li>
+      <li><a href="regexnfa.html">Regexp - NFA Equivalence</a></li>
+      <li><a href="regulargrammar.html">Regular Grammar (RG)</a></li>
+      <li><a href="rgnfa.html">RG - NFA Equivalence</a></li>
+      <li><a href="rlproperties.html">Properties of Regular Languages</a></li>
+      <li><a href="pumpinglemma.html">Pumping Lemma for Regular Languages</a></li>
+      <li><a href="lexer.html">FSM Application: Lexical Analysis</a></li>
+      <li><a href="jlex.pdf">JLex: A Lexical Analyzer Generator</a></li>
+  </div>
+
+  <div id="extra">
+  </div>
+  <div id="footer", align="right">
+    <p>Send comments to swaminathanj@am.amrita.edu</p>
+  </div>
+</div>
+</body>
+</html>
+
+</body>
