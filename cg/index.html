@@ -1,0 +1,246 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Introduction to Geometric Algorithms</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../styles.css" />
+        <script type="text/javascript" src="scripts/shCore.js"></script>
+        <script type="text/javascript" src="scripts/shBrushBash.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCpp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCss.js"></script>
+        <script type="text/javascript" src="scripts/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="scripts/shBrushDiff.js"></script>
+        <script type="text/javascript" src="scripts/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="scripts/shBrushJava.js"></script>
+        <script type="text/javascript" src="scripts/shBrushJScript.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPhp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPlain.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPython.js"></script>
+        <script type="text/javascript" src="scripts/shBrushRuby.js"></script>
+        <script type="text/javascript" src="scripts/shBrushScala.js"></script>
+        <script type="text/javascript" src="scripts/shBrushSql.js"></script>
+        <script type="text/javascript" src="scripts/shBrushVb.js"></script>
+        <script type="text/javascript" src="scripts/shBrushXml.js"></script>
+        <link type="text/css" rel="stylesheet" href="lecture-notes.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/shThemeDefault.css"/>
+        <script type="text/javascript">
+            //SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+            SyntaxHighlighter.defaults['toolbar'] = false;
+            SyntaxHighlighter.defaults['auto-links'] = false;
+            SyntaxHighlighter.all();
+        </script>
+
+</head>
+
+<body>
+ 
+<div id="container">
+<div id="header"><h1>Computational Geometry<img align="right" src="../logo-dark.png" alt="Amrita"> </h1> </div>
+  <div id="wrapper">
+    <div id="content">
+
+<table align="right">
+  <td align="left"><a href="../index.html">Prev</a></td>
+  <td align="right"><a href="Problems.html">Next</a></td>
+</table>
+
+<h2>Introduction to Computational Geometry</h2>
+
+<p>Computational geometry is a field of study that requires a mix of geometric concepts, specialized data
+structures and algorithms to solve real-life practical problems in today's world. In some scenarios,
+problems from other domains like databases, machine learning, etc are mapped to geometric domain and solved.</p> 
+
+<h2>Basic definitions</h2>
+
+<h3>1A. Euclidean distance in 2D space</h3>
+<p>Let the points be: p1 = (x1, y1), p2 = (x2, y2).</p>
+<p style="color: blue">d(p1, p2) = SQRT[ (x2 - x1)<sup>2</sup> + (y2 - y1)<sup>2</sup> ]</p>
+
+<h3>1B. Euclidean distance in kD space</h3>
+<p>Let the points be: p1 = (x1, x2, ..., xk) and p2 = (y1, y2, ..., yk).</p>
+<p style="color: blue">d(p<sub>1</sub>, p<sub>2</sub>) = 
+      SQRT[ (&Sigma;<sup>k</sup><sub>i=1</sub> (y<sub>i</sub> - x<sub>i</sub>)<sup>2</sup> ]</p>
+
+<h3>2. Slope of a line given two points in 2D space</h3>
+<p>Let the points be p1 = (x1, y1) and p2 = (x2, y2).</p>
+<p style="color: blue">Slope m = (y2 - y1) / (x2 -x1)</p>
+
+<p><b>Note</b>: The idea of slope does not generalize beyond 2D space.</p>
+
+<h3>3A. Equation of a line given a point and slope in 2D space</h3>
+<p>Let the point be (x1,  y1) and slope be m</p>
+<p style="color: blue">y - y1 = m (x - x1)</p>
+
+<h3>3B. Equation of a line given two points in 2D space</h3>
+<p>Let the points be p1 = (x1, y1) and p2 = (x2, y2).</p>
+<p style="color: blue">Step 1: Use 2A to find slope m.<br>
+Step 2: With m and one of the point, use 3A to find the equation of the line.</p>
+<p><b>Note</b>: This equation of a line cannot be generalized beyond 2D. In order to represent a line
+in a k-D space, we have to go for parameteric representation.</p>
+<p><b>Caution</b>: If you are thinking ax + by + cz + d = 0 represents a line in 3D space, you are wrong.
+This represents a plane, not a line!!</p>
+
+<h3>4A. Parameteric representation of a line passing through two points (any dimension)</h3>
+<p>Let the points be p1 = (x1, x2, ..., xk) and p2 = (y1, y2, ..., yk).</p>
+<p style="color: blue">Vector <b>a</b> = p2 + (p1 - p2)t = t p1 + (1 - t)p2 where t &in; &reals;</p>
+<p>Note that this representation of line works for any dimensions.</p>
+<p>Watch this video of Khan academy for an excellent video on <a href="https://www.khanacademy.org/math/linear-algebra/vectors-and-spaces/vectors/v/linear-algebra-parametric-representations-of-lines">Parameteric representation of line</a></p>
+<h3>4B. Parameteric representation of a line segment passing between two points (any dimension)</h3>
+<p>Let the points be p1 = (x1, x2, ..., xk) and p2 = (y1, y2, ..., yk).</p>
+<p style="color: blue">Segment(p1p2) = p2 + (p1 - p2)t = t p1 + (1 - t)p2 where t &in; [0,1]</p>
+
+<h3>5. Angle between two edges of a triangle</h3>
+<p>Given a triangle with edges A, B and C, the angle &theta; between the two edges B and C can be obtained by</p>
+<p style="color: blue">&theta; = cos<sup>-1</sup>[ (|B|^2 + |C|^2 - |A|^2) / 2.|B|.|C| ]</p>
+
+<h3>6. Signed area of a triangle given three points</h3>
+<p>Let the vertices of a triangle in 2D space be p1 = (x1,y1), p2 = (x2,y2) and p3 = (x3,y3). Then the signed
+area is half the determinant D(p1,p2,p3) of the following matrix which is given by</p>
+
+<ul>
+<div style="color: blue">
+    <table class="matrix">
+        <tr>
+            <td></td>
+            <td>|x1</td>
+            <td>y1</td>
+            <td>1|</td>
+        </tr>
+        <tr>
+            <td>D(p1,p2,p3) = </td>
+            <td>|x2</td>
+            <td>y2</td>
+            <td>1|</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>|x3</td>
+            <td>y3</td>
+            <td>1|</td>
+        </tr>
+    </table>
+</div>
+</ul>
+
+<p><b>Note</b>: D is positive if (p1 p2 p3) form a counter-clockwise cycle and negative if it is clockwise.</p>
+
+<p style="color: blue">Area = | D(p1,p2,p3) | / 2 </p>
+
+<h3>7A. Equation of a line in 2D space</h3>
+<p style="color: blue">Ax + By + C = 0</p>
+
+<h3>7B. Half-plane defined by a line in 2D space</h3>
+<p style="color: blue">Ax + By + C &ge; = 0 &emsp; OR &emsp; Ax + By + C &le; 0</p>
+<p>The following example shows the line y = 2x - 1 and the half-plane y &ge; 2x - 1.</p>
+<ul><img src="images/eg-halfplane.png" width="400"></ul>
+
+<h3>8A. Clockwise orientation of 3 points in 2D space</h3>
+<p>Let p1, p2 and p3 be three points in 2D space. We say that p1-p2-p3 have clockwise orientation if</p>
+<p style="color: blue">slope(p1-p2) > slope(p2-p3)</p>
+
+<h3>8B. Counter-clockwise orientation of 3 points in 2D space</h3>
+<p>Let p1, p2 and p3 be three points in 2D space. We say that p1-p2-p3 have counter-clockwise orientation if</p>
+<p style="color: blue">slope(p1-p2) < slope(p2-p3)</p>
+
+<h3>8C. Collinearity of 3 points in 2D space</h3>
+<p>Let p1, p2 and p3 be three points in 2D space. We say that p1-p2-p3 are collinear if</p>
+<p style="color: blue">slope(p1-p2) = slope(p2-p3)</p>
+<ul><img src="images/eg-orientation.png" width="500"></ul>
+
+<h3>9A. Whether two lines intersect in 2D space.</h3>
+<p>Let p1 = (x1, y1) and q1 = (x2, y2) define the line L<sub>1</sub>. Let p2 = (x3, y3) and 
+q2 = (x4, y4) define the line L<sub>2</sub>. L1 and L2 intersect if</p>
+<p style="color: blue">slope(p1-q1) &ne; slope(p2-q2)</p>
+<p>If m1 &ne; m2, they must intersect. If m1 = m2 then L1 and L2 may be parallel or L1 = L2 (collinear).</p>
+
+<h3>9B. Point of intersection of two lines in 2D space</h3>
+<p>Step 1: Determine the slope of L1 and L2 independently (using 2).</p>
+<p>Step 2: Use slope and one point of each line to determine the equation of the lines independently (using 3B). 
+Let the equations for L1 and L2 be</p>
+<ul>
+ 	<li>a<sub>1</sub>x + b<sub>1</sub>y + c<sub>1</sub> = 0</li>
+ 	<li>a<sub>2</sub>x + b<sub>2</sub>y + c<sub>2</sub> = 0</li>
+
+</ul>
+<p>Step 3: Solve the equations for two unknowns (x, y). </p>
+<ul>
+<li>Intersecting case: Exactly one solution exist and that is the intersection point.</li>
+<li>Parallel case: No solution exists. They don't intersect. </li>
+<li>Collinear case: Infinite solutions exist. Every point is an intersection point.</li>
+</ul>
+
+<h3>10A. Determine if two line segments intersect in 2D space</h3>
+<p>Let p1 = (x1, y1) and q1 = (x2, y2) endpoints of line-segment L<sub>1</sub>. Let p2 = (x3, y3) and 
+q2 = (x4, y4) be the endpoints of line-segment L<sub>2</sub>. L1 and L2 intersect if the following 
+conditions are satisfied.</p>
+<ul>
+	<li>(p1, q1, p2) and (p1, q1, q2) have different orientations.</li>
+	<li>(p2, q2, p1) and (p2, q2, q1) have different orientations.</li>
+</ul>
+
+<h3>10B. What if both the line-segments are collinear?</h3>
+<p>1B. In a special case when both lines are collinear, the following conditions must be satisfied.</p>
+<ul>
+	<li>x-projections of L1 and L2 must intersect.</li>
+	<li>y-projections of L1 and L2 must intersect.</li>
+</ul>
+<p>Refer to <a href="https://www.geeksforgeeks.org/check-if-two-given-line-segments-intersect/">Line segment intersection</a> at geeks-for-geeks for a good discussion on this. Note that this approach does not provide 
+a way to find the intersecting point.</p>
+
+<h3>10C. Determining the point of intersection of two line segments (parametric way)</h3>
+<p>Let line L1 be defined by the points (xa, ya) and (xb, yb). Let L2 be defined by the point (xc, yc)
+and (xd, yd).</p>
+<p>Step 1: Use 4A to find the parametric representation of L1 and L2.</p>
+<ul>
+	<li>Parametric representation of L1</li>
+	<p style="color: blue">x1 = xa + (xb - xa)t1 &emsp; .....(i)<br>y1 = ya + (yb - ya)t1 &emsp; .....(i)</p>
+	<li>Parametric representation of L2</li>
+	<p style="color: blue">x2 = xc + (xd - xc)t2 &emsp; .....(iii)<br>y2 = yc + (yc - yc)t2 &emsp; .....(iv)</p>
+</ul>
+<p>Step 2: At the point of intersection x1 = x2 and y1 = y2. Solve for t1 and t2 equating (i) & (iii) and
+(ii) & (iv).</p>
+<ul style="color: blue">xa + (xb - xa)t1 = xc + (xd - xc)t2<br>
+ya + (yb - ya)t1 = yc + (yc - yc)t2</ul> 
+<p>Step 3: Line segments intersect if </p>
+<ul style="color: blue">0 &le; t1 &le; 1 &emsp; and &emsp; 0 &le; t2 &le; 1</ul>
+<p>Step 4: If they intersect, find the intersecting point by substituting the values of t1 and t2 obtained, 
+back into the equations (i) and (ii).</p>
+
+<h3>11. Find the perpendicular bisector of a line</h3>
+<p>Let (xa, ya) and (xb, yb) be the points that define L1.</p>
+<p>Step 1: Determine slope m of the line using 2.</p>
+<p>Step 2: Slope of a line L2, perpendicular to line L1, m' can be computed by</p>
+<ul style="color: blue">m' = -1/m</ul>
+<p>Step 3: Find the bisecting point or midpoint (xm, ym) of L1 as follows.</p>
+<ul style="color: blue">xm = (xa + xb)/2 &emsp; and  &emsp; ym = (ya + yb)/2</ul>
+<p>Step 4: Now with slope m' and a point (xm, ym), the equation of perpendicular bisector L2 is given by</p>
+<ul style="color: blue"> y - ym = m' (x -xm) = y - ym = (-1/m) (x -xm) ........ simplify this</ul>
+<ul><img src="images/eg-bisector.png" width="250"></ul>
+
+   </div>
+  </div>
+
+<div id="navigation">
+	<p><strong><br><a href="../index.html">Home</a></strong></p>
+    <ul>
+      <li><a href="index.html">Introduction</a></li>
+      <li><a href="Problems.html">Geometric Problems</a></li>
+      <li><a href="References.html">References</a></li>
+      <li><a href="SegmentIntersection.html">Segment Interesection</a></li>
+      <li><a href="ConvexHull.html">Convex Hull</a></li>
+      <li><a href="PolygonTriangulation.html">Polygon Triangulation</a></li>
+      <li><a href="VoronoiDiagram.html">Voronoi Diagram</a></li>
+    </ul>
+</div> 
+ 
+
+  <div id="extra">
+  </div>
+  <div id="footer", align="right">
+    <p>Send your feedback/comments to swaminathanj@am.amrita.edu</p>
+  </div>
+</div>
+</body>
+</html>

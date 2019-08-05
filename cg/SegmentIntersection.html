@@ -1,0 +1,246 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Line Segment Intersection</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../styles.css" />
+        <script type="text/javascript" src="scripts/shCore.js"></script>
+        <script type="text/javascript" src="scripts/shBrushBash.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCpp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCss.js"></script>
+        <script type="text/javascript" src="scripts/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="scripts/shBrushDiff.js"></script>
+        <script type="text/javascript" src="scripts/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="scripts/shBrushJava.js"></script>
+        <script type="text/javascript" src="scripts/shBrushJScript.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPhp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPlain.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPython.js"></script>
+        <script type="text/javascript" src="scripts/shBrushRuby.js"></script>
+        <script type="text/javascript" src="scripts/shBrushScala.js"></script>
+        <script type="text/javascript" src="scripts/shBrushSql.js"></script>
+        <script type="text/javascript" src="scripts/shBrushVb.js"></script>
+        <script type="text/javascript" src="scripts/shBrushXml.js"></script>
+        <link type="text/css" rel="stylesheet" href="lecture-notes.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/shThemeDefault.css"/>
+        <script type="text/javascript">
+            //SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+            SyntaxHighlighter.defaults['toolbar'] = false;
+            SyntaxHighlighter.defaults['auto-links'] = false;
+            SyntaxHighlighter.all();
+        </script>
+
+</head>
+
+<body>
+ 
+<div id="container">
+<div id="header"><h1>Computational Geometry<img align="right" src="../logo-dark.png" alt="Amrita"> </h1> </div>
+  <div id="wrapper">
+    <div id="content">
+
+<table align="right">
+  <td align="left"><a href="References.html">Prev</a></td>
+  <td align="right"><a href="ConvexHull.html">Next</a></td>
+</table>
+
+
+<h2>Line Segment Intersection</h2>
+
+<p><b style="color: blue">Problem definition</b>: Given n lines S1, S2, ...., Sn defined by points (p1, q1), 
+(p2, q2), ...., (pn, qn) in 2D Euclidean space the goal is to compute all intersection points i<sub>jk</sub>
+where j and k ranges from 1 to n and j &ne; k.</p>
+
+<p>In <a href="https://www.amrita.ac.in/swaminathanj/cg/index.html">Introduction</a> we have defined how to
+compute the point of intersection for two line segments intersect. It takes O(1) time to compute the intersecting 
+point. In this section we are going to deal with the problem computing all the intersection points for arbitrary 
+number of segments.</p>
+
+<p>The brute-force way to find the intersection points is to compute them for every pair. This would take
+O(n<sup>2</sup>) time. Below, we describe the <b>plane-sweep algorithm</b> that works in O((n+k)logn) where
+k is the number of intersection points.</p>
+
+<h3>Plane-sweep algorithm</h3>
+
+<p>The intersection points can be computed using a vertical line L that sweeps through the 2D plane from left-to-
+right (or equivalently with a horizontal line that sweeps from top to bottom). We will not focus on the sweeping
+line at every point in the x-axis. Instead, we will restrict our attention to just few points, which we call as 
+<b>event points</b>. These event points include the start and end points of each segment, pi's and qi's which are 
+known at the beginning, plus the points of intersection i<sub>jk</sub>'s, which are computed dynamically while the
+vertical line sweeps through the space.</p>
+
+<p>Towards this end, we have to maintain a data structure <b style="color: blue">EVENTS</b> that contains the 
+event points sorted based on the x-coordinate. Note that initially, EVENTS will consist only initial and end 
+points (pi's and qi's) of the segments. As it stops at each of these points, intersecting points will be
+computed dynamically and added to EVENTS. A priority queue serves as a good data structure to keep EVENTS
+sorted as the intersection points are added.</p>
+
+<p>We know that n segments imply 2n end points while the number of intersecting points k may vary.
+At one extreme, none of the lines may intersect which implies k = 0. At another extreme, every line may
+intersect with the other, in which case, k = 1 + 2 + ... + n-1 = O(n<sup>2</sup>) points of intersection. 
+The following figure shows both these cases.</p>
+<ul><img src="images/intersection-extremes.png" width="500"></ul>
+
+<p>To start with, the vertical line L is at the left extreme of the line segments as shown below. Then on, it will 
+stop at the event points pi's, qi's and i<sub>jk</sub>'s where i<sub>jk</sub> denotes the intersection point of 
+Sj = (pj, qj) and Sk = (pk, qk).</p>
+
+<p>As it stops at each of these points, it will compute the intersecting points i<sub>jk</sub>'s dynamically 
+and add them to EVENTS.</p>
+
+<p><b>Question 1</b>: How do we know when to compute intersection between segments?</p>
+<p>The moment sweepline L has seen the initial point pi of more than one segment, we have to compute their 
+intersection. Towards this end, we maintain a data structure <b style="color: blue">STATUS</b>, to keep track 
+of the segments Si's, whose initial points we have seen thus far. As the initial point of a new segment Sk is
+encountered, we compute the intersection of Sk with all the active segments in the STATUS data structure,
+add the intersection points to EVENTS and finally add Sk to the STATUS.</p>
+
+<p><b>Question 2</b>: What if the sweepline goes past the end point qi of a segment Si?</p>
+<p>Then the segment Si cannot intersect with any segment henceforth. So, Si can be removed from STATUS.</p>
+
+<p>We will demonstrate the algorithm using an example first. Consider the following figure consisting of
+five line-segments (p1, q1), ...., (p5, q5). The initial position of the sweep-line L is shown below.
+The STATUS is empty and EVENTS contains only pi's and qi's sorted based on x-coordinate.</p>
+<ul><img src="images/psa0.png" width="600"></ul>
+<ul><img src="images/psa1.png" width="600"></ul>
+<ul><img src="images/psa2.png" width="600"></ul>
+<ul><img src="images/psa3.png" width="600"></ul>
+<ul><img src="images/psa4.png" width="600"></ul>
+<ul><img src="images/psa5.png" width="600"></ul>
+<ul><img src="images/psa6.png" width="600"></ul>
+<ul><img src="images/psa7.png" width="600"></ul>
+<ul><img src="images/psa8.png" width="600"></ul>
+<ul><img src="images/psa9.png" width="600"></ul>
+<ul><img src="images/psa95.png" width="600"></ul>
+<ul><img src="images/psa10.png" width="600"></ul>
+<ul><img src="images/psa11.png" width="600"></ul>
+<ul><img src="images/psa12.png" width="600"></ul>
+<ul><img src="images/psa13.png" width="600"></ul>
+<ul><img src="images/psa14.png" width="600"></ul>
+<ul><img src="images/psa15.png" width="600"></ul>
+<ul><img src="images/psa16.png" width="600"></ul>
+<ul><img src="images/psa17.png" width="600"></ul>
+
+
+<p><b>Question 3</b>: It is clear from the above example that <b>EVENTS</b> must be maintained in a sorted 
+manner so as to sweep from left to right. But, why should <b>STATUS</b> be kept sorted (per y-coordinate)? 
+In the above example, we noted that while the sweepline L is at an intersection i<sub>jk</sub>, we exchange 
+Sj and Sk to keep <b>STATUS</b> sorted. Why is it necessary?</p>
+
+<p>It turns out that maintaining STATUS in sorted manner helps in optimizing the algorithm. Whenever L
+hits a start point pi of a segment Si, we immediately compute the intersection points of Si with all
+the segments in STATUS. This takes O(n) time. This repeated for n segments leads to O(n<sup>2</sup>)
+intersection computations. To be precise, 0 + 1 + 2 + .... + n-1 computations are needed at worst.</p>
+
+<p>If we keep STATUS sorted, at each pi it is sufficient to compute the intersection point of Si with 
+its upper Su and lower segment Sl. This takes O(1) time. The remaining computations can be moved to when
+L hits the intersection points. When L hits i<sub>jk</sub>, Sj and Sk are swapped leading to Sj and Sk
+getting a new neighbor (upper neighbor of one and lower neighbor for the other).</p>
+
+<p>Without loss of generality, lets assume Sj is above Sk before intersection and 
+	STATUS = {..., Sx, Sj, Sk, Sy, ...}.
+After L hits S<sub>jk</sub>, STATUS = {..., Sx, Sk, Sj, Sy, ...}. Sk's new neighbor is Sx and Sj's new
+neighbor is Sy. Two computations are necessary to determine intersection point of Sx-Sk and Sj-Sy.
+This works out to O(1) time.</p>
+
+<p>To sum up, at each pi, 2 intersection computations are done and at each i<sub>jk</sub> again, 2
+intersection computations are done. Thus, the overall intersection computations reduces to O(n + k)
+instead of O(n<sup>2</sup>).</p>
+
+<p><b>Question 4</b>: What would be an appropriate data structure for STATUS?</p>
+
+<p>Priority queue does not suit since we not only need to keep it sorted, but have to find the upper
+and lower neighbor of segment whenever the sweeping line hits the starting points pi's and intersection 
+points i<sub>jk</sub>'s. A 2-3 tree serves as an appropriate data structure. Look into 
+<a href="http://faculty.cs.tamu.edu/chen/notes/geo.pdf">Chapter 2.3 of Computational Geometry - Methods 
+and Applications</a></p>
+
+<h3>Algorithm: Plane-sweep</h3>
+
+<pre class="brush: java">
+// Input: n segments S1, ..., Sn
+// Output: All intersection points of these segments
+
+DECLARE PriorityQueue EVENTS // Sorted by x coordinate left-to-right
+DECLARE TwoThreeTree STATUS // Sorted by y-coordinate top-to-bottom
+Include end points of S1, ..., Sn to EVENTS
+STATUS = {}
+
+for (i = 1; i < EVENTS.length; i++) {
+	Point p = EVENTS[i]
+	if ( p = left-end of a segment S )
+		Let Sj and Sk be the neighboring segments to S
+		Point q = Intersection(S, Sj)
+		Point r = Intersection(S, Sk)
+		if (q != null) 
+			OUTPUT q
+			EVENTS = EVENTS &cup; {q}
+		if (r != null) 
+			OUTPUT r
+			EVENTS = EVENTS &cup; {r}
+		STATUS = STATUS &cup; {S}
+	else if ( p = intersecting point of Sj and Sk)
+		Swap Sj and Sk in STATUS
+		Let Sx be the new neighbor of Sj
+		Let Sy be the new neighbor of Sk
+		Point q = Intersection(Sx, Sj)
+		Point r = Intersection(Sk, Sy)
+		if (q != null) 
+			OUTPUT q
+			EVENTS = EVENTS &cup; {q}
+		if (r != null) 
+			OUTPUT r
+			EVENTS = EVENTS &cup; {r}
+	else if ( p = right-end of a segment S)
+		Remove S from STATUS;
+}
+</pre>
+
+<h3>Complexity</h3>
+<p>The loop runs for (n + k) times where n is the number of segments and k is the number of intersection
+points. Within the loop, computation of intersections twice takes O(1) time while insertion of the
+intersection points take O(log n) time. Thus the overall complexity is O((n+k)logn).</p>
+
+<h3>Corner cases</h3>
+<p>There are several corner cases when algorithm might fail. Think how will you handle these cases. How 
+should you change the algorithm to deal with such cases?</p>
+<ol>
+	<li>An end point of a segment barely touches another segment.</li>
+	<li>An end point of a segment barely touches the end point of another segment.</li>
+	<li>A segment is parallel to y-axis.</li>
+	<li>Three or more segments intersect at the same point.</li>
+	<li>Floating point calculations can lead to declaring a non-intersecting point as intersecting and
+	vice-versa. This is a real challenge in geometric algorithms.</li>
+</ol>
+
+<h4>Reference: Jianer Chen, <a href="http://faculty.cs.tamu.edu/chen/notes/geo.pdf">Chapter 4.1 of
+Computational Geometry - Methods and Applications</a></h4>
+
+ 
+   </div>
+  </div>
+
+<div id="navigation">
+	<p><strong><br><a href="../index.html">Home</a></strong></p>
+    <ul>
+      <li><a href="index.html">Introduction</a></li>
+      <li><a href="Problems.html">Geometric Problems</a></li>
+      <li><a href="References.html">References</a></li>
+      <li><a href="SegmentIntersection.html">Segment Interesection</a></li>
+      <li><a href="ConvexHull.html">Convex Hull</a></li>
+      <li><a href="PolygonTriangulation.html">Polygon Triangulation</a></li>
+      <li><a href="VoronoiDiagram.html">Voronoi Diagram</a></li>
+    </ul>
+</div> 
+ 
+
+  <div id="extra">
+  </div>
+  <div id="footer", align="right">
+    <p>Send comments to swaminathanj@am.amrita.edu</p>
+  </div>
+</div>
+</body>
+</html>
