@@ -1,0 +1,29 @@
+@startuml
+(3\nMSS[2,2]) --> (3\nMSS[1,2]=max{\nMSS[1,1],MSS[2,2],\nMSS[1,1]+MSS[2,2]}\n=max{-4,3,-4+3})
+(3\nMSS[2,2]) --> (10\nMSS[2,3]=max{\nMSS[2,2],MSS[3,3],\nMSS[2,2]+MSS[3,3]}\n=max{3,7,3+7})
+(7\nMSS[3,3]) --> (10\nMSS[2,3]=max{\nMSS[2,2],MSS[3,3],\nMSS[2,2]+MSS[3,3]}\n=max{3,7,3+7})
+(7\nMSS[3,3]) --> (7\nMSS[3,4]=max{\nMSS[3,3],MSS[4,4],\nMSS[3,3]+MSS[4,4]}\n=max{7,-2,7-2})
+(-2\nMSS[4,4]) --> (7\nMSS[3,4]=max{\nMSS[3,3],MSS[4,4],\nMSS[3,3]+MSS[4,4]}\n=max{7,-2,7-2})
+(-2\nMSS[4,4]) --> (5\nMSS[4,5]=max{\nMSS[4,4],MSS[5,5],\nMSS[4,4]+MSS[5,5]}\n=max{-2,5,-2+5})
+(5\nMSS[5,5]) --> (5\nMSS[4,5]=max{\nMSS[4,4],MSS[5,5],\nMSS[4,4]+MSS[5,5]}\n=max{-2,5,-2+5})
+(-4\nMSS[1,1]) --> (3\nMSS[1,2]=max{\nMSS[1,1],MSS[2,2],\nMSS[1,1]+MSS[2,2]}\n=max{-4,3,-4+3})
+
+(3\nMSS[1,2]=max{\nMSS[1,1],MSS[2,2],\nMSS[1,1]+MSS[2,2]}\n=max{-4,3,-4+3}) --> (10\nMSS[1,3]=max{\nMSS[1,1]+MSS[2,3],\nMSS[1,2]+MSS[3,3]}\n=max{-4+10,3+7})
+(10\nMSS[2,3]=max{\nMSS[2,2],MSS[3,3],\nMSS[2,2]+MSS[3,3]}\n=max{3,7,3+7}) --> (10\nMSS[1,3]=max{\nMSS[1,1]+MSS[2,3],\nMSS[1,2]+MSS[3,3]}\n=max{-4+10,3+7})
+
+(10\nMSS[2,3]=max{\nMSS[2,2],MSS[3,3],\nMSS[2,2]+MSS[3,3]}\n=max{3,7,3+7}) --> (10\nMSS[2,4]=max{\nMSS[2,2]+MSS[3,4],\nMSS[2,3]+MSS[4,4]}\n=max{3+7,10-2})
+(7\nMSS[3,4]=max{\nMSS[3,3],MSS[4,4],\nMSS[3,3]+MSS[4,4]}\n=max{7,-2,7-2}) --> (10\nMSS[2,4]=max{\nMSS[2,2]+MSS[3,4],\nMSS[2,3]+MSS[4,4]}\n=max{3+7,10-2})
+
+(7\nMSS[3,4]=max{\nMSS[3,3],MSS[4,4],\nMSS[3,3]+MSS[4,4]}\n=max{7,-2,7-2}) --> (12\nMSS[3,5]=max{\nMSS[3,3]+MSS[4,5],\nMSS[3,4]+MSS[5,5]}\n=max{7+5,7+5})
+(5\nMSS[4,5]=max{\nMSS[4,4],MSS[5,5],\nMSS[4,4]+MSS[5,5]}\n=max{-2,5,-2+5}) --> (12\nMSS[3,5]=max{\nMSS[3,3]+MSS[4,5],\nMSS[3,4]+MSS[5,5]}\n=max{7+5,7+5})
+
+(10\nMSS[1,3]=max{\nMSS[1,1]+MSS[2,3],\nMSS[1,2]+MSS[3,3]}\n=max{-4+10,3+7}) --> (10\nMSS[1,4]=max{\nMSS[1,1]+MSS[2,4],\nMSS[1,2]+MSS[3,4],\nMSS[1,3]+MSS[4,4]}\n=max{-4+10,3+7,10-2})
+(10\nMSS[2,4]=max{\nMSS[2,2]+MSS[3,4],\nMSS[2,3]+MSS[4,4]}\n=max{3+7,10-2}) --> (10\nMSS[1,4]=max{\nMSS[1,1]+MSS[2,4],\nMSS[1,2]+MSS[3,4],\nMSS[1,3]+MSS[4,4]}\n=max{-4+10,3+7,10-2})
+(10\nMSS[2,4]=max{\nMSS[2,2]+MSS[3,4],\nMSS[2,3]+MSS[4,4]}\n=max{3+7,10-2}) --> (15\nMSS[2,5]=max{\nMSS[2,2]+MSS[3,5],\nMSS[2,3]+MSS[4,5],\nMSS[2,4]+MSS[5,5]}\n=max{-3+12,10+5,10+5})
+(12\nMSS[3,5]=max{\nMSS[3,3]+MSS[4,5],\nMSS[3,4]+MSS[5,5]}\n=max{7+5,7+5}) --> (15\nMSS[2,5]=max{\nMSS[2,2]+MSS[3,5],\nMSS[2,3]+MSS[4,5],\nMSS[2,4]+MSS[5,5]}\n=max{-3+12,10+5,10+5})
+
+(10\nMSS[1,4]=max{\nMSS[1,1]+MSS[2,4],\nMSS[1,2]+MSS[3,4],\nMSS[1,3]+MSS[4,4]}\n=max{-4+10,3+7,10-2}) --> (15\nMSS[1,5]=max{\nMSS[1,1]+MSS[2,5],\nMSS[1,2]+MSS[3,5],\nMSS[1,3]+MSS[4,5]\nMSS[1,4]+MSS[5,5]}\n=max{-4+15,3+12,10+5,10+5})
+(15\nMSS[2,5]=max{\nMSS[2,2]+MSS[3,5],\nMSS[2,3]+MSS[4,5],\nMSS[2,4]+MSS[5,5]}\n=max{-3+12,10+5,10+5}) --> (15\nMSS[1,5]=max{\nMSS[1,1]+MSS[2,5],\nMSS[1,2]+MSS[3,5],\nMSS[1,3]+MSS[4,5]\nMSS[1,4]+MSS[5,5]}\n=max{-4+15,3+12,10+5,10+5})
+@enduml
+
+https://www.planttext.com/
