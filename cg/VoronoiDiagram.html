@@ -1,0 +1,207 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Voronoi Diagram</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../styles.css" />
+        <script type="text/javascript" src="scripts/shCore.js"></script>
+        <script type="text/javascript" src="scripts/shBrushBash.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCpp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCss.js"></script>
+        <script type="text/javascript" src="scripts/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="scripts/shBrushDiff.js"></script>
+        <script type="text/javascript" src="scripts/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="scripts/shBrushJava.js"></script>
+        <script type="text/javascript" src="scripts/shBrushJScript.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPhp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPlain.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPython.js"></script>
+        <script type="text/javascript" src="scripts/shBrushRuby.js"></script>
+        <script type="text/javascript" src="scripts/shBrushScala.js"></script>
+        <script type="text/javascript" src="scripts/shBrushSql.js"></script>
+        <script type="text/javascript" src="scripts/shBrushVb.js"></script>
+        <script type="text/javascript" src="scripts/shBrushXml.js"></script>
+        <link type="text/css" rel="stylesheet" href="lecture-notes.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/shThemeDefault.css"/>
+        <script type="text/javascript">
+            //SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+            SyntaxHighlighter.defaults['toolbar'] = false;
+            SyntaxHighlighter.defaults['auto-links'] = false;
+            SyntaxHighlighter.all();
+        </script>
+
+</head>
+
+<body>
+ 
+<div id="container">
+<div id="header"><h1>Computational Geometry<img align="right" src="../logo-dark.png" alt="Amrita"> </h1> </div>
+  <div id="wrapper">
+    <div id="content">
+
+<table align="right">
+  <td align="left"><a href="PolygonTriangulation.html">Prev</a></td>
+  <td align="right"><a href="DelunayTriangulation.html">Next</a></td>
+</table>
+
+
+<h2>Voronoi Diagram</h2>
+
+<p><b style="color: blue">Problem definition</b>:  Let P = {p1, p2, ..., pn} be a set of n points in 2D plane.
+Let q be any point in the plane. The Voronoi assignment model assigns q to its nearest pi. The subdivision
+induced by the model is called Voronoi diagram. The distance measure used is Euclidean distance.</p>
+
+<p>More formally, Voronoi diagram Vor(P) is a subdivision of the plane into n cells, one for each point in P such
+that q lies in the cell corresponding to the point pi if and only if dist(q,pi) < dist(q,pj) for all j &ne; i.</p>
+
+<p>An example of Voronoi diagram for a set of points is given below. Each point denoted by the black dot is 
+closest to all the points in that cell.</p>
+<ul><img src="images/eg-voronoi.png" width="300"></ul></p>
+
+<p>The cell of Vor(P) that corresponds to the point pi is referred to by V(pi).</p>
+
+<h3>Observations</h3>
+<p>We make a number of useful observations below. These are supported by theorems, proofs for which are not 
+given here. Refer to Chapter 7 of Mark De Berg, et. al. for the proofs and details. Most of the observations
+are intuitive though.</p>
+
+<p>1. For any two points pi and pj, the perpendicular bisector of segment(pi-pj) divides the plane into two open 
+half-planes such that </p>
+<ul>
+	<li>pi is closest to all points of one half-plane and</li>
+	<li>pj is closest to all points of the other half-plane.</li>
+</ul>
+
+<p>2. Each cell V(pi) is the intersection of n-1 half-planes obtained by bisecting segment(pi-pj) for all j &ne; i.</p>
+
+<p>3. A cell need not be a closed polygon. It can be an open polygon too as can be observed in the above example.
+The other cells are open.</p>
+
+<p>4. If all the points p1, p2, ..., pn are collinear, then Vor(P) will be a n-1 parallel lines.</p>
+
+<p>5. Each Voronoi cell V(pi) is convex. This can be observed from the above example.</p>
+
+<p>6. Each Voronoi cell V(pi) has at most n-1 vertices and edges. Does this imply the number of vertices and edges
+in Vor(P) is quadratic? NO!</p>
+<ul>
+	<li>Outer cells have lesser vertices and edges since they are open.</li>
+	<li>The average number of vertices per cell is less than 6.</li>
+	<li>The number of vertices in Vor(P) is at most 2n - 5 and the edges is at most 3n - 6.</li>
+</ul>
+<p>Hence, the number of vertices and edges of Vor(P) is linear. This leads us to an important observation.</p>
+
+<p>7. We know that the edges of Vor(P) are part of the bisectors between every pair of segments and the vertices
+of Vor(P) are the intersections of the bisectors. We also know that quadratic pairs of segments, and hence quadratic
+bisectors exist. Therefore, we conclude that:</p>
+<ul>
+	<li>Not all bisectors define the edges of Vor(P) and </li>
+	<li>Not all intersections define the vertices of Vor(P).</li>
+</ul>
+
+<p>8. So which intersections and bisectors define the vertices and edges of Vor(P)?</p>
+<ul>
+	<li>A point q is a vertex of Vor(P) if and only if its largest empty circle C<sub>P</sub>(q) contains three 
+	or more sites on its boundary.</li>
+	<li>The bisector between sites pi and pj defines an edge of Vor(P) if and only if there is a point q on the
+	bisector such that C<sub>P</sub>(q) contains both pi and pj on its boundary but no other site.</li>
+</ul>
+<ul><table>
+  <tr align="center">
+    <td><img src="images/vor-intersections.png" width="280">&emsp; &emsp;</td>
+    <td><img src="images/vor-bisectors.png" width="280"></td>
+  </tr>
+</table></ul>
+
+<h2>Computing the Voronoi Diagram</h2>
+
+<h3>1. Brute-force approach</h3>
+<p>The brute-force approach follows from the second observation: Each cell V(pi) is the intersection of n-1 
+half-planes obtained by bisecting segment(pi-pj) for all j &ne; i. Find the intersecting region of n-1 half-
+planes for each pi to determine the cell V(pi).</p>
+
+<p>Each half-plane can be denoted by: a<sub>k</sub>x + b<sub>k</sub>y &le; c<sub>k</sub>. For n-1 half-planes
+we will have n-1 such equations which can be solved using linear programming. We can also compute the 
+intersection region the following way.</p>
+
+<p>We know that half-planes are convex and the intersection of convex sets are convex. Hence, the intersecting
+region can be found by using divide-and-conquer algorithm.</p>
+
+<h4>Algorithm: Voronoi-Brute-Force</h4>
+
+<pre class="brush: java">
+// Input: P = {p1, p2, ..., pn}
+// Output: Vor(P)
+
+Vor(P) = {}
+for (each pi in P) {
+    H = {}
+    for (each pj in P and pj &ne; pi)
+        h(pi,pj) = Half-plane determined by perpendicular bisector of pi-pj 
+        H = H &cup; { h(pi,pj) }
+    V(pi) = IntersectHalfPlanes(H)
+    Vor(P) = Vor(P) &cup; { V(pi) }
+}
+
+IntersectHalfPlanes(H) {
+	if (H contains a single halfplane h)
+    	C = Region spanned by h
+	else
+    	Divide H into two sets H1 and H2 of almost equal size
+    	C1 = IntersectHalfPlanes(H1)
+    	C2 = IntersectHalfPlanes(H2)
+    	C = IntersectConvexRegions(C1, C2)
+	return C
+}
+</pre>
+
+<p>The last computation IntersectConvexRegions(C1, C2) takes O(nlogn) time. We don't prove this here. Please
+look into Chapter 4.2 of Mark De Berg, et. al. for the details.</p>
+
+<p>The time complexity of IntersectHalfPlanes can be determined by solving the recurrence equation below.</p> 
+<ul style="color: blue">
+	<p>T(1) = 1</br>
+	   T(n) = 2T(n/2) + O(nlogn)</p>
+</ul>
+
+<p>This yields time complexity of O(nlogn). By repeating this for half-planes corresponding to
+every other point, the overall time compexity to compute Vor(P) is O(n<sup>2</sup>logn).</p>
+
+<h3>2. O(nlogn) Fortune's algorithm</h3>
+
+<p>This algorithm uses plane-swee technique. For a high-level idea on how this algorithm works, check this 
+<a href="http://people.math.gatech.edu/~randall/Algs07/mount.pdf">link</a>.</p>
+
+<p>The general idea is simple to understand while implementation may be hard.</p>
+
+
+<h4>Reference: Mark de Berg, et al., <a href="http://www.cimec.org.ar/twiki/pub/Cimec/GeometriaComputacional/DeBerg_-_Computational_Geometry_-_Algorithms_and_Applications_2e.pdf">Chapter 7 of
+Computational Geometry - Algorithms and Applications</a></h4>
+
+ 
+   </div>
+  </div>
+
+<div id="navigation">
+	<p><strong><br><a href="../index.html">Home</a></strong></p>
+    <ul>
+      <li><a href="index.html">Introduction</a></li>
+      <li><a href="Problems.html">Geometric Problems</a></li>
+      <li><a href="References.html">References</a></li>
+      <li><a href="SegmentIntersection.html">Segment Interesection</a></li>
+      <li><a href="ConvexHull.html">Convex Hull</a></li>
+      <li><a href="PolygonTriangulation.html">Polygon Triangulation</a></li>
+      <li><a href="VoronoiDiagram.html">Voronoi Diagram</a></li>
+   </ul>
+</div> 
+ 
+
+  <div id="extra">
+  </div>
+  <div id="footer", align="right">
+    <p>Send comments to swaminathanj@am.amrita.edu</p>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,251 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Introduction to Geometric Algorithms</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../styles.css" />
+        <script type="text/javascript" src="scripts/shCore.js"></script>
+        <script type="text/javascript" src="scripts/shBrushBash.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCpp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCss.js"></script>
+        <script type="text/javascript" src="scripts/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="scripts/shBrushDiff.js"></script>
+        <script type="text/javascript" src="scripts/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="scripts/shBrushJava.js"></script>
+        <script type="text/javascript" src="scripts/shBrushJScript.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPhp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPlain.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPython.js"></script>
+        <script type="text/javascript" src="scripts/shBrushRuby.js"></script>
+        <script type="text/javascript" src="scripts/shBrushScala.js"></script>
+        <script type="text/javascript" src="scripts/shBrushSql.js"></script>
+        <script type="text/javascript" src="scripts/shBrushVb.js"></script>
+        <script type="text/javascript" src="scripts/shBrushXml.js"></script>
+        <link type="text/css" rel="stylesheet" href="lecture-notes.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/shThemeDefault.css"/>
+        <script type="text/javascript">
+            //SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+            SyntaxHighlighter.defaults['toolbar'] = false;
+            SyntaxHighlighter.defaults['auto-links'] = false;
+            SyntaxHighlighter.all();
+        </script>
+
+</head>
+
+<body>
+ 
+<div id="container">
+<div id="header"><h1>Computational Geometry<img align="right" src="../logo-dark.png" alt="Amrita"> </h1> </div>
+  <div id="wrapper">
+    <div id="content">
+
+<table align="right">
+  <td align="left"><a href="index.html">Prev</a></td>
+  <td align="right"><a href="References.html">Next</a></td>
+</table>
+
+
+<h2>Classification of Geometric Problems</h2>
+
+<p>Geometric problems can be broadly classified into 5 types.</p>
+<ol>
+  <li>Convexity</li>
+  <li>Proximity</li>
+  <li>Geometric search</li>
+  <li>Intersection</li>
+  <li>Optimization</li>
+</ol>
+
+<p>A brief description of each of these is given below.</p>
+
+<h3>A. Convexity</h3>
+
+<p>One fundamental problem in computational geometry is to find the convex hull over a given set of points. 
+This problems can be likened to sorting in general algorithms. A number of apparently unrelated questions can 
+be answered by using convex hull as the vehicle. Few definitions follow.</p>
+
+<p><b style="color: blue">1. Simple convex polygon</b>: Let S be a simple polygon defined by points 
+p1, p2, ..., pn in 2D space. We say that S is a convex polygon if for <u>every pair q1, q2</u> of 
+points in S, the <u>line-segment(q1q2) is entirely in L</u>.</p> 
+<ul>
+<table>
+	<tr align="center">
+		<td><img src="images/convexpolygon.png" width="230">&emsp; &emsp;</td>
+		<td><img src="images/notconvexpolygon.png" width="230"></td>
+	</tr>
+	<tr align="center">
+		<td><b>Convex polygon</b></td>
+		<td><b>Not a convex polygon</b></td>
+	</tr>
+</table></ul><br>
+
+<p>This definition can be extended to any dimension.</p>
+<p><b style="color: blue">Convex set</b>:Let S be a convex set defined by points p1, p2, ..., pn in kD space. 
+We say that S is a convex set if for every pair q1, q2 of points in S, the line segment(q1q2) is entirely in L.</p>
+<p>In a 3D case, a convex set would be the smallest polyhedron with many plane faces.</p>
+
+<h4>Intersection property of convex sets</h4>
+
+<p><b>[2D case] The intersection of two convex polygons in 2D space is a convex polygon.</b></p>
+
+<p>To see this, consider the convex polygons S1 = A-B-C-D-E-F and S2 = 1-2-3-4-5-6.</p>
+<ul><img src="images/convexintersection.png" width="300"></ul>
+<p>It is easy to see their intersection S = S1 &cap; S2 = 1-&alpha;-C-D-&beta;-6, is also a convex polygon. 
+i.e. <u>for every two points q1, q2</u> in 1-2-&alpha;-D-E-&beta;-6, the <u>line-segment(q1q2)</u> will be 
+within the intersection.</p>
+<p>The proof idea is as follows. Let q1 and q2 be two points in S. Since S is the intersection of S1 and S2, 
+q1 and q2 are also points in S1 and S2. Since both S1 and S2 are convex by definition, the entire 
+line-segment(q1q2) is in both S1 and S2. This implies line-segment(q1q2) is in S1 &cap; S2.</p>
+
+<p><b>[Generalized 2D case] The intersection of any number of convex polygons in 2D space is a convex 
+polygon.</b></p>
+<p>This should be obvious. Try to extend the above proof.</p>
+
+<p><b>[kD case]The intersection of any number of convex sets in kD space is a convex set.</b></p>
+<p>First think about 3D and then generalize for any dimension. The same proof should very well work.</p>
+
+<p><b style="color: blue">Convex Hull</b>: Let S be a set of points p1, p2, ..., pn in 2D space. The 
+<b>convex hull CH(S)</b> is the smallest convex polygon containing S.</p>
+<ul><img src="images/convexhull.png" width="240"></ul>
+<p>The following observations can be made.</p>
+<ul>
+	<li>The convex hull of a finite set S of points in 2D space is a simple polygon.</li>
+	<li>Each hull vertex of the polygon is in S.</li>
+	<li>The points p1, p2, ..., pn are in the interior of polygon.</li>
+</ul>
+<p>An extreme case is that every point ends up as a hull vertex. Another extreme case is that all the points 
+form straight line. This is usually referred to as degenerate case.</p>
+<ul>
+<table>
+	<tr align="center">
+		<td><img src="images/extremecase.png" width="200">&emsp; &emsp;</td>
+		<td><img src="images/degeneratecase.png" width="95"></td>
+	</tr>
+	<tr align="center">
+		<td><b>An extreme case</b></td>
+		<td><b>A degenerate case</b></td>
+	</tr>
+</table></ul><br>
+<p>This definition can be generalized to any dimension. In a 3D case, the convex hull would be the smallest polyhedron with many plane faces. A gift wrap is a good example of a convex hull in 3D space.</p>
+
+<p><b>Property: Convex hull of set S equals intersection of all convex sets containing S (any dimension).</b></p>
+<p>Given a set S of n points there are infinite number of convex sets that contain S. The convex hull CH(S), 
+the smallest polygon containing S is simply the intersection of all these infinite convex sets.</p>
+<p>To see this for 2D case, look into the following figure which has convex polygons that enclose S. Of course, infinite such polygons exists.</p>
+<ul><img src="images/allconvexintersections.png" width="400"></ul><br>
+
+<p>Proof idea: Let C be the intersection of all convex sets containing S. We know that C is convex (as per 
+property 1) and hence contains S. To prove that C is the smallest set, let C' be an arbitrary convex set 
+containing S. Then by definition of C, C is the intersection of C' and the other convex sets containing S. 
+Therefore, C is a subset of C'. i.e. C is contained in every convex set containing S, so C is the smallest 
+such set.</p>
+
+<h3>B. Proximity</h3>
+
+<p>Proximity problems arise in many applications where physical or mathematical objects are represented 
+as points in space. Examples include</p>
+<ul>
+<li><b>Clustering</b>: A number of entities are grouped together if they are sufficiently close to one another.</li>
+<li><b>Classification</b>: An entity is assigned to a class based on its closest neighbor.</li>
+</ul>
+
+<p><b style="color: blue">Nearest neighbor</b>: Let p1, p2, ..., pn be a set S of n points in 2D plance. 
+The nearest neighbor NN(p<sub>i</sub>) is a point p<sub>j</sub> such that d(p<sub>i</sub>, p<sub>j</sub>) 
+< d(p<sub>i</sub>, p<sub>k</sub>) for 0 < k < n, k &ne; j and i &ne; j.</p>
+
+<p><b style="color: blue">Closest Pair</b>: Let p1, p2, ..., pn be a set S of n points in 2D plane. The 
+closest pair CP(S) is a pair (p<sub>i</sub>, p<sub>j</sub>) such that the distance 
+d(p<sub>i</sub>, p<sub>j</sub>) &lt; d(p<sub>r</sub>, p<sub>q</sub>) where at least one of the points 
+p<sub>r</sub> or p<sub>q</sub> is distinct from p<sub>i</sub> and p<sub>j</sub>.</p>
+
+<p><b style="color: blue">Farthest Pair</b>: Let p1, p2, ..., pn be a set S of n points in 2D plane. The 
+farthest pair CP(S) is a pair (p<sub>i</sub>, p<sub>j</sub>) such that the distance 
+d(p<sub>i</sub>, p<sub>j</sub>) &gt; d(p<sub>r</sub>, p<sub>q</sub>) where at least one of the points 
+p<sub>r</sub> or p<sub>q</sub> is distinct from p<sub>i</sub> and p<sub>j</sub>.</p>
+
+<ul>
+<table>
+	<tr align="center">
+		<td><img src="images/eg-nn.png" width="200">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</td>
+		<td><img src="images/eg-cp.png" width="200"></td>
+	</tr>
+	<tr align="center">
+		<td><b>Nearest neighbor of p is q</b>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</td>
+		<td><b>Closest pair: (p2, p5) and Farthest pair: (p1, p9)</b></td>
+	</tr>
+</table><br>
+</ul>
+
+<p><b style="color: blue">Euclidean-MST</b>: Let p1, p2, ..., pn be a set S of n points in 2D plane. The 
+Euclidean-Minimum-Spanning-Tree is set of interconnecting tree edges between all the vertices of S such that 
+the total tree length is minimal.</p>
+<p>In the examples given below, (A) is an Euclidean-MST while (B) and (C) are not.</p>
+<ul><img src="images/eg-emst.png" width="500"></ul>
+
+<p><b style="color: blue">Triangulation</b>: Let P be a polygon over a set of n points p1, p2, ..., pn 
+in 2D plane. We say that P is a triangulated polygon if points are connected by line segments such that 
+the interior space of the polygon are divided into non-intersecting triangular regions.</p>
+<p>Given below is a polygon and its various triangulations. The last one is not a triangulation since the
+non-intersection region property is violated.</p>
+<ul><img src="images/eg-triangulations.png" width="600"></ul>
+
+<p><b style="color: blue">Maximum empty circle</b>: Let p1, p2, ..., pn be a set S of n points in 2D plane. 
+The maximum empty circle is the largest circle containing no points of the set S yet whose center is interior 
+to the convex hull of S.</p>
+<ul><img src="images/eg-mec.png" width="500"></ul>
+
+<h3>C. Intersections</h3>
+
+<p>Intersection problems and their variations arise in many disciplines, such as architectural design,
+computer graphics, pattern recognition, circuit design, etc. If it is just about whether two lines or
+line-segments intersect or not, geometric formulas are sufficient. We are interested in problems such
+as intersection of several segments, half-planes, or polygons. Before we start to define these problems,
+lets summarize how to determine the intersection of 2 entities.</p>
+
+<p><b style="color: blue">Line segment intersection</b>: Let (p1, q1), ...., (pn, qn) denote n line segments 
+in 2D space. Determine all intersections.</p>
+
+<p><b style="color: blue">Half-plane intersection</b>: Let h1, h2, ... hn denote n half-planes in 2D space. 
+Compute their common intersection..</p>
+
+<p><b style="color: blue">Polygon intersection</b>: Let P be a m-sided polygon defined by points p1, ..., pm.
+Let Q be a n-sided polygon defined by points q1, ..., qn. Compute their intersection.</p>
+<ul><img src="images/eg-intersections.png" width="600"></ul>
+
+<h3>D. Geometric searching</h3>
+
+<p><b style="color: blue">Post Office problem</b>: Given a fixed map of n post offices denoted by coordinates
+p1, p2, ..., pn, for an arbitrary points q1, q2, ..., qm, which is the nearest one for each point?</p>
+
+<p><b style="color: blue">Point location problem</b>: Suppose we have a subdivision G of the plane and we
+want to know which region of G a given query point is located.</p>
+<ul><img src="images/eg-search.png" width="500"></ul>
+
+
+   </div>
+  </div>
+
+<div id="navigation">
+	<p><strong><br><a href="../index.html">Home</a></strong></p>
+    <ul>
+      <li><a href="index.html">Introduction</a></li>
+      <li><a href="Problems.html">Geometric Problems</a></li>
+      <li><a href="References.html">References</a></li>
+      <li><a href="SegmentIntersection.html">Segment Interesection</a></li>
+      <li><a href="ConvexHull.html">Convex Hull</a></li>
+      <li><a href="PolygonTriangulation.html">Polygon Triangulation</a></li>
+      <li><a href="VoronoiDiagram.html">Voronoi Diagram</a></li>
+    </ul>
+</div> 
+ 
+
+  <div id="extra">
+  </div>
+  <div id="footer", align="right">
+    <p>Send comments to swaminathanj@am.amrita.edu</p>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,321 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Convex Hull</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../styles.css" />
+        <script type="text/javascript" src="scripts/shCore.js"></script>
+        <script type="text/javascript" src="scripts/shBrushBash.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCpp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCss.js"></script>
+        <script type="text/javascript" src="scripts/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="scripts/shBrushDiff.js"></script>
+        <script type="text/javascript" src="scripts/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="scripts/shBrushJava.js"></script>
+        <script type="text/javascript" src="scripts/shBrushJScript.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPhp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPlain.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPython.js"></script>
+        <script type="text/javascript" src="scripts/shBrushRuby.js"></script>
+        <script type="text/javascript" src="scripts/shBrushScala.js"></script>
+        <script type="text/javascript" src="scripts/shBrushSql.js"></script>
+        <script type="text/javascript" src="scripts/shBrushVb.js"></script>
+        <script type="text/javascript" src="scripts/shBrushXml.js"></script>
+        <link type="text/css" rel="stylesheet" href="lecture-notes.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/shThemeDefault.css"/>
+        <script type="text/javascript">
+            //SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+            SyntaxHighlighter.defaults['toolbar'] = false;
+            SyntaxHighlighter.defaults['auto-links'] = false;
+            SyntaxHighlighter.all();
+        </script>
+
+</head>
+
+<body>
+ 
+<div id="container">
+<div id="header"><h1>Computational Geometry<img align="right" src="../logo-dark.png" alt="Amrita"> </h1> </div>
+  <div id="wrapper">
+    <div id="content">
+
+<table align="right">
+  <td align="left"><a href="SegmentIntersection.html">Prev</a></td>
+  <td align="right"><a href="PolygonTriangulation.html">Next</a></td>
+</table>
+
+
+<h2>Convex Hull</h2>
+
+<p><b style="color: blue">Problem definition</b>: Given a set S of n points p1, p2, ..., pn  in 
+2D Euclidean space the goal is to compute the convex hull of S. In other words, the smallest convex
+polygon that contains all n points.</p>
+
+<p>As noted in <a href="Problems.html">Problems</a>, the hull vertices are a subset of points that 
+form the vertices of the (smallest) convex polygon while the other points are within the polygon.</p>
+
+<p>We discuss two algorithms: Jarvis and Graham-scan. The former takes O(n<sup>2</sup>) time and the 
+latter O(nlogn) time.</p>
+
+<h2>1. Jarvis algorithm</h2>
+
+<p>The basic idea of Jarvis algorithm is as follows.</p>
+<ol>
+	<li>Sort the n points along x-axis.</li>
+	<li>Consider a vertical line L which touches or passes through the leftmost point.</li>
+	<li>Include this point to the convex set.</li>
+	<li>Rotate the line L in the counter-clockwise direction until it hits some point of S.</li>
+	<li>Append this point to the convex set.</li>
+	<li>Repeat steps 4 and 5 until leftmost point is reached.</li>
+	<li>The points in the convex set in the left-to-right order is the convex hull of S</li>
+</ol>
+
+<p>The procedure is demonstrated using an example.</p>
+
+<table border="1">
+	<tr align="center">
+		<td>Step 1: L passes through<br>leftmost point p<br>CH(S) = { p }</td>
+		<td>Step 2: L on rotation around<br>p hits point q first<br>CH(S) = { p, q }</td>
+		<td>Step 3: L on rotation around<br>q hits point r first<br>CH(S) = { p, q, r }</td>
+	</tr>
+	<tr align="center">
+		<td><img src="images/jarvis1.png" width="200">&emsp;&emsp;</td>
+		<td><img src="images/jarvis2.png" width="200">&emsp;&emsp;</td>
+		<td><img src="images/jarvis3.png" width="200">&emsp;&emsp;</td>
+	</tr>
+	<tr align="center">
+		<td>Step 4: L on rotation around<br>r hits point s first<br>CH(S) = { p, q, r, s }</td>
+		<td>Step 5: L on rotation around<br>s hits point t first<br>CH(S) = { p, q, r, s, t }</td>
+		<td>Step 6: L on rotation around<br>t hits point u first<br>CH(S) = { p, q, r, s, t, u }</td>
+	</tr>
+	<tr align="center">
+		<td><img src="images/jarvis4.png" width="200">&emsp;&emsp;</td>
+		<td><img src="images/jarvis5.png" width="200">&emsp;&emsp;</td>
+		<td><img src="images/jarvis6.png" width="200">&emsp;&emsp;</td>
+	</tr>
+	<tr align="center">
+		<td>Step 7: L on rotation around<br>u hits point v first<br>CH(S) = { p, q, r, s, t, u, v }</td>
+		<td>Step 8: L on rotation around<br>v hits point p first. STOP.<br>CH(S) = { p, q, r, s, t, u, v }</td>
+		<td>Final: The convex hull</td>
+	</tr>
+	<tr align="center">
+		<td><img src="images/jarvis7.png" width="200">&emsp;&emsp;</td>
+		<td><img src="images/jarvis8.png" width="200">&emsp;&emsp;</td>
+		<td><img src="images/jarvis9.png" width="200">&emsp;&emsp;</td>
+	</tr>
+</table><br><br>
+
+<p><b>All the steps except the step 4 are straightforward. Hence the question is: What does it take to 
+rotate L until it hits some point in S?</b></p>
+
+<p>To answer this consider the scenario when L passes through the point pi-1 and pi. We need to find 
+pi+1 among all other points. i.e. pi+1  = pj for some j where j = 1 to n and j &ne; i. It boils down 
+to ANGLE(pi-1, pi, pj) for each j and picking the one with the largest angle. </p>
+<ul><img src="images/jarvis-nextpoint.png" width="150"></ul>
+
+<p>The intuition behind is simple. As we walk along the convex hull path in the counter-clockwise
+direction, all the points in the set S must be on the left side (or the boundary) of the hull.
+If we picked the next point whose angle is not maximum, some points will be on the right side.</p>
+
+<p>We have already seen in Definition 5A of the <a href="index.html">Introduction</a>, the formula for 
+computing the angle given the three edges of a triangle. The points pi-1, pi, and pj make triangle for 
+every j = 1 to n and j &ne; i. Because we know the coordinates, we can compute the edge lengths (which 
+is just the Euclidean distance between the pair of points) and apply Definition 5A to find the angle. 
+By doing this for every j and picking the point with largest angle, we get the next hull vertex pi+1. 
+This takes O(n) time.</p>
+
+<h3>Algorithm: Jarvis-Convex-Hull</h3>
+
+<pre class="brush: java">
+// Input: Set S of n points p[1], ..., p[n]
+// Output: Sequence of points in S in counter-clockwise order that form hull vertices
+
+INIT CH[S] = {}
+p[1] = Leftmost point of S 
+p[2] = Point in S such that SLOPE(p[1]-p[2]) is the smallest
+CH[S] = CH[S] U {p[1], p[2]}
+
+i = 2
+while (p[i] &ne; p[1]) {
+	Let p[i+1] be a point in S such that ANGLE(p[i-1] p[i], p[i+1]) is largest
+	i = i + 1
+	CH[S] = CH[S] &cup; {p[i+1]}
+}
+</pre>
+
+<h3>Complexity</h3>
+<p>The while loop is executed k times where k is the number of hull vertices. Inside the loop, finding 
+p[i+1] such that ANGLE[p[i-1] pi p[i+1] is the largest, takes O(n) time. Thus, the complexity is O(nk). 
+If k << n, then this algorithm takes linear time. If k &asymp; n (worst case), then the compleixty is
+O(n<sup>2</sup>).</p>
+
+<h3>Degenerate case</h3>
+<p>What would be the shape of the convex hull if all the points are collinear? Reason it out.</p>
+
+<h3>Floating point considerations</h3>
+<p>Lets say p and another point p' are very close. It is possible that the algorithm starts 
+with p and never comes back to p i.e. it comes back to p'. How do you deal with this scenario?</p>
+<ul><img src="images/jarvis-degen.png" width="450"></ul>
+
+<p>Are there other corner cases/peculiar scenarios? How would you change the algoirthm to deal 
+with these cases?</p>
+
+<h4>Reference: Jianer Chen, <a href="http://faculty.cs.tamu.edu/chen/notes/geo.pdf">Chapter 4.2 of
+Computational Geometry - Methods and Applications</a></h4>
+
+<h2>2. Graham-scan</h2>
+
+<p>Looking closely at Jarvis's algorithm, we find that after discovering every new point of the hull,
+we need to compute the angle between every other point to compute the next hull vertex. Graham scan
+optimizes by computing the angles once for all and uses them to compute the hull vertices. Of course,
+this can introduce "spurious" vertices in to the convex hull which are removed dynamically as the
+algorithm progresses.</p>
+
+<p>The basic idea of the algorithm is as follows.</p>
+<ol>
+	<li>Sort the vertices in S based on the y-coordinate from bottom to top.</li>
+	<li>Choose the bottommost vertex. Add it to convex hull set CH(S). </li>
+	<li>Let L be the horizontal line L passing through this vertex.</li>
+	<li>Rotate L around the vertex in the counter-clockwise direction. i.e. compute the slope (or polar
+	angle) with every other point. Add the vertices to a set CCW(S) in the same order.</li>
+	<li>Remove the head vertex from CCW(S) and append it to CH(S).</li>
+	<li>While last three vertices of the convex hull set are not counter-clockwise, remove the middle
+	vertex from the convex hull set.</li>
+	<li>Repeat steps 5 and 6 until CCW(S) is empty.</li>
+</ol>
+
+<p>The working of the algorithm is demonstrated with an example below.</p>
+
+<table border="1">
+	<tr align="center" style="background-color: lightgray">
+		<td>Initial step: Identify the bottommost<br>vertex p<br></td>
+		<td>Find slope from p to all vertices<br>CCW(S) = {q, r, s, t, u, v, w, x, y}<br>CH(S) = {p}</td>
+		<td>Itn 1: Move q from CCW(S) to CH(S)<br>CCW(S) = {r, s, t, u, v, w, x, y}<br>CH(S) = {p, q}</td>
+	</tr>
+	<tr align="center">
+		<td><img src="images/graham1.png" width="200"></td>
+		<td><img src="images/graham2.png" width="200"></td>
+		<td><img src="images/graham3.png" width="200"></td>
+	</tr>
+	<tr align="center" style="background-color: lightgray">
+		<td>Itn 2: Move r from CCW(S) to CH(S)<br>CCW(S) = {s, t, u, v, w, x, y}<br>CH(S) = {p, q, r}</td>
+		<td>Itn 3: Move s from CCW(S) to CH(S)<br>CCW(S) = {t, u, v, w, x, y}<br>CH(S) = {p, q, r, s}</td>
+		<td>Itn 4: Move t from CCW(S) to CH(S)<br>CCW(S) = {u, v, w, x, y}<br>CH(S) = {p, q, r, s, t}</td>
+	</tr>
+	<tr align="center">
+		<td><img src="images/graham4.png" width="200"><br>Is p-q-r counter-clockwise? YES.</td>
+		<td><img src="images/graham5.png" width="200"><br>Is q-r-s counter-clockwise? YES.</td>
+		<td><img src="images/graham6.png" width="200"><br>Is r-s-t counter-clockwise? NO.</td>
+	</tr>
+	<tr align="center" style="background-color: lightgray">
+		<td>Itn 4: Remove s from CH(S)<br>CCW(S) = {u, v, w, x, y}<br>CH(S) = {p, q, r, t}</td>
+		<td>Itn 5: Move u from CCW(S) to CH(S)<br>CCW(S) = {v, w, x, y}<br>CH(S) = {p, q, r, t, u}</td>
+		<td>Itn 5: Remove t from CH(S)<br>CCW(S) = {v, w, x, y}<br>CH(S) = {p, q, r, u}</td>
+	</tr>
+	<tr align="center">
+		<td><img src="images/graham7.png" width="200"><br>Is q-r-t counter-clockwise? YES.</td>
+		<td><img src="images/graham8.png" width="200"><br>Is r-t-u counter-clockwise? NO.</td>
+		<td><img src="images/graham9.png" width="200"><br>Is q-r-u counter-clockwise? YES.</td>
+	</tr>
+	<tr align="center" style="background-color: lightgray">
+		<td>Itn 6: Move v from CCW(S) to CH(S)<br>CCW(S) = {w, x, y}<br>CH(S) = {p, q, r, u, v}</td>
+		<td>Itn 7: Move w from CCW(S) to CH(S)<br>CCW(S) = {x, y}<br>CH(S) = {p, q, r, u, v, w}</td>
+		<td>Itn 7: Remove v from CH(S)<br>CCW(S) = {x, y}<br>CH(S) = {p, q, r, u, w}</td>
+	</tr>
+	<tr align="center">
+		<td><img src="images/graham10.png" width="200"><br>Is r-u-v counter-clockwise? YES.</td>
+		<td><img src="images/graham11.png" width="200"><br>Is u-v-w counter-clockwise? NO.</td>
+		<td><img src="images/graham12.png" width="200"><br>Is r-u-w counter-clockwise? YES.</td>
+	</tr>
+	<tr align="center" style="background-color: lightgray">
+		<td>Itn 8: Move x from CCW(S) to CH(S)<br>CCW(S) = {y}<br>CH(S) = {p, q, r, u, w, x}</td>
+		<td>Itn 9: Move y from CCW(S) to CH(S)<br>CCW(S) = { }<br>CH(S) = {p, q, r, u, w, x, y}</td>
+		<td>Itn 9: Remove x from CH(S)<br>CCW(S) = { }<br>CH(S) = {p, q, r, u, w, y}</td>
+	</tr>
+	<tr align="center">
+		<td><img src="images/graham13.png" width="200"><br>Is u-w-x counter-clockwise? YES.</td>
+		<td><img src="images/graham14.png" width="200"><br>Is w-x-y counter-clockwise? NO.</td>
+		<td><img src="images/graham15.png" width="200"><br>Is w-x-y counter-clockwise? NO.</td>
+	</tr>
+	<tr align="center" style="background-color: lightgray">
+		<td></td>
+		<td>The Final Convex Hull<br>CH(S) = {p, q, r, u, w, y}</td>
+		<td></td>
+	</tr>
+	<tr align="center">
+		<td></td>
+		<td><img src="images/graham16.png" width="200"></td>
+		<td></td>
+	</tr>
+</table>
+
+<h3>Algorithm: Graham scan</h3>
+
+<pre class="brush: java">
+// Input: Set S of n points p[1], ..., p[n]
+// Output: Sequence of points in S in counter-clockwise order that form hull vertices
+
+INIT SET CH = {}
+p[1] = Bottommost point of S // Requires sorting on y-coordinate 
+CH = CH &cup; { p[1] } 
+
+INIT CCW[1..n] = {}	// CCW[1] is not necessary
+for (i = 2; i <= n; i++)
+	CCW[i].vertex = p[i]
+	CCW[i].slope = SLOPE(p[1], p[i])
+SORT(CCW, slope)	// Sort based on slope attribute
+
+while (CCW not empty)
+	Point X = HEAD(CCW)
+	CH = CH &cup; {X.vertex}
+	while (Last 3 vertices of CH are not counterclockwise)
+		Remove the middle vertex from CH
+</pre>
+
+<h3>Complexity</h3>
+<p>Initialization of CH and CCW takes O(n) time. Sorting of CCW takes O(nlogn) time. There are two 
+while loops, one nested inside the other. The outer loop runs for n-1 times. In the inner loop we
+remove a vertex from CH. Since CH can at most contain n-1 vertices, the number of times inner loop
+will be executed is at worst n-2 across all iterations. This is so because a convex hull will have 
+at least two vertices at the end. Thus, the outer and inner while loops runs for O(n) time together.
+Hence the overall time complexity is O(nlogn).</p>
+
+<h3>Degenerate cases</h3>
+<p>1. What if all the points are collinear.</p>
+<p>2. Is it possible to end up with a convex hull that is not cyclic or has breaks due to floating 
+point computations?</p>
+<p>3. Are there other corner cases to consider?</p>
+
+<p>How would you deal with these scenarios.</p>
+
+<h4>Reference: Jianer Chen, <a href="http://faculty.cs.tamu.edu/chen/notes/geo.pdf">Chapter 4.2 of
+Computational Geometry - Methods and Applications</a></h4>
+
+ 
+   </div>
+  </div>
+
+<div id="navigation">
+	<p><strong><br><a href="../index.html">Home</a></strong></p>
+    <ul>
+      <li><a href="index.html">Introduction</a></li>
+      <li><a href="Problems.html">Geometric Problems</a></li>
+      <li><a href="References.html">References</a></li>
+      <li><a href="SegmentIntersection.html">Segment Interesection</a></li>
+      <li><a href="ConvexHull.html">Convex Hull</a></li>
+      <li><a href="PolygonTriangulation.html">Polygon Triangulation</a></li>
+      <li><a href="VoronoiDiagram.html">Voronoi Diagram</a></li>
+   </ul>
+</div> 
+ 
+
+  <div id="extra">
+  </div>
+  <div id="footer", align="right">
+    <p>Send comments to swaminathanj@am.amrita.edu</p>
+  </div>
+</div>
+</body>
+</html>

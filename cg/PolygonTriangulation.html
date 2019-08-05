@@ -1,0 +1,587 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Polygon Triangulation</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../styles.css" />
+        <script type="text/javascript" src="scripts/shCore.js"></script>
+        <script type="text/javascript" src="scripts/shBrushBash.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCpp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCss.js"></script>
+        <script type="text/javascript" src="scripts/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="scripts/shBrushDiff.js"></script>
+        <script type="text/javascript" src="scripts/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="scripts/shBrushJava.js"></script>
+        <script type="text/javascript" src="scripts/shBrushJScript.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPhp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPlain.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPython.js"></script>
+        <script type="text/javascript" src="scripts/shBrushRuby.js"></script>
+        <script type="text/javascript" src="scripts/shBrushScala.js"></script>
+        <script type="text/javascript" src="scripts/shBrushSql.js"></script>
+        <script type="text/javascript" src="scripts/shBrushVb.js"></script>
+        <script type="text/javascript" src="scripts/shBrushXml.js"></script>
+        <link type="text/css" rel="stylesheet" href="lecture-notes.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/shThemeDefault.css"/>
+        <script type="text/javascript">
+            //SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+            SyntaxHighlighter.defaults['toolbar'] = false;
+            SyntaxHighlighter.defaults['auto-links'] = false;
+            SyntaxHighlighter.all();
+        </script>
+
+</head>
+
+<body>
+ 
+<div id="container">
+<div id="header"><h1>Computational Geometry<img align="right" src="../logo-dark.png" alt="Amrita"> </h1> </div>
+  <div id="wrapper">
+    <div id="content">
+
+<table align="right">
+  <td align="left"><a href="ConvexHull.html">Prev</a></td>
+  <td align="right"><a href="VoronoiDiagram.html">Next</a></td>
+</table>
+
+
+<h2>Polygon Triangulation</h2>
+
+<p><b style="color: blue">Problem definition</b>:  Let P be a polygon over a set of n points p1, p2, ..., pn 
+in 2D plane. We say that P is a triangulated polygon if points are connected by line segments such that 
+the interior space of the polygon are divided into non-intersecting triangular regions.</p>
+<p>Given below is a polygon and its various triangulations. The last one is not a triangulation since the
+non-intersecting region property is violated.</p>
+<ul><img src="images/eg-triangulations.png" width="600"></ul></p>
+
+<h4>Special case: Triangulating a convex polygon</h4>
+<p>A (simple) convex polygon can be triangulated in a straightforward manner by picking an arbitrary
+vertex and drawing line segments (or diagonals) from that vertex to every other vertex that are not 
+its neighbors. This is possible because from any vertex all other vertices are visible through the
+interior of the polygon. Starting from a vertex one can traverse in a clockwise or counter-clockwise 
+direction and draw the n-3 diagonals as the vertices are succesively visited. It is easy to infer
+that the algorithm takes linear time.</p>
+
+<p>The first traingulation in the above figure is an example of this method.</p>
+
+<h3>Triangulating a simple (not necessarily convex) polygon</h3>
+<p>In computational geometry literature, there are several algorithms to triangulate a simple polygon. 
+(i) O(n<sup>2</sup>) Fisk's Ear Clipping algorithm, (ii) O(nlogn) algorithm to decompose the simple 
+polygon into monotone polygons and then triangulating them, (iii) O(n) Chazelle's algorithm. There are 
+several other variations too. We will discuss the first two. The third one, although efficient, is too 
+complex to implement.</p>
+
+<h3>Triangulation using Ear clipping method</h3>
+
+<p><b style="color: blue">Definition</b>: Let P be a polygon in 2D space. Let v be a vertex in P and let
+v' and v" be its neighbors. We say v'-v-v" is an <b style="color: blue">ear</b> if the line segment
+v'-v" lies entirely in the interior of the polygon. In such a case, the vertex v is referred to as an
+ear tip.</p>
+
+<p>Every simple polygon has at least two ears. By identifying the ears and repeatedly clipping them,
+a polygon can be triangulated.</p>
+
+<p>Clipping an ear involves removing the vertex v along with its edges v'-v and v-v" from the polygon 
+and adding a line segment v'-v" (also called as diagonal) to the polygon. Removing an ear reduces the 
+polygon size by 1 since v is no more part of the polygon. By repeating this n-3 times, a simple polygon 
+can be triangulated resulting in n-2 traingles.</p>
+
+<p><b style="color: blue">Question</b>: How do we identify an ear (or ear tip)?</p>
+
+<p><b>In a convex polygon</b> every vertex is an ear tip. So during each iteration, any of the remaining 
+vertices can be randomly picked and the ear can be removed.</p> 
+<p>The working of the algorithm for an example is shown below. Vertices p1, p4, p7 and p3 were picked
+succesively to triangulate the polygon. Clearly several other choices are possible.</p>
+<ul><img src="images/fiskconvex.png" width="600"></ul>
+
+<p>An important property of the convex polygon that allows this approach to work is: <u>each vertex in 
+a convex polygon is a hull vertex. When an ear is clipped from the polygon, the residual polygon 
+remains convex</u>.</p>
+
+<p><b>For a simple polygon that is not convex</b> this property does not hold. Non-hull vertices 
+(called as reflex vertices) cannot be an ear tip. However, there is no guarantee that a hull vertex 
+can be a ear tip either. Also, a reflex vertex can turn into a hull vertex. Consider the example 
+given in the following figure.</p> 
+<ol>
+  <li>Vertex u cannot be an ear tip. It can be seen that segment u'-u" is not interior to the polygon. 
+  This is because the vertex u is not a hull vertex.</li><br>
+  <li>Vertex v is a hull vertex and can be an ear tip. It can be seen that the segment v'-v" is 
+  completely interior to the polygon.</li><br>
+  <li>Vertex w cannot be an ear tip inspite of it being a hull vertex because	a part of the polygon 
+  is obstructing the path w'-w" and hence w'-w" does not lie completely inside the polygon.</li>
+</ol>
+<ul><img src="images/earselection.png" width="250"></ul>
+
+<p>There are two more consequences due to the concavity in the polygon.</p>
+<p>1. A hull vertex that satisfies the property of the ear tip, can lose that property as the algorithm 
+progresses. For example, consider the polygon below.</p>
+<ul>
+  <li>Initially, vertices v and v" satisfy the property of ear tip. i.e. the diagonals v'-v" and v-v**
+  lie completely interior to the polygon.</li>
+  <li>Let's say we chose vertex v as the ear tip during the first iteration and clipped v'-v-v".</li>
+  <li>Now, vertex v" loses the property of the ear tip since v'-v** does not lie to the interior of
+  the residual polygon.</li>
+</ul>
+<ul><img src="images/earselection2.png" width="500"></ul>
+
+<p>2. A reflex vertex can become a hull vertex and possibly gain the property of ear tip as the 
+algorithm progresses. For example, see the two cases shown in the figure below.</p>
+<ul>
+	<li>Initially, vertex u is a reflex vertex.</li>
+	<li>Let's say we chose vertex v* as the ear tip and remove the ear v'-v*-u.</li>
+	<li>In the first case shown at the left, vertex u not only becomes a hull vertex but also acquires 
+  the property of ear tip.</li>
+  <li>In the second case shown at the right, vertex u becomes a hull vertex but not an ear tip.</li>
+</ul>
+
+<ul><table border="1">
+  <tr align="center">
+    <td>Reflex vertex u turns into convex vertex<br> and also becomes ear tip</td>
+    <td>Reflex vertex u turns into convex vertex<br> but not an ear tip</td>
+  </tr>
+  <tr align="center">
+    <td><img src="images/earselection3.png" width="300">&emsp; &emsp;</td>
+    <td><img src="images/earselection4.png" width="300"></td>
+  </tr>
+</table></ul>
+
+<p>Let's summarize the points observered.</p>
+<ol>
+	<li>Not all hull vertices qualify to be an ear tip.</li>
+	<li>A hull vertex remains a hull vertex throughout.</li>
+	<li>A hull vertex that qualify as an ear tip may not retain the property throughout.</li>
+	<li>A reflex vertex can turn into a hull vertex and possibly acquire the property of ear tip.</li>
+</ol>
+
+<p>Although the above examples do not give an approach to pick the ear tip, it gives some clue on the 
+criteria that a vertex needs to satisfy to be chosen as an ear tip and how often we need to check
+the criteria.</p>
+
+<p>To arrive at a general algorithm, let's define three sets of vertices.</p>
+<ol>
+	<li><b style="color: blue">Set C</b>: Tracks all convex hull vertices at any point of the algorithm.</li>
+	<li><b style="color: blue">Set E</b>: Subset of C that tracks vertices that have ear tip property.</li>
+	<li><b style="color: blue">Set R</b>: Tracks all reflex vertices as algorithm progresses.</li>
+</ol>
+
+<p>The basic idea of the algorithm is given below.</p>
+
+<p><b style="color: blue">Initialization</b>: Firstly, all hull vertices can be computed in O(nlogn) time 
+using Graham scan. This needs to be done once in the beginning since a hull vertex remains so throughout.
+Thus the convex set C can be determined. Secondly, to determine the reflex set R, all one needs to do is
+to compute V - C where V is the set of all vertices. Thirdly, to determine the Ear set E, one can take 
+every vertex p in C, compute the ear (triangle) and then check if at least one of the reflex vertices 
+lies within the ear. If so, add p to E. This takes O(n<sup>2</sup>) time.</p>
+
+<p><b style="color: blue">Execution</b>: After the above initialization step, n-3 iterations are done.</p>
+<ul>
+  <li>Pick a vertex v from the E and clip the ear v'-v-v". This takes O(1) time.</li>
+  <li>Remove v from E and C. This takes O(1) time.</li>
+  <li>Check if v' and v" has turned into convex vertices. If so, add it/them to both C. It takes O(1) time.</li> 
+  <li>Further, if it/they satisfy the ear tip property, add it/them to E. This step takes O(n) time.</li>
+</ul>
+<p>Hence, the iterative step takes (n-3)*O(n) = O(n<sup>2</sup>) time. </p>
+
+<p><b>The question that remains is how too check if v' and v" has turned into convex vertices?</b></p>
+<p>Let v* and v** be the new adjacent vertices of v' and v" repsectively after ear tip v 
+is removed. If the interior angle <u>/ v*-v'-v"</u> &lt; &pi;, then v' has turned into a convex 
+vertex. Similarly, if the interior angle <u>/ v'-v"-v**</u> &lt; &pi;, then v" has turned into a 
+convex vertex.</p>
+
+<p>The figures below show the step-by-step working of the algorithm for an example. The ear vertices picked
+successively during each iteration are as follows: 1, 17, 14, 12, 11, 9, 7, 6, 4, 3, 2, 15, 13. During each
+iteration, the sets C, E and R are revised.</p>
+
+<table border="1">
+  <tr align="center">
+    <td>INITIALIZATION<br>
+      C = {1,3,4,6,7,9,11,12,14,17}<br>
+      E = {1,3,4,6,7,9,11,12,14,17}<br>
+      R = {2,5,8,10,13,15,16}
+    </td>
+    <td>ITERATION 1<br>
+      C = {<s style="color: blue">1</s>,3,4,6,7,9,11,12,14,17}<br>
+      E = {<s style="color: blue">1</s>,3,4,6,7,9,11,12,14,17}<br>
+      R = {2,5,8,10,13,15,16}
+    </td>
+    <td>ITERATION 2<br>
+      C = {3,4,6,7,9,11,12,14,<b style="color: red">16</b>,<s style="color: blue">17</s>}<br>
+      E = {3,4,6,7,9,11,12,14,<b style="color: red">16</b>,<s style="color: blue">17</s>}<br>
+      R = {2,5,8,10,13,15,<s style="color: red">16</s>}
+    </td>
+  </tr>
+  <tr>
+    <td><img src="images/fisk1.png" width="225"></td>
+    <td><img src="images/fisk2.png" width="225"></td>
+    <td><img src="images/fisk3.png" width="225"></td>
+  </tr>
+  <tr align="center">
+    <td>ITERATION 3<br>
+      C = {3,4,6,7,9,11,12,14,<s style="color: blue">16</s>}<br>
+      E = {3,4,6,7,9,11,12,14,<s style="color: blue">16</s>}<br>
+      R = {2,5,8,10,13,15}
+    </td>
+    <td>ITERATION 4<br>
+      C = {3,4,6,7,9,11,12,<s style="color: blue">14</s>,<b style="color: red">15</b>}<br>
+      E = {3,4,6,7,9,11,12,<s style="color: blue">14</s>,<b style="color: red">15</b>}<br>
+      R = {2,5,8,10,13,<s style="color: red">15</s>}
+    </td>
+    <td>ITERATION 5<br>
+      C = {3,4,6,7,9,11,<s style="color: blue">12</s>,<b style="color: red">13</b>,15}<br>
+      E = {3,4,6,7,9,11,<s style="color: blue">12</s>,<b style="color: red">13</b>,15}<br>
+      R = {2,5,8,10,<s style="color: red">13</s>}
+    </td>
+  </tr>
+  <tr>
+    <td><img src="images/fisk4.png" width="225"></td>
+    <td><img src="images/fisk5.png" width="225"></td>
+    <td><img src="images/fisk6.png" width="225"></td>
+  </tr>
+<tr align="center">
+    <td>ITERATION 6<br>
+      C = {3,4,6,7,9,<b style="color: red">10</b>,<s style="color: blue">11</s>,13,15}<br>
+      E = {3,4,6,7,9,<b style="color: red">10</b>,<s style="color: blue">11</s>13,15}<br>
+      R = {2,5,8,<s style="color: red">10</s>}
+    </td>
+    <td>ITERATION 7<br>
+      C = {3,4,6,7,8,<s style="color: blue">9</s>,10,13,15}<br>
+      E = {3,4,6,7,8,<s style="color: blue">9</s>,10,13,15}<br>
+      R = {2,5,8}
+    </td>
+    <td>ITERATION 8<br>
+      C = {3,4,6,<s style="color: blue">7</s>,<b style="color: red">8</b>,10,13,15}<br>
+      E = {3,4,6,<s style="color: blue">7</s>,<b style="color: red">8</b>,10,13,15}<br>
+      R = {2,5,<s style="color: red">8</s>}
+    </td>
+  </tr>
+  <tr>
+    <td><img src="images/fisk7.png" width="225"></td>
+    <td><img src="images/fisk8.png" width="225"></td>
+    <td><img src="images/fisk9.png" width="225"></td>
+  </tr>
+<tr align="center">
+    <td>ITERATION 9<br>
+      C = {3,4,<s style="color: blue">6</s>,8,10,13,15}<br>
+      E = {3,4,<s style="color: blue">6</s>,8,10,13,15}<br>
+      R = {2,5}
+    </td>
+    <td>ITERATION 10<br>
+      C = {3,<s style="color: blue">4</s>,8,10,13,15}<br>
+      E = {3,<s style="color: blue">4</s>,8,10,13,15}<br>
+      R = {2,5}
+    </td>
+    <td>ITERATION 11<br>
+      C = {<b style="color: red">2</b>,<s style="color: blue">3</s>,<b style="color: red">5</b>,8,10,13,15}<br>
+      E = {<b style="color: red">2</b>,<s style="color: blue">3</s>,<b style="color: red">5</b>,8,10,13,15}<br>
+      R = {<s style="color: red">2,5</s>}
+    </td>
+  </tr>
+  <tr>
+    <td><img src="images/fisk10.png" width="225"></td>
+    <td><img src="images/fisk11.png" width="225"></td>
+    <td><img src="images/fisk12.png" width="225"></td>
+  </tr>
+<tr align="center">
+    <td>ITERATION 12<br>
+      C = {<s style="color: blue">2</s>,5,8,10,13,15}<br>
+      E = {<s style="color: blue">2</s>,5,8,10,13,15}<br>
+      R = {}
+    </td>
+    <td>ITERATION 13<br>
+      C = {5,8,10,13,<s style="color: blue">15</s>}<br>
+      E = {5,8,10,13,<s style="color: blue">15</s>}<br>
+      R = {}
+    </td>
+    <td>ITERATION 14<br>
+      C = {5,8,10,<s style="color: blue">13</s>}<br>
+      E = {5,8,10,<s style="color: blue">13</s>}<br>
+      R = {}
+    </td>
+  </tr>
+  <tr>
+    <td><img src="images/fisk13.png" width="225"></td>
+    <td><img src="images/fisk14.png" width="225"></td>
+    <td><img src="images/fisk15.png" width="225"></td>
+  </tr>
+</table><br>
+
+<h4>Algorithm: Ear-Clip-Triangulation</h4>
+
+<pre class="brush: java">
+// Input: Vertices V = v[1..n] in counter-clockwise order
+// Output: n-3 ears (or triangles)
+
+C = ConvexHull(v[1], ..., v[n]) // O(nlogn)
+R = V - C                       // O(n)
+for each vertex v in C          // O(n^2)
+  if v is an ear tip     // i.e. no w &in; R lies inside the ear 
+    E = E &cup; {v}
+
+for (i = 1; i &le; n-3; i++) {     // O(n^2)
+  Let v[i] be an ear tip and v[x] and v[y] be its neighbors
+  Remove v[i] from E and C
+  Let v[l] be the left neighbor of v[x]
+  Let v[r] be the right neighbor of v[y]
+  if ( ANGLE(v[l], v[x], v[y]) < 180 )
+    R = R - {v[x]}
+    C = C &cup; {v[x]}
+    if v[x] is an ear tip
+      E = E &cup; {v[x]}
+  if ( ANGLE(v[x], v[y], v[r]) < 180 )
+    R = R - {v[y]}
+    C = C &cup; {v[y]}
+    if v[y] is an ear tip
+      E = E &cup; {v[y]}
+} 
+</pre>
+
+<p>The overall complexity is O(nlogn) + O(n) + O(n<sup>2</sup>) + O(n<sup>2</sup>) = O(n<sup>2</sup>).</p>
+
+<h3>Triangulation using monotone polygons</h3>
+
+<p>There are two steps in this approach. Given a polygon P, the first phase is to divide it into
+monotone polygons. In the second phase, the monotone polygons are triangulated.</p>
+
+<p><b>What is a monotone polygon?</b></p>
+<p>A polygon P is called monotone with respect to a line L, if every line orthogonal to L
+intersects P at most twice.</p>
+
+<p>Given below is a monotone polygon and the demonstration of above definition. The thick
+blue line denotes the straight line L and the light blue lines perpendicular to l denotes
+the orthogonal lines. L and its orthogonals are shown in three positions.</p>
+
+<table border="1">
+	<tr align="center">
+		<td><img src="images/eg-xymonotone.png" width="165"></td>
+		<td><img src="images/eg-xymonotone1.png" width="165"></td>
+		<td><img src="images/eg-xymonotone2.png" width="165"></td>
+		<td><img src="images/eg-xymonotone3.png" width="165"></td>
+	</tr>
+</table><br><br>
+
+<p>Note that if L is tilted in certain manner, the orthogonals may pass through the edge of the polygon,
+apparently breaking the definition of intersection at max two points. In such cases, we can tilt line L
+slightly so that it does not pass through any edge of the polygon.</p>
+
+<p>In practical problems we will be interested in line L being either vertical or horizontal.
+Based on this, a polygon may be x-monotone, y-monotone or xy-monotone.</p>
+
+<p>A more useful way to understand monotone polygon is as follows.</p>
+<ul>
+	<p><b>x-monotone polygon</b>: Assume that from the leftmost point two ants travel along the
+	upper and lower paths to the rightmost point. If the x value is always increasing (or non-
+	decreasing) as the ants travel along their paths, then it is a x-monotone polygon.</p>
+	<p><b>y-monoton polygon</b>: Assume that from the topmost point two ants travel along the
+	left and right paths to the bottommost point. If the y-value is always decreasing (or non-
+	increasing) as the ants travel along their paths, then it is a y-monotone polygon.</p>
+</ul>
+
+<p>Given below are three polygons, the first one is both x- and y-monotone. The second one is
+x-monotone but not y-monotone and the third is y-monotone but not x-monotone.</p>
+
+<ul><table>
+	<tr>
+		<td><img src="images/eg-xymonotone.png" width="200">&emsp;</td>
+		<td><img src="images/eg-xmonotone.png" width="200">&emsp;</td>
+		<td><img src="images/eg-ymonotone.png" width="200">&emsp;</td>
+	</tr>
+</table></ul>
+
+<h3>Step 1: Breaking a polygon into x-monotone pieces</h3>
+
+<p>In this approach, we will focus on breaking a polygon into x-monotone pieces. We will do
+different cases that can arise one at a time and then come out with the overall algorithm.</p>
+
+<p style="color: blue"><b>Case 1</b>: Handling a split vertex</p>
+<p>Consider the polygon below. We call the reflex vertex 4 as split vertex because when seen
+from left to right, two edges emerge from 4. And because of the presence of the split vertex, 
+this is not a x-monotone polygon.</p>
+<ul><img src="images/eg-monotone-b4split.png" width="150"></ul>
+
+<p>There are three ways to split the polygon into x-monotone pieces.</p>
+<ol>
+  <li>Draw a diagonal from 6 to 4 yielding two x-monotone pieces: 6-4-5 and 1-2-3-4-6.</li>
+  <li>Draw a diagonal from 2 to 4 yielding two x-monotone pieces: 1-2-4-5-6 and 2-3-4.</li>
+  <li>Draw a diagonal from 1 to 4 yielding two x-monotone pieces: 1-2-3-4 and 1-4-5-6.</li>
+</ol>
+<p>In the above three cases 6, 2 and 1 are called as opposite vertices respectively.</p>
+
+<ul>
+  <table>
+    <tr>
+      <td><img src="images/eg-monotone-split1.png" width="150">&emsp;</td>
+      <td><img src="images/eg-monotone-split2.png" width="150">&emsp;</td>
+      <td><img src="images/eg-monotone-split3.png" width="150">&emsp;</td>
+    </tr>
+  </table>
+</ul>
+
+<p>How do we arrive at a general method to determine the opposite vertex (for split vertex)?</p>
+<p>We use a vertical sweepline L to determine the opposite vertex of the split vertex.
+We keep track of last seen vertex as L sweeps the polygon. The moment the L hits a
+split vertex, we connect it to the last seen vertex. 
+This is demonstrated in the below example.</p>
+<ul>
+  <table>
+    <tr align="center">
+      <td>
+        L hits vertex 1. <br> Last seen vertex = null.<br><br>
+        <img src="images/split1.png" width="130">&emsp;
+      </td>
+      <td>
+        L hits vertex 6. <br> Last seen vertex = 1.<br><br>
+        <img src="images/split2.png" width="130">&emsp;
+      </td>
+      <td>
+        L hits vertex 2. <br> Last seen vertex = 6.<br><br>
+        <img src="images/split3.png" width="130">&emsp;
+      </td>
+      <td>
+        L hits vertex 4. <br> Last seen vertex = 2.<br><br>
+        <img src="images/split4.png" width="130">&emsp;
+      </td>
+    </tr>
+  </table>
+</ul>
+
+<p><b>Note that the start vertex 1</b> is also a split vertex. However, since it is at
+the beginning we don't attempt to draw any diagonals. There can be more than one start 
+vertices. See the figure below. Both 1 and 3 are start vertices.</p>
+<ul><img src="images/eg-2startvertices.png" width="130"></ul>
+
+<p>This brings us to the question: How do we differentiate between a start and split
+vertices?</p>
+<p>The interior angle at the start vertex is < &pi; while that of split vertex is > &pi;.<br>
+It is easy to infer <u>/ 7-1-2</u> < &pi;, <u>/ 2-3-4</u> < &pi;, <u>/ 4-5-6</u> > &pi;</p>
+
+<p style="color: blue"><b>Case 2</b>: Handling a merge vertex</p>
+<p>Consider the polygon below. We call the reflex vertex 1 as merge vertex because when seen
+from left to right, two edges merge into 1. And because of the presence of the merge vertex, 
+this is not a x-monotone polygon.</p>
+<ul><img src="images/eg-monotone-b4merge.png" width="150"></ul>
+
+<p>There are three ways to split the polygon into x-monotone pieces.</p>
+<ol>
+  <li>Draw a diagonal from 1 to 3 yielding two x-monotone pieces: 1-2-3 and 1-3-4-5-6.</li>
+  <li>Draw a diagonal from 1 to 5 yielding two x-monotone pieces: 1-2-3-4-5 and 1-5-6.</li>
+  <li>Draw a diagonal from 1 to 4 yielding two x-monotone pieces: 1-2-3-4 and 1-4-5-6.</li>
+</ol>
+<p>In the above three cases 3, 5 and 4 are called as opposite vertices respectively.</p>
+
+<ul>
+  <table>
+    <tr>
+      <td><img src="images/eg-monotone-merge1.png" width="150">&emsp;</td>
+      <td><img src="images/eg-monotone-merge2.png" width="150">&emsp;</td>
+      <td><img src="images/eg-monotone-merge3.png" width="150">&emsp;</td>
+    </tr>
+  </table>
+</ul>
+
+<p>How do we arrive at a general method to determine the opposite vertex (for merge vertex)?</p>
+<p>We use a vertical sweepline L to determine the opposite vertex of the merge vertex.
+As L sweeps the polygon once L hits a merge vertex, we look for the next vertex and 
+connect it to the merge vertex. This is demonstrated in the below example.</p>
+<ul>
+  <table>
+    <tr align="center">
+      <td>
+        L hits vertex 6. <br> Next vertex = null.<br><br>
+        <img src="images/merge1.png" width="130">&emsp;
+      </td>
+      <td>
+        L hits vertex 2. <br> Next vertex = null.<br><br>
+        <img src="images/merge2.png" width="130">&emsp;
+      </td>
+      <td>
+        L hits vertex 1. <br> Next vertex = null.<br><br>
+        <img src="images/merge3.png" width="130">&emsp;
+      </td>
+      <td>
+        L hits vertex 5. <br> Next vertex = 5.<br><br>
+        <img src="images/merge4.png" width="130">&emsp;
+      </td>
+    </tr>
+  </table>
+</ul>
+
+<p><b>Note that the end vertex 4</b> is also a merge vertex. However, since it is at
+the end we don't attempt to draw any diagonals. There can be more than one end 
+vertices. See the figure below. Both 4 and 6 are end vertices.</p>
+<ul><img src="images/eg-2endvertices.png" width="130"></ul>
+
+<p>This brings us to the question: How do we differentiate between a merge and end
+vertices?</p>
+<p>The interior angle at the end vertex is > &pi; while that of merge vertex is < &pi;.<br>
+It is easy to infer <u>/ 7-1-2</u> > &pi;, <u>/ 3-4-5</u> < &pi;, <u>/ 5-6-7</u> < &pi;</p>
+
+<h4>Algorithm: Make-Monotone</h4>
+
+<pre class="brush: java">
+// Input: Vertices V = v[1..n] sorted on x-coordinate
+// Output: Monotone pieces
+
+last_vertex = null
+merge_vertex = null
+
+for (i = 1; i <= n; i++)
+  current_vertex = v[i]
+  if merge_vertex &ne; null
+    Connect merge_vertex to v[i]
+
+  if v[i] is a regular vertex
+    last_vertex = v[i]
+  else if v[i] is a start vertex 
+    last_vertex = v[i]
+  else if v[i] is a split vertex  // Connect to last vertex
+    Connect last_vertex to v[i]
+    last_vertex = v[i]
+  else if v[i] is a merge vertex
+    merge_vertex = v[i] // Connect to v[i] in next iteration
+    last_vertex = v[i]
+  else if v[i] is an end vertex
+    // do nothing
+</pre>
+
+<h4>Time complexity</h4>
+<p>The algorithm takes O(n) time as we do O(1) operation at each vertex. To determine
+if a split vertex is a start vertex, it takes O(1) time since we need to check the
+interior angle with either neighbors of v[i]. The same reasoning goes for determining 
+if merge vertex is an end vertex. Connecting v[i] to either last_vertex or merge_vertex
+again takes O(1) time. If we count the sorting of the vertices on x-coordinate, the
+overall time complexity works out to O(nlogn).</p>
+
+<h3>Step 2: Triangulating a monotone polygon</h3>
+
+
+
+<h4>Reference: Mark de Berg, et al., <a href="http://www.cimec.org.ar/twiki/pub/Cimec/GeometriaComputacional/DeBerg_-_Computational_Geometry_-_Algorithms_and_Applications_2e.pdf">Chapter 3 of
+Computational Geometry - Algorithms and Applications</a></h4>
+
+ 
+   </div>
+  </div>
+
+<div id="navigation">
+	<p><strong><br><a href="../index.html">Home</a></strong></p>
+    <ul>
+      <li><a href="index.html">Introduction</a></li>
+      <li><a href="Problems.html">Geometric Problems</a></li>
+      <li><a href="References.html">References</a></li>
+      <li><a href="SegmentIntersection.html">Segment Interesection</a></li>
+      <li><a href="ConvexHull.html">Convex Hull</a></li>
+      <li><a href="PolygonTriangulation.html">Polygon Triangulation</a></li>
+      <li><a href="VoronoiDiagram.html">Voronoi Diagram</a></li>   </ul>
+</div> 
+ 
+
+  <div id="extra">
+  </div>
+  <div id="footer", align="right">
+    <p>Send comments to swaminathanj@am.amrita.edu</p>
+  </div>
+</div>
+</body>
+</html>
