@@ -1,5 +1,5 @@
 ---
-Test: test topic
+Data structures
 ---
 
 ## Test
