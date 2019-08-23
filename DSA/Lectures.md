@@ -1,6 +1,6 @@
-----
+---
 Data Structures and Algorithms
-----
+---
 
 ## 1. Linked List
 
