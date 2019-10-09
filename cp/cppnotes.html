@@ -339,6 +339,31 @@ int main() {
 </tr>
 
 <tr>
+<td>function.cpp</td>
+<td>
+<pre class="brush: c">
+#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+  int a, b; 
+
+  cin >> a >> b;
+  int sum_of_squares = square(a) + square(b);
+  cout << sum_of_squares << endl;
+
+  return 0;
+}
+
+int square(int x) {
+	return x*x;
+}
+</pre>
+</td>
+<td>A program that computes <br>sum of squares by delegating<br> it to a function.</td>
+</tr>
+
+<tr>
 <td>while.cpp</td>
 <td>
 <pre class="brush: c">
