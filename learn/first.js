@@ -1,3 +1,3 @@
 function one() {
-  alert('You called function one()');
+  alert('You called function one');
 }
