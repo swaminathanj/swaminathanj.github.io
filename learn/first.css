@@ -5,10 +5,15 @@ h2 {
 .bullets {
   background-color: lightgray
 }
-#start {
-  color: red
+
+#alert {
+  color: red;
 }
 
 #one {
-  color: blue
+  color: #E90550;
+}
+
+#confirm {
+  color: blue;
 }
