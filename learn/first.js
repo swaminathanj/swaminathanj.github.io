@@ -2,9 +2,10 @@ function one() {
   alert('You called function one');
 }
 
-count = 1;
+count = 0;
 function increment() {
   var dcounter = document.getElementById("count");
-  dcounter.value("Clicked " + count + " times");
   count++;
+  alert('counter incremented to ' + count);
+  dcounter.value("Clicked " + count + " times");
 }
