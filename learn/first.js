@@ -16,3 +16,20 @@ function increment() {
   count++;
   dcounter.value = "Clicked " + count + " times";
 }
+
+function changeColor() {
+  var cc = document.getElementById("c1");
+  cc.style.backgroundColor = "blue";
+}
+
+function fill() {
+  var cc = document.getElementById("c1");
+  var ctx = cc.getContext("2d");
+  ctx.fillStyle = "red";
+  ctx.fillRect(20,20,40,40);
+  ctx.fillRect(40,40,40,40);
+  ctx.fillRect(60,60,40,40);
+  ctx.fillRect(100,80,100,40);
+  ctx.font = "30px Arial";
+  ctx.fillText("Aum Amma",60,40);
+}
