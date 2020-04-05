@@ -11,5 +11,9 @@ h2 {
 #confirm {  color: blue;   }
 
 canvas {
- background-color: skyblue; 
+  width: 200pt;
+  height: 100pt;
+  margin: 10px;
+  border: 1px solid lightgray;
+  background-color: yellow;
 }
