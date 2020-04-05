@@ -39,3 +39,19 @@ function cclear() {
   var ctx = cc.getContext("2d");
   ctx.clearRect(25,25,30,30);
 }
+
+function doColor() {
+  var cc = document.getElementById("c2");
+  var colorinput = document.getElementById("clr");
+  cc.style.backgroundColor = colorinput.value;
+}
+
+function doSquare() {
+  var cc = document.getElementById("c2");
+  var sizeinput = document.getElementById("sldr");
+  var size = sizeinput.value;
+  var ctx = cc.getContext("2d");
+  ctx.clearRect(0,0,cc.width,cc.height);
+  ctx.fillStyle = "green";
+  ctx.fillRect(10,10,size,size);
+}
