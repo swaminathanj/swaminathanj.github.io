@@ -33,3 +33,9 @@ function fill() {
   ctx.font = "30px Arial";
   ctx.fillText("Aum Amma",60,40);
 }
+
+function cclear() {
+  var cc = document.getElementById("c1");
+  var ctx = cc.getContext("2d");
+  ctx.clearRect(25,25,30,30);
+}
