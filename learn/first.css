@@ -2,18 +2,14 @@ h2 {
   color: blue;
 }
 
-.bullets {
-  background-color: lightgray
-}
+.bullets {  background-color: lightgray  }
 
-#alert {
-  color: red;
-}
+#alert {  color: red;   }
 
-#one {
-  color: #E90550;
-}
+#one {  color: #E90550;   }
 
-#confirm {
-  color: blue;
+#confirm {  color: blue;   }
+
+canvas {
+ background-color: skyblue; 
 }
