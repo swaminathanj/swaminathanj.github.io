@@ -6,5 +6,5 @@ count = 0;
 function increment() {
   var dcounter = document.getElementById("count");
   count++;
-  dcounter.innerHTML("Clicked " + count + " times");
+  dcounter.value("Clicked " + count + " times");
 }
