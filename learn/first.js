@@ -78,7 +78,7 @@ function makeGray() {
   image.drawTo(imgcanvas);
 }
 
-var image1, image2;
+var image1=null, image2=null;
 var canvas1, canvas2;
 function loadfgImage() {
   canvas1 = document.getElementById("fgcanvas");
