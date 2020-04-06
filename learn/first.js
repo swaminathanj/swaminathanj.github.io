@@ -55,3 +55,12 @@ function doSquare() {
   ctx.fillStyle = "green";
   ctx.fillRect(10,10,size,size);
 }
+
+function upload() {
+  var imgcanvas = document.getElementById("c3");
+  var fileinput = document.getElementById("finput");
+  alert("image selected");
+  var image = new SimpleImage(fileinput);
+  alert("image created");
+  image.drawTo(imgcanvas);
+}
