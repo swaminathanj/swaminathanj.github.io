@@ -24,6 +24,7 @@
     </ol>
   </div>
   <hr>
+  <h2>Using canvas 1: fill color, change</h2>
   <canvas id="c1">
     <p>This is canvas text</p>
   </canvas>
@@ -32,15 +33,23 @@
   <input type="button" value="Fill" onclick="fill()">
   <input type="button" value="Clear" onclick="cclear()">
   <hr>
+  <h2>Using canvas 2: Draw based on slider</h2>
   <canvas id="c2">
   </canvas>
   <br>
   <input type="color" value="yellow" id="clr" onchange="doColor()">
   <input type="range" min="0" max="100" value="10" id="sldr" oninput="doSquare()">
   <hr>
+  <h2>Using canvas 3: Upload image</h2>
   <canvas id="c3">
   </canvas>
   <br>
   <input type="file" multiple="false" accept="image/*" id="finput" onchange="imageUpload()">
-</body>
+  <hr>
+  <h2>Using canvas 4: Altering image</h2>
+  <canvas id="c4">
+  </canvas>
+  <br>
+  <input type="file" multiple="false" accept="image/*" id="finput" onchange="imageUpload()">
+  <input type="button" value = "Gray scale" id="grayscale" onclick="makeGray()">
 </html>
