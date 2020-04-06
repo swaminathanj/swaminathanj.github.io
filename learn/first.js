@@ -56,7 +56,7 @@ function doSquare() {
   ctx.fillRect(10,10,size,size);
 }
 
-function upload() {
+function imageUpload() {
   var imgcanvas = document.getElementById("c3");
   var fileinput = document.getElementById("finput");
   alert("image selected");
