@@ -12,6 +12,6 @@ canvas {
   width: 300pt;
   height: 150pt;
   margin: 10px;
-  border: 1px solid lightgray;
-  background-color: yellow;
+  border: 1px solid gray;
+  background-color: lightgray;
 }
