@@ -51,4 +51,13 @@
   </canvas>
   <br>
   <input type="button" value = "Gray scale" id="grayscale" onclick="makeGray()">
+    <h2>Using canvas 5: Merging images</h2>
+  <canvas id="fgcanvas"></canvas>
+  <canvas id="bgcanvas"></canvas>
+  <br>
+  Foreground: <input type="file" multiple="false" accept="image/*" id="fgfile" onchange=loadfgImage()>
+  Background: <input type="file" multiple="false" accept="image/*" id="bgfile" onchange=loadbgImage()>
+  <br><br>
+  <input type="button" value="Create Composite" id="composite" onclick="createComposite()">
+  <input type="button" value="Clear Canvases" id="composite" onclick="clearcanvases()">
 </html>
