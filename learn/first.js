@@ -96,7 +96,7 @@ function loadbgImage() {
 function createComposite() {
   alert("createComposite begin");
   var output = new SimpleImage(image1.getWidth(),image1.getHeight());
-  for (var pixel of image1.values) {
+  for (var pixel of image1.values()) {
     var x = pixel.getX();
     var y = pixel.getY();
     if (pixel.getGreen() > pixel.getRed() && pixel.getBlue()) {
@@ -113,12 +113,12 @@ function createComposite() {
 
 function clearCanvases() {
   alert("clearCanvases begin");
-  for (var pixel of image1.values) {
+  for (var pixel of image1.values()) {
     pixel.setRed(0);
     pixel.setGreen(0);
     pixel.setBlue(0);    
   }
-  for (var pixel of image2.values) {
+  for (var pixel of image2.values()) {
     pixel.setRed(0);
     pixel.setGreen(0);
     pixel.setBlue(0);    
