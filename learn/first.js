@@ -77,3 +77,18 @@ function makeGray() {
   var imgcanvas = document.getElementById("c4");
   image.drawTo(imgcanvas);
 }
+
+var image1, image2;
+function loadfgImage() {
+  var canvas1 = document.getElementById("fgcanvas");
+  var fileinput = document.getElementById("fgfile");
+  image1 = new SimpleImage(fileinput);
+  image1.drawTo(canvas1);
+}
+
+function loadbgImage() {
+  var canvas2 = document.getElementById("bgcanvas");
+  var fileinput = document.getElementById("bgfile");
+  image2 = new SimpleImage(fileinput);
+  image2.drawTo(canvas2);
+}
