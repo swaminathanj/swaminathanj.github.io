@@ -92,3 +92,19 @@ function loadbgImage() {
   image2 = new SimpleImage(fileinput);
   image2.drawTo(canvas2);
 }
+
+function createComposite() {
+  var output = new SimpleImage(image1.getWidth(),image1.getHeight());
+  for (var pixel of image1.values) {
+    var x = pixel.getX();
+    var y = pixel.getY();
+    if (pixel.getGreen() > pixel.getRed() && pixel.getBlue()) {
+      var bgPixel = image2.getPixel(x,y);
+      output.setPixel(x,y,bgPixel);
+    }
+    else
+      output.setPixel(x,y,pixel);
+  }
+}
+
+
