@@ -100,7 +100,7 @@ function createComposite() {
   for (var pixel of image1.values()) {
     var x = pixel.getX();
     var y = pixel.getY();
-    if (pixel.getGreen() > pixel.getRed() && pixel.getBlue()) {
+    if (pixel.getGreen() > pixel.getRed() + pixel.getBlue()) {
       var bgPixel = image2.getPixel(x,y);
       output.setPixel(x,y,bgPixel);
     }
