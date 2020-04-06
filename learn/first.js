@@ -109,7 +109,7 @@ function createComposite() {
   output.drawTo(canvas1);
 }
 
-function clearConvases() {
+function clearCanvases() {
   for (var pixel of image1.values) {
     pixel.setRed(0);
     pixel.setGreen(0);
