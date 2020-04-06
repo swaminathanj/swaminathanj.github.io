@@ -79,15 +79,16 @@ function makeGray() {
 }
 
 var image1, image2;
+var canvas1, canvas2;
 function loadfgImage() {
-  var canvas1 = document.getElementById("fgcanvas");
+  canvas1 = document.getElementById("fgcanvas");
   var fileinput = document.getElementById("fgfile");
   image1 = new SimpleImage(fileinput);
   image1.drawTo(canvas1);
 }
 
 function loadbgImage() {
-  var canvas2 = document.getElementById("bgcanvas");
+  canvas2 = document.getElementById("bgcanvas");
   var fileinput = document.getElementById("bgfile");
   image2 = new SimpleImage(fileinput);
   image2.drawTo(canvas2);
@@ -113,15 +114,9 @@ function createComposite() {
 
 function clearCanvases() {
   alert("clearCanvases begin");
-  for (var pixel of image1.values()) {
-    pixel.setRed(0);
-    pixel.setGreen(0);
-    pixel.setBlue(0);    
-  }
-  for (var pixel of image2.values()) {
-    pixel.setRed(0);
-    pixel.setGreen(0);
-    pixel.setBlue(0);    
-  }
+  var ctx1 = canvas1.getContext("2d");
+  ctx1.clearRect(0,0,canvas1.width,canvas1.height);
+  var ctx2 = canvas2.getContext("2d");
+  ctx2.clearRect(0,0,canvas2.width,canvas2.height);
 }
 
