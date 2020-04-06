@@ -105,6 +105,20 @@ function createComposite() {
     else
       output.setPixel(x,y,pixel);
   }
+  clearCanvases();
+  output.drawTo(canvas1);
 }
 
+function clearConvases() {
+  for (var pixel of image1.values) {
+    pixel.setRed(0);
+    pixel.setGreen(0);
+    pixel.setBlue(0);    
+  }
+  for (var pixel of image2.values) {
+    pixel.setRed(0);
+    pixel.setGreen(0);
+    pixel.setBlue(0);    
+  }
+}
 
