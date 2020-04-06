@@ -56,11 +56,24 @@ function doSquare() {
   ctx.fillRect(10,10,size,size);
 }
 
+var image;
+
 function imageUpload() {
   var imgcanvas = document.getElementById("c3");
   var fileinput = document.getElementById("finput");
   alert("image selected");
-  var image = new SimpleImage(fileinput);
+  image = new SimpleImage(fileinput);
   alert("image created");
+  image.drawTo(imgcanvas);
+}
+
+function makeGray() {
+  for (var pixel of image.values()) {
+    var avg = (pixel.getRed() + pixel.getGreen() + pixel.getBlue())/3;
+    pixel.setRed(avg);
+    pixel.setGreen(avg);
+    pixel.setBlue(avg);
+  }
+  var imgcanvas = document.getElementById("c4");
   image.drawTo(imgcanvas);
 }
