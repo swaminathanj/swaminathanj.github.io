@@ -1,6 +1,4 @@
-h2 {
-  color: blue;
-}
+h2 {  color: blue;   }
 
 .bullets {  background-color: lightgray  }
 
@@ -11,8 +9,8 @@ h2 {
 #confirm {  color: blue;   }
 
 canvas {
-  width: 200pt;
-  height: 100pt;
+  width: 300pt;
+  height: 150pt;
   margin: 10px;
   border: 1px solid lightgray;
   background-color: yellow;
