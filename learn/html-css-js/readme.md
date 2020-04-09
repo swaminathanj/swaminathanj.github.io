@@ -5,7 +5,7 @@ A good site to practice html, css and javascript is (https://codepen.io/swaminat
 
 A support site for working with Javascritp as part of Coursera course Programming Fundamentals with HTML, CSS and Javascript by Duke University is (http://www.dukelearntoprogram.com/course1/example/index.php)[dukelearntoprogram]
 
-''' js
+``` js
 var img = new SimpleImage(200,200);
 for (var px of img.values()){
   var x = px.getX();
@@ -71,4 +71,4 @@ for (var pixel of img.values()) {
     pixel.setRed(green);
 }
 print(img);
-'''
+```
