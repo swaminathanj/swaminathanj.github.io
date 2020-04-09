@@ -39,6 +39,13 @@ Google had to deal with all these challenges since it processes huge volumes of 
 
 ### Real world use cases
 
+1. Ocado - large online grocer in UK, store peta bytes of data, their mission is to make their data so intelligent that it has answer to queries before being asked.
+2. Spotify - Music streaming service
 
+### Navigate Google Cloud Platform Project Basics
+- Dashboard (projects, resources, billing)
+- Projects organize all your activities
+- Resources are what you use in the cloud (Buckets for storage, BigQuery Datasets)
+- Billed for the resources you use (buckets, query and table storage)
 
 
