@@ -22,6 +22,8 @@ Why GCP is used for data analysis?
 
 Traditional big data platform require an investment in infrastructure.
 - Processors, storage, networking, administrators/technicians
+- Under-provisioned (demand > capacity, 120s - 1 machine) or over-provisioned (demand < capacity, 1s - 120 machines)
+- Storage and processing on same servers
 
 Typical big data processing includes
 - Resource provisioning
@@ -33,7 +35,10 @@ Typical big data processing includes
 - Monitoring
 - Insights (main goal)
 
-Google had to deal with all these challenges since it processes huge volumes of data. Now, they have made available GCP. With GCP, you focus only on <b>insights</b>.
+Google had to deal with all these challenges since it processes huge volumes of data. Now, they have made available GCP. With GCP, you focus only on <b>insights</b>. So, the cloud will run on Google infrastructure. <b>True on-demand cloud!</b>. Pay only for queries you process or store (i.e. data you use). 
+
+### Real world use cases
+
 
 
 
