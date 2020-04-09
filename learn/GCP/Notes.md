@@ -31,5 +31,9 @@ Typical big data processing includes
 - Utilization improvements
 - Performance tuning
 - Monitoring
-- Insights
-- 
+- Insights (main goal)
+
+Google had to deal with all these challenges since it processes huge volumes of data. Now, they have made available GCP. With GCP, you focus only on <b>insights</b>.
+
+
+
