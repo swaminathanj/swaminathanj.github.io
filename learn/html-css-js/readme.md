@@ -1,9 +1,9 @@
 
 Aum Amma
 
-A good site to practice html, css and javascript is [https://codepen.io/swaminathanj/pen/JjdVNLp](codepen)
+A good site to practice html, css and javascript is (https://codepen.io/swaminathanj/pen/JjdVNLp)[codepen].
 
-A support site for working with Javascritp as part of Coursera course Programming Fundamentals with HTML, CSS and Javascript by Duke University is [http://www.dukelearntoprogram.com/course1/example/index.php](dukelearntoprogram)
+A support site for working with Javascritp as part of Coursera course Programming Fundamentals with HTML, CSS and Javascript by Duke University is (http://www.dukelearntoprogram.com/course1/example/index.php)[dukelearntoprogram]
 
 ''' js
 var img = new SimpleImage(200,200);
