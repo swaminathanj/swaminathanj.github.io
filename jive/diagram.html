@@ -77,15 +77,14 @@ document.getElementById("alltext").value = "PragnyaS->ChinmayiS : hello";
 <form>
 <input type="file" multiple="false" accept="*test/csv" id="csv" onchange="process()">
 	<textarea id="inflated" cols="64" rows="16" name="umlarea"></textarea>
+	<script>
+	document.getElementById("umlarea").value = "PragnyaS->ChinmayiS : hello";
+	</script>
 <p>
 <input type=submit onclick="compress($('inflated').value);return false;">
 <p>
 <img id="im" src=http://www.plantuml.com/plantuml/img/SyfFKj2rKt3CoKnELR1Io4ZDoSa70000>
 </form>
-	
-<script>
-document.getElementById("umlarea").value = "PragnyaS->ChinmayiS : hello";
-</script>
 
 </body>
 </html>
