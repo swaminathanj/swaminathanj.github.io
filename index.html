@@ -1,69 +1,158 @@
-<html>
-<head>
-<title>Dr. Swaminathan J : Amrita Vishwa Vidyapeetham</title>
-</head>
-  
-<body>
-  <h1>My Home</h1>
-  <table>
-    <td>
-      <img width="120" height="150" align="left" src="images/me3.jpg" alt="Picture">
-    </td>
-    <td>
-      Dr. Swaminathan J<br>
-      Assistant Professor<br>            
-      Department of Computer Science and Engineering<br>
-      Amrita School of Engineering, Amritapuri Campus<br>
-      Amrita Vishwa Vidyapeetham<br>
-      India<br>
-    </td>
-  </table>
-  
-<h2>Courses</h2>
-    <ul>
-	<p><a href="https://github.com/swaminathanj/ProblemSolving/blob/master/Home.md">1. Problem Solving using Programming</a></p>
-            <p id="psp">This course is about learning computer programming by problem solving. It is broadly divided ... 
-            <button type="button" onclick='document.getElementById("psp").innerHTML = "This course is about learning computer programming by problem solving. The course is broadly divided into three units. The essential constructs of C language (for problem solving) are introduced at the beginning of each unit really quick. This is followed by an extended duration of problem solving. To get started, 5 problems from code forces are selected and the incremental approach to solving them demostrated. Modularity is emphasized throughout. The students are encouraged to break the solution into functions rather than implement the entire logic in main. While it might seem unneccesary to define functions for really simple problems, the expectation is that students learn the art of developing programs as building blocks. How else does one apply modularity for large software unless he/she has learnt to apply it for smaller programs?"'>Expand</button>
-	    </p>
-	<p><a href="oop/01_intro.html">2. Object Oriented Programming</a></p>
-	    <p id="oop">This is a course on object oriented programming using Java. The initial emphasis of the course ... 
-            <button type="button" onclick='document.getElementById("oop").innerHTML = "This is a course on object oriented programming using Java. The initial emphasis of the course is on object oriented paradigm with almost zero use of any Java libraries. All the major features of object orientation such as encapsulation, polymorphism, composition, inheritance, interface and exception handling, are introduced and wound around single application example to enable the learner to assimilate the underlying principles. In the second phase, the essential librarires of core Java such as math, string and file handling are introduced. In the final phase, advanced features such as generics, collections, swings, multi-threading, serialization and UML design notations are introduced. The students are strongly encouraged to design and implement a 1000-LOC project."'>Expand</button>
-	    </p>
-	    <p><a href="https://github.com/swaminathanj/DSA/blob/master/Lectures.md">3. Data Structures and Algorithms</a></p>
-            <p id="dsa">This course focuses on fundamental data structures that includes linked list, stack, queue, trees ... 
-            <button type="button" onclick='document.getElementById("dsa").innerHTML = "This course focuses on fundamental data structures including linked list, stack, queue, binary tree, binary heap, binary search tree, graphs disjoint sets and hash tables. The course emphasizes on incremental approach towards implementation and modularity. The treatment is object oriented and the language used is Java. Broadly, there are two goals to this course. The first one being implementing the data structures themselves. The second one is to determine the right data structure for a given problem and apply them. It is also important to develop the ability to design new data structures or variants of existing ones when required."'>Expand</button>
-	    </p>
-	<p><a href="algo/01_Intro.html">4. Design and Analysis of Algorithms</a></p>
-	    <p id="algo">This is a standard course on algorithm design and analysis. The course starts with the need for ... 
-	    <button type="button" onclick='document.getElementById("algo").innerHTML = "This is a standard course on algorithm design and analysis. The course starts with the need for efficient algorithms and methods to measure the efficiency in terms of time and space. This is followed by the introduction to asysmptotic notations, solving recurrences and Masters method. The next phase of the course moves to classical problems on algorithms and strategies to solve them such as divide-and-conquer, greedy and dynamic programming. The problems center around arrays, strings, trees and graphs. In the final phase, other strategies such as backtracking, branch-and-bound and problem-specific techniques are covered. The course ends with a short discussion on NP, NP-Hard and NP-Complete topics and reductions."'>Expand</button>	
-	    </p>
-	    
-	<p><a href="fsm/fsm.html">5. Formal Languages and Automata</a></p>
-	<p><a href="cg/index.html">6. Computational Geometry</a></p>
-	<p><a href="pr/home.html">7. Program Reasoning</a></p>
-	    <p id="pr"><details>In program reasoning we are concerned with correctness of programs. After some introduction and background, we introduct how to do functional verification using frama-c in the light of weakest preconditions calculus. <summary>This course deals with reasoning about the correctness of programs.</summary></details>
-	    </p>
-    </ul>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="style.css" rel="stylesheet">
+    <title>Dr. Swaminathan J</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-dark bg-secondary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Home</a>
+      </div>
+      <!-- Navbar content -->
+    </nav>
+    <div class="container">
+      <table>
+        <tr>
+          <td>
+            <div class="card" style="width: 15rem;">
+              <img src="photo.jpg" class="card-img-top" alt="Photo">
+            </div>
+          </td>
+          <td>
+            <div class="card-body">
+              <h5 class="card-title">Dr. Swaminathan J</h5>
+              <p class="card-text">Associate Professor<br>
+                Amrita School of Computing<br>
+                Amritapuri Campus<br>
+                Amrita Vishwa Vidyapeetham<br>
+                India
+              </p>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <div class="accordion" id="accordionExample">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              A brief summary
+            </button>
+          </h2>
+          <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne">
+            <div class="accordion-body">
+              <p><strong>I serve as an Associate Professor at Amrita School of Computing, Amrita Vishwa Vidyapeetham, Amritapuri Campus located at Kollam, Kerala.</strong>
+              <p>I have about 23 years of overall experience including he had a 10 ½ years stint with IT major Wipro Technologies. At Wipro I served in various capacities including software engineer, project lead, consultant, project manager and delivery manager in product engineering, network protocol maintenance and enterprise application development.</p>
+              <P>I am passionate about teaching and my teaching interests include computational thinking, programming, algorithms, data structures, networking and distributed computing. I also lead the Code @Amrita club specially dedicated to competitive programming at the campus that mentors students to take part in national and international coding competitions such as ACM ICPC. Apart from these, I guide B. Tech. projects, M. Tech. dissertations and Ph. D. theses.</p>
+              <p>I have 20+ research publications in reputed international journals and conferences. I am part of numerous initiatives at Amrita including Amrita AHEAD Online BCA and MCA programs, designing curricula for UG and PG programs, process initiatives, course content development, and mentoring junior faculty members. My interview on Concise Introduction to Computer Science & Engineering can be watched at <a href="https://www.youtube.com/watch?v=rFPMD9cJ99Q">YouTube</a>.</p>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingTwo">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+              Courses
+            </button>
+          </h2>
+          <div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo">
+            <div class="accordion-body">
+              <div class="list-group">
+                <a href="https://github.com/swaminathanj/ProblemSolving/blob/master/Home.md" class="list-group-item list-group-item-action"><span class="badge bg-primary">1</span> Problem Solving and Programmming</a>
+                <a href="https://swaminathanj.github.io/oop/01_intro.html" class="list-group-item list-group-item-action"><span class="badge bg-primary">2</span> Object Oriented Programming</a>
+                <a href="https://github.com/swaminathanj/DSA/blob/master/Lectures.md" class="list-group-item list-group-item-action"><span class="badge bg-primary">3</span> Data Structures and Algorithms</a>
+                <a href="https://swaminathanj.github.io/algo/01_Intro.html" class="list-group-item list-group-item-action"><span class="badge bg-primary">4</span> Design and Analysis of Algorithms</a>
+                <a href="https://swaminathanj.github.io/fsm/fsm.html" class="list-group-item list-group-item-action"><span class="badge bg-primary">5</span> Finite State Automata</a>
+                <a href="https://swaminathanj.github.io/cg/index.html" class="list-group-item list-group-item-action"><span class="badge bg-primary">6</span> Computational Geometry</a>
+                <a href="https://swaminathanj.github.io/pr/home.html" class="list-group-item list-group-item-action"><span class="badge bg-primary">7</span> Program Reasoning</a>
+                <a href="https://github.com/swaminathanj/fsd/blob/main/main.md" class="list-group-item list-group-item-action"><span class="badge bg-primary">8</span> Full Stack Development with Python</a>
+                <a href="#" class="list-group-item disabled"><span class="badge bg-secondary">9</span> Machine Learning</a>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingThree">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+              Publications
+            </button>
+          </h2>
+          <div id="collapseThree" class="accordion-collapse collapse show" aria-labelledby="headingThree">
+            <div class="accordion-body">
+              <ol class="list-group list-group-numbered list-group-flush">
+                <li class="list-group-item">
+                  <span class="badge bg-danger">J</span> Lekshmi S. Nair, Jo Cheriyan and J. Swaminathan, "Microscopic Structural Analysis of Complex Networks: An Empirical Study Using Motifs," in IEEE Access, vol. 10, pp. 33220-33229, 2022, doi: 10.1109/ACCESS.2022.3160206.
+                </li>
+                <li class="list-group-item">
+                  <span class="badge bg-secondary">C</span> S. Saran, M. T. Vignesh, G. V. S. Sundar, M. S. Naidu and S. Jayaraman, "File Compilation in a Constrained Distributed Scenario for an Optimal Resource Allocation," 2022 6th International Conference on Computing Methodologies and Communication (ICCMC), 2022, pp. 1592-1596, doi: 10.1109/ICCMC53470.2022.9753975.
+                </li>
+                <li class="list-group-item">
+                  <span class="badge bg-secondary">C</span> Lekshmy H. O. and J. Swaminathan, "English Malayalam bilingual assistive aid using multimodal machine learning technologies," in proceedings of International Conference on Advances in Computer Engineering and Communication Technology, 2021.
+                </li>
+                <li class="list-group-item">
+                  <span class="badge bg-danger">J</span> Ayswarya R. Kurup, G. P. Sajeev, Swaminathan Jayaraman, "Aggregating Reliable Submissions in Crowdsourcing Systems", in IEEE Access, vol. 9, pp. 153058-153071, 2021, doi: 10.1109/ACCESS.2021.3127994.
+                </li>
+                <li class="list-group-item">
+                  <span class="badge bg-secondary">C</span> B. Satwik, K. G. Manoj, S. R. Immadi and S. Jayaraman, "Visualization of Distributed Program Execution," 2021 12th International Conference on Computing Communication and Networking Technologies (ICCCNT), 2021, pp. 1-6, doi: 10.1109/ICCCNT51525.2021.9579575.
+                </li>
+                <li class="list-group-item">
+                  <span class="badge bg-secondary">C</span> S. Saran, M. T. Vignesh, G. V. S. Sundar, M. S. Naidu and S. Jayaraman, "An Optimal Algorithm to Maximize Vaccine Production in a Distributed Environment," 2021 12th International Conference on Computing Communication and Networking Technologies (ICCCNT), 2021, pp. 1-6, doi: 10.1109/ICCCNT51525.2021.9580008.
+                </li>
+                <li class="list-group-item">
+                  <span class="badge bg-secondary">C</span> S. Dixit, T. K. Geethna, S. Jayaraman and V. Pavithran, "AngErza: Automated Exploit Generation," 2021 12th International Conference on Computing Communication and Networking Technologies (ICCCNT), 2021, pp. 1-6, doi: 10.1109/ICCCNT51525.2021.9579959.
+                </li>
+                <li class="list-group-item">
+                  <span class="badge bg-secondary">C</span> Shobitha, M., Sidharth, R.P., Sreesruthi, P.K., Varun Raj, P., Swaminathan, J. (2022). Comparison of Concurrent Program Behavior Using Java Interactive Visualization Environment. In: Smys, S., Balas, V.E., Palanisamy, R. (eds) Inventive Computation and Information Technologies. Lecture Notes in Networks and Systems, vol 336. Springer, Singapore. doi: 10.1007/978-981-16-6723-7_29.
+                </li>
+                <li class="list-group-item">
+                  <span class="badge bg-danger">J</span> K. P. Jevitha, Swaminathan Jayaraman, Bharat Jayaraman, M. Sethumadhavan, "Finite-state model extraction and visualization from Java program execution", Softw Pract Exper. 2021; 51: 409– 437. https://doi.org/10.1002/spe.2910.
+                </li>
+                <li class="list-group-item">
+                  <span class="badge bg-secondary">C</span> Namitha S. Nair, Aswathy Mohan and Swaminathan Jayaraman, "Interactive Exploration of Compact Sequence Diagrams - JIVE based approaches," 2020 Third International Conference on Smart Systems and Inventive Technology (ICSSIT), Tirunelveli, India, 2020, pp. 907-912, doi: 10.1109/ICSSIT48917.2020.9214261.
+                </li>
+                <li class="list-group-item">
+                  <span class="badge bg-secondary">C</span> Kanchan Karippara, Adithya D. Nayar, Vivek Illikkal, Nandu Vasudevan and Swaminathan Jayaraman, "Synthesis, Analysis and Visualization of Networked Executions," 2020 5th International Conference on Communication and Electronics Systems (ICCES), COIMBATORE, India, 2020, pp. 430-435, doi: 10.1109/ICCES48766.2020.9138091.
+                </li>
+                <li class="list-group-item">
+                  <span class="badge bg-secondary">C</span> Mayank Pugalia, Aswin Ashok and Swaminathan Jayaraman, "A Hybrid Algorithm for Optimized Resource Allocation under Constrained Task Schedule,"  Fourth International Conference on Computing Methodologies and Communication (ICCMC), Erode, India, 2020, pp. 136-141, doi: 10.1109/ICCMC48092.2020.ICCMC-00028.
+                </li>
+                <li class="list-group-item">
+                  <span class="badge bg-secondary">C</span> Lekshmi S. Nair and J. Swaminathan, "Towards Reduction of Software Maintenance Cost through Assignment of Critical Functionality Scores," 2020 5th International Conference on Communication and Electronics Systems (ICCES), COIMBATORE, India, 2020, pp. 199-204, doi: 10.1109/ICCES48766.2020.9138071.
+                </li>
+                <li class="list-group-item">
+                  <span class="badge bg-secondary">C</span> A. A. Aziz, M. Unny, S. Niranjana, M. Sanjana and J. Swaminathan, "Decoding Parallel Program Execution by using Java Interactive Visualization Environment (JIVE): Behavioral and Performance Analysis," 2019 3rd International Conference on Computing Methodologies and Communication (ICCMC), Erode, India, 2019, pp. 792-797, doi: 10.1109/ICCMC.2019.8819754.
+                </li>
+                <li class="list-group-item">
+                  <span class="badge bg-secondary">C</span> Devi Sree Rajan, Swaminathan Jayaraman, "Construction of activity diagrams from Java execution traces," In: Perez G., Tiwari S., Trivedi M., Mishra K. (eds) <i>Ambient Communications and Computer Systems. Advances in Intelligent Systems and Computing</i>, Springer, Singapore, 2018, vol 696, pp. 641-655. DOI: 10.1007/978-981-10-7386-1_54.
+                <li class="list-group-item">
+                  <span class="badge bg-danger">J</span> Swaminathan Jayaraman, Bharat Jayaraman and Demian Lessa, "Compact visualization of Java program execution", <i>Software: Practice & Experience, John Wiley & Sons Inc.,</i> 2017, vol. 47, pp. 163-191. DOI: 10.1002/spe.2411.
+                </li>
+                <li class="list-group-item">
+                  <span class="badge bg-secondary">C</span> Aparna K Das and Swaminathan Jayaraman, "Building a common notation for enabling comparison of design and execution," in proceedings of <i>International Conference on  Advances in Computing, Communications and Informatics (ICACCI)</i>, Udupi, 2017, pp. 1609 - 1612. DOI: 10.1109/ ICACCI.2017.8126072.
+                </li>
+                <li class="list-group-item">
+                  <span class="badge bg-secondary">C</span> M. Mithun; Swaminathan Jayaraman, "Comparison of sequence diagram from execution against design-time state specification," in proceedings of <i>International Conference on  Advances in Computing, Communications and Informatics (ICACCI)</i>, Udupi, 2017, pp. 1387 - 1392. DOI: 10.1109/ ICACCI.2017.8126034.
+                </li>
+                <li class="list-group-item">
+                  <span class="badge bg-secondary">C</span> Lukasz Ziarek, Bharat Jayaraman, Demian Lessa and Swaminathan Jayaraman, "Runtime visualization and verification in JIVE," In: Falcone Y., Sánchez C. (eds) <i>Runtime Verification. RV 2016. Lecture Notes in Computer Science</i>, Springer, Cham, 2016, vol 10012., pp. 491-494. DOI: 10.1007/978-3-319-46982-9_33.
+                </li>
+                <li class="list-group-item">
+                  <span class="badge bg-secondary">C</span> Swaminathan Jayaraman, Dinoop Hari and Bharat Jayaraman, "Consistency of Java run-time behavior with design-time specifications," in proceedings of <i>Eighth International Conference on Contemporary Computing (IC3)</i>, Noida, 2015, pp. 548-554. DOI: 10.1109/IC3.2015.7346742.
+                </li>
+                <li class="list-group-item">
+                  <span class="badge bg-secondary">C</span> Swaminathan Jayaraman, Kishor Kamath Diwakar and Bharat Jayaraman, "Towards program execution summarization: Deriving state diagrams from sequence diagrams," in proceedings of <i>Seventh International Conference on Contemporary Computing (IC3)</i>, Noida, 2014, pp. 299-305. DOI: 10.1109/IC3.2014.6897190.
+                </li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-<h2>Publications</h2>
-   <ul>
-     <p> 1. A. A. Aziz, M. Unny, S. Niranjana, M. Sanjana and J. Swaminathan, <a href="https://ieeexplore.ieee.org/abstract/document/8819754">"Decoding Parallel Program Execution by using Java Interactive Visualization Environment (JIVE): Behavioral and Performance Analysis"</a> in proceedings of <i>3rd International Conference on Computing Methodologies and Communication (ICCMC)</i>, Erode, India, 2019, pp. 792-797. DOI: 10.1109/ICCMC.2019.8819754.</p>
+    </div>
 
-     <p> 2. Swaminathan Jayaraman, Devi Sree Rajan and Bharat Jayaraman, "Towards runtime verification using activity diagrams," in proceedings of <i>Second Symposium on Applications of Formal Methods for Safety and Security of Critical Systems (AFMSS)</i>, Amritapuri, 2018.</p>
-
-     <p> 3. Devi Sree Rajan, Swaminathan Jayaraman, <a href="https://link.springer.com/chapter/10.1007/978-981-10-7386-1_54">"Construction of activity diagrams from Java execution traces,"</a> In: Perez G., Tiwari S., Trivedi M., Mishra K. (eds) <i>Ambient Communications and Computer Systems. Advances in Intelligent Systems and Computing</i>, Springer, Singapore, 2018, vol 696, pp. 641-655. DOI: 10.1007/978-981-10-7386-1_54.</p>
-
-     <p> 4. Swaminathan Jayaraman, Bharat Jayaraman and Demian Lessa, <a href="http://onlinelibrary.wiley.com/doi/10.1002/spe.2411/abstract">"Compact visualization of Java program execution"</a>, <i>Software: Practice & Experience, John Wiley & Sons Inc.,</i> 2017, vol. 47, pp. 163-191. DOI: 10.1002/spe.2411</p>
-
-     <p> 5. Aparna K Das and Swaminathan Jayaraman, <a href="http://ieeexplore.ieee.org/document/8126072/">"Building a common notation for enabling comparison of design and execution,"</a> in proceedings of <i>International Conference on  Advances in Computing, Communications and Informatics (ICACCI)</i>, Udupi, 2017, pp. 1609 - 1612. DOI: 10.1109/ ICACCI.2017.8126072.</p>
-
-     <p> 6. M. Mithun; Swaminathan Jayaraman, <a href="http://ieeexplore.ieee.org/document/8126034/">"Comparison of sequence diagram from execution against design-time state specification,"</a> in proceedings of <i>International Conference on  Advances in Computing, Communications and Informatics (ICACCI)</i>, Udupi, 2017, pp. 1387 - 1392. DOI: 10.1109/ ICACCI.2017.8126034.</p>
-
-     <p> 7. Lukasz Ziarek, Bharat Jayaraman, Demian Lessa and Swaminathan Jayaraman, <a href="https://link.springer.com/chapter/10.1007/978-3-319-46982-9_33">"Runtime visualization and verification in JIVE,"</a> In: Falcone Y., Sánchez C. (eds) <i>Runtime Verification. RV 2016. Lecture Notes in Computer Science</i>, Springer, Cham, 2016, vol 10012., pp. 491-494. DOI: 10.1007/978-3-319-46982-9_33.</p>
-
-     <p> 8. Swaminathan Jayaraman, Dinoop Hari and Bharat Jayaraman, <a href="http://ieeexplore.ieee.org/document/7346742/">"Consistency of Java run-time behavior with design-time specifications,"</a> in proceedings of <i>Eighth International Conference on Contemporary Computing (IC3)</i>, Noida, 2015, pp. 548-554. DOI: 10.1109/IC3.2015.7346742.</p>
-
-     <p> 9. Swaminathan Jayaraman, Kishor Kamath Diwakar and Bharat Jayaraman, <a href="http://ieeexplore.ieee.org/document/6897190/">"Towards program execution summarization: Deriving state diagrams from sequence diagrams,"</a> in proceedings of <i>Seventh International Conference on Contemporary Computing (IC3)</i>, Noida, 2014, pp. 299-305. DOI: 10.1109/IC3.2014.6897190.</p>     
-   </ul>    
-</body>
+    <script type="text/javascript" src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+  </body>
 </html>
