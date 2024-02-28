@@ -1,0 +1,593 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Quiz - 3</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="styles.css" />
+        <script type="text/javascript" src="scripts/shCore.js"></script>
+        <script type="text/javascript" src="scripts/shBrushBash.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCpp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCss.js"></script>
+        <script type="text/javascript" src="scripts/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="scripts/shBrushDiff.js"></script>
+        <script type="text/javascript" src="scripts/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="scripts/shBrushJava.js"></script>
+        <script type="text/javascript" src="scripts/shBrushJScript.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPhp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPlain.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPython.js"></script>
+        <script type="text/javascript" src="scripts/shBrushRuby.js"></script>
+        <script type="text/javascript" src="scripts/shBrushScala.js"></script>
+        <script type="text/javascript" src="scripts/shBrushSql.js"></script>
+        <script type="text/javascript" src="scripts/shBrushVb.js"></script>
+        <script type="text/javascript" src="scripts/shBrushXml.js"></script>
+        <link type="text/css" rel="stylesheet" href="lecture-notes.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/shThemeDefault.css"/>
+        <script type="text/javascript">
+            //SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+            SyntaxHighlighter.defaults['toolbar'] = false;
+            SyntaxHighlighter.defaults['auto-links'] = false;
+ 
+            SyntaxHighlighter.all();
+        </script>
+        <script type="text/JavaScript">
+            //courtesy of BoogieJack.com
+            function killCopy(e){
+            return false
+            }
+            function reEnable(){
+            return true
+            }
+            document.onselectstart=new Function ("return false")
+            if (window.sidebar){
+            document.onmousedown=killCopy
+            document.onclick=reEnable
+            }
+
+        </script>
+</head>
+<body>
+<div id="container">
+<div id="header"><h1>Object Oriented Programming<img align="right" src="logo-dark.png" alt="Amrita"> </h1></div>
+  <div id="wrapper">
+    <div id="content">
+      
+<table align="right">
+  <td align="left"><a href="Quiz-2.html">Prev</a></td>
+  <td align="right"><a href="Quiz-4.html">Next</a></td>
+</table>
+
+<h2>Quiz - 3</h2>
+
+<p>This quiz tests your knowledge of Java language semantics. Get a print out of this 
+when you come to the class.</p>
+<ul>
+  <li>First try answering without running the program.</li>
+  <li>Then run the program to check if your understanding was indeed correct.</li>
+  <li>Enter both the answers in the last column and submit.</li>
+</ul>
+
+<table border="1">
+<tr>
+<td><b>Concept</b></td>
+<td><b>Program</b></td>
+<td><b>Your answer first, followed by the actual answer</b></td>
+
+<tr>
+<td>Visibility of<br>super class<br>attributes</td>
+<td>
+<pre class="brush: java">
+// A.java
+public class A {
+  private float f;  // Try 'protected'
+}
+</pre>
+<pre class="brush: java">
+// AX.java
+public class AX extends A {
+  public AX() {  this.f = 1.0f;  }
+}
+</pre>
+<pre class="brush: java">
+// ATest.java
+public class ATest {
+  public static void main(String[] args) {
+    AX ax = new AX();
+  }
+}
+</pre>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td>Accessing<br>super and<br>sub class<br>attributes<br>alike</td>
+<td>
+<pre class="brush: java">
+// B.java
+public class B {
+  protected int x;
+}
+</pre>
+<pre class="brush: java">
+// BX.java
+public class BX extends B {
+  protected int y;
+  public BX() {
+    this.x = 1; 
+    this.y = 2;
+  }
+  public String toString() {
+    return this.x + " " + this.y;
+  }
+}
+</pre>
+<pre class="brush: java">
+// BTest.java
+public class BTest {
+  public static void main(String[] args) {
+    BX bx = new BX();
+    System.out.println(bx);
+  }
+}
+</pre>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td>Accessing<br>super class<br>attributes<br>if hidden</td>
+<td>
+<pre class="brush: java">
+// C.java
+public class C {
+  protected int x;
+}
+</pre>
+<pre class="brush: java">
+// CX.java
+public class CX extends C {
+  protected int x;
+  public CX() {
+    super.x = 1; 
+    this.x = 2;
+  }
+  public String toString() {
+    return super.x + " " + this.x;
+  }
+}
+</pre>
+<pre class="brush: java">
+// CTest.java
+public class CTest {
+  public static void main(String[] args) {
+    CX cx = new CX();
+    System.out.println(cx);
+  }
+}
+</pre>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td>Explicit<br>call to<br>super class<br>constructor<br>necessary</td>
+<td>
+<pre class="brush: java">
+// D.java
+public class D {
+  protected int x;
+  public D() { this.x = 1; }
+}
+</pre>
+<pre class="brush: java">
+// DX.java
+public class DX extends D {
+  protected int y;
+  public DX() {
+    super(); // What if we comment this
+    this.y = 1;
+  }
+public String toString() {
+    return this.x + " " + this.y;
+  }
+}
+</pre>
+<pre class="brush: java">
+// DTest.java
+public class DTest {
+  public static void main(String[] args) {
+    DX dx = new DX();
+    System.out.println(dx);
+  }
+}
+</pre>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td>Overriding</td>
+<td>
+<pre class="brush: java">
+// E.java
+public class E {
+  protected int x;
+  public void set(int x) { 
+    this.x = x; 
+  }
+  public String toString() {
+    return this.x;
+  }
+}
+</pre>
+<pre class="brush: java">
+// EX.java
+public class EX extends E {
+  public void set(int x) {
+    this.x = 2*x;
+  }
+  public String toString() {
+    return this.x;
+  }
+}
+</pre>
+<pre class="brush: java">
+// ETest.java
+public class ETest {
+  public static void main(String[] args) {
+    E e = new E();
+    e.set(4);
+    System.out.println(e);
+    EX ex = new EX();
+    ex.set(4);
+    System.out.println(ex);
+  }
+}
+</pre>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td>Overriding<br>a private<br>method</td>
+<td>
+<pre class="brush: java">
+// F.java
+public class F {
+  protected int x;
+  private void set(int x) { 
+    this.x = x; 
+  }
+  public String toString() {
+    return this.x;
+  }
+}
+</pre>
+<pre class="brush: java">
+// FX.java
+public class FX extends F {
+  public void set(int x) {
+    this.x = 2*x;
+  }
+  public String toString() {
+    return this.x;
+  }
+}
+</pre>
+<pre class="brush: java">
+// FTest.java
+public class FTest {
+  public static void main(String[] args) {
+    F f = new F();
+    f.set(4);
+    System.out.println(f);
+    FX fx = new FX();
+    fx.set(4);
+    System.out.println(fx);
+  }
+}
+</pre>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td>Overriding<br>a private<br>method<br>(Use of <br>@override)</td>
+<td>
+<pre class="brush: java">
+// G.java
+public class G {
+  protected int x;
+  private void set(int x) { 
+    this.x = x; 
+  }
+  public String toString() {
+    return this.x;
+  }
+}
+</pre>
+<pre class="brush: java">
+// GX.java
+public class GX extends G {
+  // @override
+  public void set(int x) {
+    this.x = 2*x;
+  }
+  public String toString() {
+    return this.x;
+  }
+}
+</pre>
+<pre class="brush: java">
+// GTest.java
+public class GTest {
+  public static void main(String[] args) {
+    G g = new G();
+    g.set(4);
+    System.out.pgrintln(g);
+    GX gx = new X();
+    gx.set(4);
+    System.out.println(gx);
+  }
+}
+</pre>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td>Assignment<br>of subclass<br>type to a<br>superclass<br>type and <br>vice-versa</td>
+<td>
+<pre class="brush: java">
+// H.java
+public class H {
+  protected int x;
+  public H() { this.x = 1; }
+  public String toString() {
+    return x;
+  }
+}
+</pre>
+<pre class="brush: java">
+// HX.java
+public class HX extends H {
+  protected int y;
+  public HX() {
+    super();
+    this.y = 1;
+  }
+  public String toString() {
+    return x + " " + y;
+  }
+}
+</pre>
+<pre class="brush: java">
+// HTest.java
+public class HTest {
+  public static void main(String[] args) {
+    H h = new H();
+    System.out.println(h);
+    HX hx = new HX();
+    h = hx;
+    System.out.println(h);
+    // hx = h; // Uncomment this and check
+  }
+}
+</pre>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td>Assignment<br>of subclass<br>type to a<br>superclass<br>type during<br>creation of<br>object and<br>
+vice-versa</td>
+<td>
+<pre class="brush: java">
+// I.java
+public class I {
+  protected int x;
+  public I() { this.x = 1; }
+  public String toString() {
+    return x;
+  }
+}
+</pre>
+<pre class="brush: java">
+// IX.java
+public class IX extends I {
+  protected int y;
+  public IX() {
+    super();
+    this.y = 1;
+  }
+  public String toString() {
+    return x + " " + y;
+  }
+}
+</pre>
+<pre class="brush: java">
+// ITest.java
+public class ITest {
+  public static void main(String[] args) {
+    I i1 = new I();
+    I i2 = new IX();
+    System.out.println(i1);
+    System.out.println(i2);
+
+    // IX ix1 = new IX(); // Uncomment and
+    // IX ix2 = new I();  // check 1-by-1
+  }
+}
+</pre>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td>Passing<br>subclass <br>type to<br>a method<br>that takes<br>superclass<br>type as a<br>parameter<br>
+and<br>vice-versa</td>
+<td>
+<pre class="brush: java">
+// J.java
+public class J {
+  protected int x;
+  public J() { x = 1; }
+  public String toString() {
+    return x;
+  }
+}
+</pre>
+<pre class="brush: java">
+// JX.java
+public class JX extends J {
+  protected int y;
+  public JX() {
+    super();
+    y = 1;
+  }
+  public String toString() {
+    return x + " " + y;
+  }  
+}
+</pre>
+<pre class="brush: java">
+// JTest.java
+public class JTest {
+  public static void main(String[] args) {
+    JTest jt = new JTest();
+    jt.print(new J());
+    jt.print(new JX());
+
+    // jt.display(new JX()); // Uncomment
+    // jt.display(new J());  // and check 
+  }
+  public void print(J j) {
+    System.out.println(j);
+  }
+  public void display(JX jx) {
+    System.out.println(jx);
+  }
+}
+</pre>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td>Explicit<br>casting of<br>superclass<br>type while<br>assigning to<br>a subclass<br>type</td>
+<td>
+<pre class="brush: java">
+// K.java
+public class K {
+  protected int x;
+  public K() { x = 1; }
+  public String toString() {
+    return x;
+  }
+}
+</pre>
+<pre class="brush: java">
+// KX.java
+public class KX extends K {
+  protected int y;
+  public KX() {
+    super();
+    y = 1;
+  }
+  public String toString() {
+    return x + " " + y;
+  }
+}
+</pre>
+<pre class="brush: java">
+// KTest.java
+public class KTest {
+  public static void main(String[] args) {
+    K k = new K();
+    KX kx = (KX) k;
+    System.out.println(kx);
+    			// Check the output!
+  }
+}
+</pre>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td>Overriding<br>static<br>method<br>does not<br>make sense</td>
+<td>
+<pre class="brush: java">
+// L.java
+public class L {
+  public static void greet() {
+    System.out.println("L");
+  }
+}
+</pre>
+<pre class="brush: java">
+// LX.java
+public class LX extends L {
+  public static void greet() {
+    System.out.println("LX");
+  }
+}
+</pre>
+<pre class="brush: java">
+// LTest.java
+public class LTest {
+  public static void main(String[] args) {
+    L.greet();
+    LX.greet();
+  }
+}
+</pre>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td>Multiple<br>inheritance<br>is not<br>supported</td>
+<td>
+<pre class="brush: java">
+// MA.java
+public class MA {
+  protected int a;
+  public MA() { a = 1; }
+}
+</pre>
+<pre class="brush: java">
+// MB.java
+public class MB {
+  protected int b;
+  public MB() { b = 1; }
+} 
+</pre>
+<pre class="brush: java">
+// MX.java
+public class MX extends MA, MB {
+  MX() {
+    a = 2;
+    b = 2;
+  }
+}	
+</pre>
+</td>
+<td></td>
+</tr>
+
+</table>
+    <br>
+    <br>
+    </div>
+  </div>
+  
+ <div id="footer", align="right">
+    <p align="center">In case you find any discrepancies please send them to swaminathanj@am.amrita.edu.</p>
+  </div>
+</div>
+</body>
+</html>

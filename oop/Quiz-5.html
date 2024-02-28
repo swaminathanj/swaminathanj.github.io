@@ -1,0 +1,240 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Quiz - 5</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="styles.css" />
+        <script type="text/javascript" src="scripts/shCore.js"></script>
+        <script type="text/javascript" src="scripts/shBrushBash.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCpp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCss.js"></script>
+        <script type="text/javascript" src="scripts/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="scripts/shBrushDiff.js"></script>
+        <script type="text/javascript" src="scripts/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="scripts/shBrushJava.js"></script>
+        <script type="text/javascript" src="scripts/shBrushJScript.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPhp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPlain.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPython.js"></script>
+        <script type="text/javascript" src="scripts/shBrushRuby.js"></script>
+        <script type="text/javascript" src="scripts/shBrushScala.js"></script>
+        <script type="text/javascript" src="scripts/shBrushSql.js"></script>
+        <script type="text/javascript" src="scripts/shBrushVb.js"></script>
+        <script type="text/javascript" src="scripts/shBrushXml.js"></script>
+        <link type="text/css" rel="stylesheet" href="lecture-notes.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/shThemeDefault.css"/>
+        <script type="text/javascript">
+            //SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+            SyntaxHighlighter.defaults['toolbar'] = false;
+            SyntaxHighlighter.defaults['auto-links'] = false;
+ 
+            SyntaxHighlighter.all();
+        </script>
+        <script type="text/JavaScript">
+            //courtesy of BoogieJack.com
+            function killCopy(e){
+            return false
+            }
+            function reEnable(){
+            return true
+            }
+            document.onselectstart=new Function ("return false")
+            if (window.sidebar){
+            document.onmousedown=killCopy
+            document.onclick=reEnable
+            }
+
+        </script>
+</head>
+<body>
+<div id="container">
+<div id="header"><h1>Object Oriented Programming<img align="right" src="logo-dark.png" alt="Amrita"> </h1></div>
+  <div id="wrapper">
+    <div id="content">
+      
+<table align="right">
+  <td align="left"><a href="Quiz-4.html">Prev</a></td>
+  <td align="right"><a href="Quiz-6.html">Next</a></td>
+</table>
+
+<h2>Quiz - 5</h2>
+
+<p>This quiz tests your knowledge of Java language semantics. Get a print out of this 
+when you come to the class.</p>
+<ul>
+  <li>First try answering without running the program.</li>
+  <li>Then run the program to check if your understanding was indeed correct.</li>
+  <li>Enter both the answers in the last column and submit.</li>
+</ul>
+
+<table border="1">
+<tr>
+<td><b>Concept</b></td>
+<td><b>Program</b></td>
+<td><b>Your answer first, followed by the actual answer</b></td>
+
+<tr>
+<td>Defining<br>custom<br>checked<br>exception</td>
+<td>
+<pre class="brush: java">
+// CheckedException.java
+public class CheckedException extends Exception {
+  public CheckedException(String s) {
+    super(s);
+  }
+}
+</pre>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td>Defining<br>custom<br>unchecked<br>exception</td>
+<td>
+<pre class="brush: java">
+// UncheckedException.java
+public class UncheckedException 
+                    extends RuntimeException {
+  public UncheckedException(String s) {
+    super(s);
+  }
+}
+</pre>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td>Throwing<br>Exception:<br>checked or<br>unchecked</td>
+<td>
+<pre class="brush: java">
+// AThrow.java
+public class AThrow {
+  private int weight;
+  public AThrow(int w) throws CheckedException {
+                       // or UncheckedException
+  	if (w > 0)
+      weight = w;
+    else
+      throw new AException("Every object has mass!");
+  }
+}
+</pre>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td></td>
+<td>
+<pre class="brush: java">
+
+</pre>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td></td>
+<td>
+<pre class="brush: java">
+
+</pre>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td></td>
+<td>
+<pre class="brush: java">
+
+</pre>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td></td>
+<td>
+<pre class="brush: java">
+
+</pre>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td></td>
+<td>
+<pre class="brush: java">
+
+</pre>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td></td>
+<td>
+<pre class="brush: java">
+
+</pre>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td></td>
+<td>
+<pre class="brush: java">
+
+</pre>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td></td>
+<td>
+<pre class="brush: java">
+
+</pre>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td></td>
+<td>
+<pre class="brush: java">
+
+</pre>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td></td>
+<td>
+<pre class="brush: java">
+
+</pre>
+</td>
+<td></td>
+</tr>
+
+</table>
+    <br>
+    <br>
+    </div>
+  </div>
+  
+ <div id="footer", align="right">
+    <p align="center">In case you find any discrepancies please send them to swaminathanj@am.amrita.edu.</p>
+  </div>
+</div>
+</body>
+</html>

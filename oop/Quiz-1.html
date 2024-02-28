@@ -1,0 +1,374 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Quiz - 1</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="styles.css" />
+        <script type="text/javascript" src="scripts/shCore.js"></script>
+        <script type="text/javascript" src="scripts/shBrushBash.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCpp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCSharp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushCss.js"></script>
+        <script type="text/javascript" src="scripts/shBrushDelphi.js"></script>
+        <script type="text/javascript" src="scripts/shBrushDiff.js"></script>
+        <script type="text/javascript" src="scripts/shBrushGroovy.js"></script>
+        <script type="text/javascript" src="scripts/shBrushJava.js"></script>
+        <script type="text/javascript" src="scripts/shBrushJScript.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPhp.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPlain.js"></script>
+        <script type="text/javascript" src="scripts/shBrushPython.js"></script>
+        <script type="text/javascript" src="scripts/shBrushRuby.js"></script>
+        <script type="text/javascript" src="scripts/shBrushScala.js"></script>
+        <script type="text/javascript" src="scripts/shBrushSql.js"></script>
+        <script type="text/javascript" src="scripts/shBrushVb.js"></script>
+        <script type="text/javascript" src="scripts/shBrushXml.js"></script>
+        <link type="text/css" rel="stylesheet" href="lecture-notes.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/shCore.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/shThemeDefault.css"/>
+        <script type="text/javascript">
+            //SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+            SyntaxHighlighter.defaults['toolbar'] = false;
+            SyntaxHighlighter.defaults['auto-links'] = false;
+ 
+            SyntaxHighlighter.all();
+        </script>
+        <script type="text/JavaScript">
+            //courtesy of BoogieJack.com
+            function killCopy(e){
+            return false
+            }
+            function reEnable(){
+            return true
+            }
+            document.onselectstart=new Function ("return false")
+            if (window.sidebar){
+            document.onmousedown=killCopy
+            document.onclick=reEnable
+            }
+
+        </script>
+</head>
+<body>
+<div id="container">
+<div id="header"><h1>Object Oriented Programming<img align="right" src="logo-dark.png" alt="Amrita"> </h1> </div>
+  <div id="wrapper">
+    <div id="content">
+      
+<table align="right">
+  <td align="left"><a href="Quiz-1.html">Prev</a></td>
+  <td align="right"><a href="Quiz-2.html">Next</a></td>
+</table>
+
+<h2>Quiz - 1</h2>
+
+<p>This quiz tests your knowledge of Java language semantics. Get a print out of this 
+when you come to the class.</p>
+<ul>
+  <li>First try answering without running the program.</li>
+  <li>Then run the program to check if your understanding was indeed correct.</li>
+  <li>Enter both the answers in the last column and submit.</li>
+</ul>
+
+<table border="1">
+<tr>
+<td><b>Concept</b></td>
+<td><b>Program</b></td>
+<td><b>Your answer first, followed by the actual answer</b></td>
+
+<tr>
+<td>Visibility</td>
+<td>
+<pre class="brush: java">
+// A.java
+public class A {
+  private double d;
+  protected char c;
+  public float f;
+}
+</pre>
+<pre class="brush: java">
+// ATest.java
+public class ATest {
+  public static void main(String[] args) {
+    A a = new A();
+    a.d = 5;
+    a.c = 'x';
+    a.f = 1.0f;
+  }
+}
+</pre>
+</td>
+<td></td>
+</tr>
+
+</tr>
+<tr>
+<td>Default<br>values of<br>instance<br>variables</td>
+<td>
+<pre class="brush: java">
+// BTest.java
+public class BTest {
+  private int i;
+  private long l;
+  private double d;
+  private char c;
+  private float f;
+  private String s;
+  public static void main(String[] args) {
+    BTest b = new BTest();
+    System.out.println("The default values"
+            + "instance/object variables are: "
+    		+ "b.i = " + b.i
+    		+ "b.l = " + b.l
+    		+ "b.f = " + b.f
+    		+ "b.d = " + b.d
+    		+ "b.c = " + b.c
+    		+ "b.s = " + b.s);
+  }
+}
+</pre>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td>Default<br>values of<br>static<br>variables</td>
+<td>
+<pre class="brush: java">
+// CTest.java
+public class CTest {
+  private static int i;
+  private static long l;
+  private static double d;
+  private static char c;
+  private static float f;
+  private static String s;
+
+  public static void main(String[] args) {
+    System.out.println("The default values"
+            + "static/class variables are: "
+    		+ "i = " + i
+    		+ "l = " + l
+    		+ "f = " + f
+    		+ "d = " + d
+    		+ "c = " + c
+    		+ "s = " + s);
+  }
+}
+</pre>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td>Default<br>values of<br>local<br>variables</td>
+<td>
+<pre class="brush: java">
+// DTest.java
+public class DTest {
+
+  public static void main(String[] args) {
+    int i;
+    long l;
+    double d;
+    char c;
+    float f;
+    String s;
+
+    System.out.println("The default values"
+            + "local variables are: "
+    		+ "i = " + i
+    		+ "l = " + l
+    		+ "f = " + f
+    		+ "d = " + d
+    		+ "c = " + c
+    		+ "s = " + s);
+  }
+}
+</pre>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td>Private<br>(outer)<br>class</td>
+<td>
+<pre class="brush: java">
+// E.java
+private class E {
+  /* 1. Is it possible to create a private class?
+     2. How about protected class?
+     3. Does it make sense to declare a public
+        attribute in a private class? */
+}
+</pre>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td>Equality<br>of object<br>instances</td>
+<td>
+<pre class="brush: java">
+// F.java
+public class F {
+  private int x;
+  F(int xi) { x = xi; }
+  // equals() not defined
+}
+
+// FTest.java
+public class FTest {
+  public static void main(String[] args) {
+    F f1 = new F(2);
+    F f2 = new F(2);
+    System.out.println(f1==f2);
+    System.out.println(f1.equals(f2));
+    /* How is it possible to call equals()
+       method without defining it even? */
+  }
+}
+</pre>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td>Equality<br>of object<br>instances</td>
+<td>
+<pre class="brush: java">
+// G.java
+public class G {
+  private int x;
+  G(int xi) { x = xi; }
+  public boolean equals(G g) {
+    if (this.x == g.x)
+      return true;
+    return false;
+  }
+}
+
+// GTest.java
+public class GTest {
+  public static void main(String[] args) {
+    G g1 = new G(2);
+    G g2 = new G(2);
+    System.out.println(g1==g2);
+    System.out.println(g1.equals(g2));
+  }
+}
+</pre>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td>Private<br>main()</td>
+<td>
+<pre class="brush: java">
+// HTest.java
+public class HTest {
+  private static void main(String[] args) {
+    System.out.println("main is private");
+  }
+}
+</pre>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td>Non-static<br>main()</td>
+<td>
+<pre class="brush: java">
+// ITest.java
+public class ITest {
+  public void main(String[] args) {
+    System.out.println("main is not static");
+  }
+}
+</pre>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td>main()<br>with no<br>arguments</td>
+<td>
+<pre class="brush: java">
+// JTest.java
+public class JTest {
+  public static void main() {
+    System.out.println("main without arguments");
+  }
+}
+</pre>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td>main() with <br>a return<br>type</td>
+<td>
+<pre class="brush: java">
+// KTest.java
+public class KTest {
+  public static int main(String[] args) {
+    System.out.println("main returns a value");
+    return 0;
+  }
+}
+</pre>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td>Overloaded<br>main()</td>
+<td>
+<pre class="brush: java">
+// LTest.java
+public class LTest {
+  public static void main(String[] args) {
+    System.out.println("From real main");
+    main(10);
+  }
+
+  public static void main(int x) {
+    System.out.println("From overloaded main");
+  }
+}
+</pre>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td>main()<br>calling<br>itself</td>
+<td>
+<pre class="brush: java">
+// MTest.java
+public class MTest {
+  public static void main(String[] args) {
+    System.out.println("Inside main");
+    String[] s;
+    main(s);
+  }
+}
+</pre>
+</td>
+<td></td>
+</tr>
+</table>
+
+    <br>
+    <br>
+    </div>
+  </div>
+  
+ <div id="footer", align="right">
+    <p align="center">In case you find any discrepancies please send them to swaminathanj@am.amrita.edu.</p>
+  </div>
+</div>
+</body>
+</html>
