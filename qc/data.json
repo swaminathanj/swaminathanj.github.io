@@ -12,9 +12,9 @@
         "cr": "3"
       },
       {
-        "cat": "PC",
-        "code": "CS102",
-        "name": "Course 2",
+        "cat": "HUM",
+        "code": "23ENG101",
+        "name": "Technical Communication",
         "l": "3",
         "t": "0",
         "p": "0",
@@ -23,7 +23,7 @@
       {
         "cat": "PC",
         "code": "CS103",
-        "name": "Course 3",
+        "name": "Linear Algebra (Mathematics 1)",
         "l": "3",
         "t": "0",
         "p": "0",
@@ -32,7 +32,7 @@
       {
         "cat": "PC",
         "code": "CS104",
-        "name": "Course 4",
+        "name": "Mechanics (Physics 1)",
         "l": "3",
         "t": "0",
         "p": "0",
@@ -41,7 +41,7 @@
       {
         "cat": "PC",
         "code": "CS105",
-        "name": "Course 5",
+        "name": "Introduction to Electrical and Electronics Engineering",
         "l": "3",
         "t": "0",
         "p": "0",
@@ -50,7 +50,7 @@
       {
         "cat": "PC",
         "code": "CS106",
-        "name": "Course 6",
+        "name": "Basic Electrical and Electronics Engineering",
         "l": "3",
         "t": "0",
         "p": "0",
@@ -59,7 +59,7 @@
       {
         "cat": "PC",
         "code": "CS107",
-        "name": "Course 7",
+        "name": "Computational Problem Solving",
         "l": "3",
         "t": "0",
         "p": "0",
@@ -68,7 +68,7 @@
       {
         "cat": "PC",
         "code": "CS108",
-        "name": "Course 8",
+        "name": "Computer Hardware Essentials",
         "l": "3",
         "t": "0",
         "p": "0",
