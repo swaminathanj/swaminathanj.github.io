@@ -21,7 +21,7 @@
         "cr": "3"
       },
       {
-        "cat": "PC",
+        "cat": "SCI",
         "code": "23MAT117",
         "name": "Linear Algebra (Mathematics 1)",
         "l": "3",
@@ -30,8 +30,8 @@
         "cr": "3"
       },
       {
-        "cat": "PC",
-        "code": "CS104",
+        "cat": "SCI",
+        "code": "",
         "name": "Mechanics (Physics 1)",
         "l": "3",
         "t": "0",
