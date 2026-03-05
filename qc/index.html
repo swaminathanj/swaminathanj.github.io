@@ -3,116 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Curriculum Master - File Sync</title>
+    <title>Curriculum Planner | GitHub Edition</title>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #4b7bec; --secondary: #a29bfe; --accent: #ffd32a;
-            --success: #26de81; --bg: #f0f2f5; --text: #2d3436;
-        }
-
-        body { font-family: 'Nunito', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 20px; }
+        :root { --primary: #4b7bec; --secondary: #a29bfe; --accent: #ffd32a; --success: #26de81; --bg: #f0f2f5; }
+        body { font-family: 'Nunito', sans-serif; background: var(--bg); margin: 0; padding: 20px; }
         
-        .toolbar { 
-            position: sticky; top: 0; background: white; padding: 15px; 
+        .nav-bar { 
+            position: sticky; top: 10px; background: white; padding: 15px 25px; 
             z-index: 100; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            display: flex; justify-content: center; gap: 15px; margin-bottom: 30px;
-            border: 2px solid var(--primary);
+            display: flex; justify-content: space-between; align-items: center;
+            max-width: 1500px; margin: 0 auto 30px; border: 1px solid #ddd;
         }
 
-        .curriculum-grid {
-            display: grid; grid-template-columns: 1fr 1fr;
-            gap: 25px; max-width: 1500px; margin: 0 auto;
+        .curriculum-grid { 
+            display: grid; grid-template-columns: 1fr 1fr; 
+            gap: 25px; max-width: 1500px; margin: 0 auto; 
         }
 
-        .semester-card {
+        .semester-card { 
             background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             border: 1px solid #dcdde1; overflow: hidden; display: flex; flex-direction: column;
         }
 
-        .semester-header {
+        .semester-header { 
             background: var(--primary); color: white; padding: 12px 15px;
             font-family: 'Fredoka One', cursive; display: flex; justify-content: space-between;
         }
 
         .semester-card:nth-child(even) .semester-header { background: var(--secondary); }
 
-        table { width: 100%; border-collapse: collapse; font-size: 0.8rem; min-width: 600px; }
-        th { background: #f8f9fa; padding: 10px 5px; border-bottom: 2px solid #eee; font-size: 0.6rem; text-transform: uppercase; }
-        td { padding: 5px; border-bottom: 1px solid #f1f2f6; }
+        .table-wrapper { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.8rem; min-width: 750px; }
+        th { background: #f8f9fa; padding: 10px 5px; border-bottom: 2px solid #eee; font-size: 0.6rem; text-transform: uppercase; color: #7f8c8d; }
+        td { padding: 6px 4px; border-bottom: 1px solid #f1f2f6; }
 
-        .editable { outline: none; padding: 3px; border-radius: 3px; transition: 0.2s; }
-        .editable:focus { background: #fff9db; box-shadow: 0 0 0 2px var(--accent); }
+        .editable { outline: none; padding: 3px; border-radius: 3px; transition: 0.2s; border: 1px solid transparent; }
+        .editable:focus { background: #fff9db; border-color: var(--accent); }
 
-        .btn { padding: 10px 20px; border-radius: 50px; border: none; font-family: 'Fredoka One', cursive; cursor: pointer; transition: 0.2s; }
-        .btn-open { background: var(--accent); color: #333; }
-        .btn-save { background: var(--success); color: white; }
+        .btn { padding: 10px 20px; border-radius: 50px; border: none; font-family: 'Fredoka One', cursive; cursor: pointer; transition: 0.2s; font-size: 0.8rem; }
+        .btn-export { background: var(--success); color: white; }
+        .btn-reset { background: #ff7675; color: white; padding: 5px 15px; }
         
-        .btn-sm { border: 1px solid #ddd; background: white; cursor: pointer; border-radius: 4px; padding: 2px 4px; font-size: 0.7rem; }
-        
-        .sem-footer { padding: 10px; background: #f8f9fa; text-align: right; font-weight: 800; }
+        .btn-sm { border: 1px solid #ddd; background: white; cursor: pointer; border-radius: 4px; padding: 2px 5px; font-size: 0.7rem; }
+        .btn-sm:hover { background: var(--accent); }
+
+        .sem-footer { padding: 10px; background: #f8f9fa; text-align: right; font-weight: 800; border-top: 1px solid #eee; }
 
         @media (max-width: 1100px) { .curriculum-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
-    <div class="toolbar">
-        <button class="btn btn-open" onclick="linkFile()">📂 1. Link data.json File</button>
-        <button class="btn btn-save" onclick="saveToFile()">💾 2. Save Changes to File</button>
-        <div id="fileStatus" style="align-self: center; font-size: 0.8rem; font-weight: bold;">Status: No file linked</div>
+    <div class="nav-bar">
+        <div>
+            <h2 style="margin:0; font-family:'Fredoka One'; color:var(--primary);">Academic Planner</h2>
+            <small id="sync-status" style="color:#666;">Checking for saved data...</small>
+        </div>
+        <div style="display: flex; gap: 10px;">
+            <button class="btn btn-export" onclick="exportToJSON()">📤 Export Updated JSON</button>
+            <button class="btn btn-reset" onclick="resetToSource()">Reset to data.json</button>
+        </div>
     </div>
 
     <div class="curriculum-grid" id="grid"></div>
 
     <script>
         let data = [];
-        let fileHandle = null;
+        const STORAGE_KEY = 'gh_curriculum_data';
 
-        // Create default structure if file is empty
-        function createDefaults() {
-            let temp = [];
+        // 1. DATA LOADING LOGIC
+        async function init() {
+            const localData = localStorage.getItem(STORAGE_KEY);
+            
+            if (localData) {
+                // If the user has made previous edits in this browser
+                data = JSON.parse(localData);
+                document.getElementById('sync-status').innerText = "Loaded from browser storage (Draft)";
+                render();
+            } else {
+                // Fetch from the data.json file in the repo
+                try {
+                    const response = await fetch('data.json');
+                    if (!response.ok) throw new Error();
+                    data = await response.json();
+                    document.getElementById('sync-status').innerText = "Loaded from data.json (Source)";
+                } catch (err) {
+                    console.log("data.json not found or empty, creating defaults.");
+                    generateDefaults();
+                }
+                render();
+            }
+        }
+
+        function generateDefaults() {
+            data = [];
             for (let s = 1; s <= 8; s++) {
                 let sem = { id: s, courses: [] };
                 for (let c = 1; c <= 10; c++) {
                     sem.courses.push({ cat: 'PC', code: 'CS'+s+'0'+c, name: 'Course '+c, l:'3', t:'0', p:'0', cr:'3' });
                 }
-                temp.push(sem);
-            }
-            return temp;
-        }
-
-        async function linkFile() {
-            try {
-                [fileHandle] = await window.showOpenFilePicker({
-                    types: [{ description: 'JSON File', accept: {'application/json': ['.json']} }]
-                });
-                
-                const file = await fileHandle.getFile();
-                const content = await file.text();
-                
-                data = content ? JSON.parse(content) : createDefaults();
-                document.getElementById('fileStatus').innerText = "✅ Linked: " + file.name;
-                render();
-            } catch (err) {
-                console.error(err);
-                alert("File access denied or cancelled.");
+                data.push(sem);
             }
         }
 
-        async function saveToFile() {
-            if (!fileHandle) return alert("Please link the data.json file first!");
-            
-            try {
-                const writable = await fileHandle.createWritable();
-                await writable.write(JSON.stringify(data, null, 2));
-                await writable.close();
-                alert("File successfully updated in your directory!");
-            } catch (err) {
-                alert("Error saving: " + err.message);
-            }
-        }
-
+        // 2. RENDERING LOGIC
         function render() {
             const grid = document.getElementById('grid');
             grid.innerHTML = '';
@@ -123,20 +118,20 @@
 
                 let rows = sem.courses.map((c, cIdx) => `
                     <tr>
-                        <td>
+                        <td style="width: 50px; text-align:center;">
                             <button class="btn-sm" onclick="reorder(${sIdx}, ${cIdx}, -1)">↑</button>
                             <button class="btn-sm" onclick="reorder(${sIdx}, ${cIdx}, 1)">↓</button>
                         </td>
-                        <td><div class="editable" contenteditable="true" onblur="update(${sIdx},${cIdx},'cat',this.innerText)">${c.cat}</div></td>
-                        <td><div class="editable" contenteditable="true" onblur="update(${sIdx},${cIdx},'code',this.innerText)">${c.code}</div></td>
+                        <td style="width:40px;"><div class="editable" contenteditable="true" onblur="update(${sIdx},${cIdx},'cat',this.innerText)">${c.cat}</div></td>
+                        <td style="width:80px;"><div class="editable" contenteditable="true" onblur="update(${sIdx},${cIdx},'code',this.innerText)">${c.code}</div></td>
                         <td><div class="editable" contenteditable="true" onblur="update(${sIdx},${cIdx},'name',this.innerText)">${c.name}</div></td>
-                        <td><div class="editable" contenteditable="true" onblur="update(${sIdx},${cIdx},'l',this.innerText)">${c.l}</div></td>
-                        <td><div class="editable" contenteditable="true" onblur="update(${sIdx},${cIdx},'t',this.innerText)">${c.t}</div></td>
-                        <td><div class="editable" contenteditable="true" onblur="update(${sIdx},${cIdx},'p',this.innerText)">${c.p}</div></td>
-                        <td><div class="editable" contenteditable="true" onblur="update(${sIdx},${cIdx},'cr',this.innerText)">${c.cr}</div></td>
-                        <td>
-                            <select onchange="transfer(${sIdx}, ${cIdx}, this.value)" style="font-size: 0.6rem">
-                                <option disabled selected>Move...</option>
+                        <td style="width:25px;"><div class="editable" contenteditable="true" onblur="update(${sIdx},${cIdx},'l',this.innerText)">${c.l}</div></td>
+                        <td style="width:25px;"><div class="editable" contenteditable="true" onblur="update(${sIdx},${cIdx},'t',this.innerText)">${c.t}</div></td>
+                        <td style="width:25px;"><div class="editable" contenteditable="true" onblur="update(${sIdx},${cIdx},'p',this.innerText)">${c.p}</div></td>
+                        <td style="width:30px; font-weight:800; background:#fff9db;"><div class="editable" contenteditable="true" onblur="update(${sIdx},${cIdx},'cr',this.innerText)">${c.cr}</div></td>
+                        <td style="width:90px;">
+                            <select onchange="transfer(${sIdx}, ${cIdx}, this.value)" style="font-size:0.7rem; width:100%;">
+                                <option disabled selected>Move To...</option>
                                 ${data.map(t => `<option value="${t.id-1}">Sem ${t.id}</option>`).join('')}
                             </select>
                         </td>
@@ -144,20 +139,24 @@
                 `).join('');
 
                 card.innerHTML = `
-                    <div class="semester-header">Semester ${sem.id}</div>
-                    <table>
-                        <thead><tr><th>Pos</th><th>Cat</th><th>Code</th><th>Name</th><th>L</th><th>T</th><th>P</th><th>Cr</th><th>Move</th></tr></thead>
-                        <tbody>${rows}</tbody>
-                    </table>
-                    <div class="sem-footer">Credits: ${sem.courses.reduce((sum, c) => sum + (parseFloat(c.cr) || 0), 0)}</div>
+                    <div class="semester-header">Semester ${sem.id} <span style="font-size:0.7rem; opacity:0.8;">${sem.courses.length} Courses</span></div>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead><tr><th>Pos</th><th>Cat</th><th>Code</th><th>Name</th><th>L</th><th>T</th><th>P</th><th>Cr</th><th>Transfer</th></tr></thead>
+                            <tbody>${rows}</tbody>
+                        </table>
+                    </div>
+                    <div class="sem-footer">Total Credits: ${sem.courses.reduce((sum, c) => sum + (parseFloat(c.cr) || 0), 0)}</div>
                 `;
                 grid.appendChild(card);
             });
         }
 
-        function update(sIdx, cIdx, field, val) { 
-            data[sIdx].courses[cIdx][field] = val; 
-            if(field === 'cr') render(); 
+        // 3. EDITING LOGIC
+        function update(sIdx, cIdx, field, val) {
+            data[sIdx].courses[cIdx][field] = val;
+            autoSave();
+            if(field === 'cr') render();
         }
 
         function reorder(sIdx, cIdx, dir) {
@@ -165,19 +164,39 @@
             const target = cIdx + dir;
             if (target >= 0 && target < list.length) {
                 [list[cIdx], list[target]] = [list[target], list[cIdx]];
-                render();
+                autoSave(); render();
             }
         }
 
         function transfer(sIdx, cIdx, targetSIdx) {
             const item = data[sIdx].courses.splice(cIdx, 1)[0];
             data[targetSIdx].courses.push(item);
-            render();
+            autoSave(); render();
         }
 
-        // Initialize with default view
-        data = createDefaults();
-        render();
+        function autoSave() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            document.getElementById('sync-status').innerText = "Changes saved to browser draft";
+        }
+
+        function resetToSource() {
+            if(confirm("Discard all browser changes and reload from data.json?")) {
+                localStorage.removeItem(STORAGE_KEY);
+                location.reload();
+            }
+        }
+
+        function exportToJSON() {
+            const blob = new Blob([JSON.stringify(data, null, 2)], {type : 'application/json'});
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'data.json';
+            a.click();
+            alert("Step 1: data.json downloaded.\nStep 2: Upload this file to your GitHub repository to update the source.");
+        }
+
+        init();
     </script>
 </body>
 </html>
