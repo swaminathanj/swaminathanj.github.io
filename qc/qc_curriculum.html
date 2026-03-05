@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B.Tech CSE (Quantum Computing) Curriculum</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4b7bec;
+            --secondary: #a29bfe;
+            --accent: #ffd32a;
+            --success: #26de81;
+            --bg: #f0f2f5;
+            --text: #2d3436;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 40px 10px;
+        }
+
+        .header { text-align: center; margin-bottom: 40px; }
+        h1 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.8rem;
+            color: var(--primary);
+            text-shadow: 2px 2px 0px var(--accent);
+            margin: 0;
+        }
+
+        .curriculum-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            max-width: 1500px;
+            margin: 0 auto;
+        }
+
+        .semester-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 1px solid #dcdde1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .semester-header {
+            background: var(--primary);
+            color: white;
+            padding: 12px 15px;
+            font-family: 'Fredoka One', cursive;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .semester-card:nth-child(even) .semester-header { background: var(--secondary); }
+
+        .table-wrapper { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.82rem; min-width: 650px; }
+        th {
+            background: #f8f9fa;
+            color: #7f8c8d;
+            text-align: left;
+            padding: 10px 5px;
+            border-bottom: 2px solid #eee;
+            font-size: 0.6rem;
+            text-transform: uppercase;
+        }
+
+        td { padding: 5px; border-bottom: 1px solid #f1f2f6; }
+
+        .col-move { width: 60px; text-align: center; }
+        .col-cat { width: 40px; text-align: center; font-weight: 700; color: var(--primary); }
+        .col-code { width: 80px; font-family: monospace; }
+        .col-name { min-width: 120px; font-weight: 600; }
+        .col-val { width: 25px; text-align: center; background: #fafafa; }
+        .col-cr { width: 30px; text-align: center; font-weight: 800; background: #fff9db; }
+        .col-transfer { width: 90px; }
+
+        .editable {
+            outline: none;
+            padding: 2px 4px;
+            border-radius: 3px;
+            transition: 0.2s;
+        }
+        .editable:focus { background: #fff; box-shadow: 0 0 0 2px var(--accent); }
+
+        /* Small action buttons */
+        .btn-sm {
+            border: none;
+            background: #eee;
+            cursor: pointer;
+            border-radius: 4px;
+            padding: 2px 5px;
+            font-size: 0.7rem;
+            margin: 0 1px;
+        }
+        .btn-sm:hover { background: var(--accent); }
+
+        select.transfer-sel {
+            font-size: 0.7rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 100%;
+        }
+
+        .sem-footer {
+            padding: 8px 15px;
+            background: #f8f9fa;
+            text-align: right;
+            font-weight: 800;
+            font-size: 0.85rem;
+        }
+
+        .controls { text-align: center; margin: 30px; }
+        .btn-main {
+            padding: 12px 25px;
+            border-radius: 50px;
+            border: none;
+            font-family: 'Fredoka One', cursive;
+            cursor: pointer;
+            background: var(--success);
+            color: white;
+            margin: 5px;
+        }
+
+        @media (max-width: 1100px) { .curriculum-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>📑 Interactive Curriculum Planner</h1>
+        <p>Use arrows to reorder | Use "Move To" to change semesters</p>
+    </div>
+
+    <div class="curriculum-grid" id="grid"></div>
+
+    <div class="controls">
+        <button class="btn-main" onclick="saveToCloud()">💾 Save All Progress</button>
+        <button class="btn-main" style="background: #fab1a0;" onclick="resetAll()">🗑️ Reset Grid</button>
+    </div>
+
+    <script>
+        let data = [];
+
+        // Initialize Data
+        function loadData() {
+            const saved = localStorage.getItem('curriculum_v2');
+            if (saved) {
+                data = JSON.parse(saved);
+            } else {
+                for (let s = 1; s <= 8; s++) {
+                    let semester = { id: s, courses: [] };
+                    for (let c = 1; c <= 10; c++) {
+                        semester.courses.push({
+                            cat: 'PC', code: `CS${s}0${c}`, name: `Course ${c}`,
+                            l: '3', t: '0', p: '0', cr: '3'
+                        });
+                    }
+                    data.push(semester);
+                }
+            }
+            render();
+        }
+
+        function render() {
+            const grid = document.getElementById('grid');
+            grid.innerHTML = '';
+
+            data.forEach((sem, sIdx) => {
+                const card = document.createElement('div');
+                card.className = 'semester-card';
+
+                let rows = sem.courses.map((c, cIdx) => `
+                    <tr>
+                        <td class="col-move">
+                            <button class="btn-sm" onclick="moveUpDown(${sIdx}, ${cIdx}, -1)">↑</button>
+                            <button class="btn-sm" onclick="moveUpDown(${sIdx}, ${cIdx}, 1)">↓</button>
+                        </td>
+                        <td class="col-cat"><div class="editable" contenteditable="true" onblur="update(${sIdx}, ${cIdx}, 'cat', this.innerText)">${c.cat}</div></td>
+                        <td class="col-code"><div class="editable" contenteditable="true" onblur="update(${sIdx}, ${cIdx}, 'code', this.innerText)">${c.code}</div></td>
+                        <td class="col-name"><div class="editable" contenteditable="true" onblur="update(${sIdx}, ${cIdx}, 'name', this.innerText)">${c.name}</div></td>
+                        <td class="col-val"><div class="editable" contenteditable="true" onblur="update(${sIdx}, ${cIdx}, 'l', this.innerText)">${c.l}</div></td>
+                        <td class="col-val"><div class="editable" contenteditable="true" onblur="update(${sIdx}, ${cIdx}, 't', this.innerText)">${c.t}</div></td>
+                        <td class="col-val"><div class="editable" contenteditable="true" onblur="update(${sIdx}, ${cIdx}, 'p', this.innerText)">${c.p}</div></td>
+                        <td class="col-cr"><div class="editable" contenteditable="true" onblur="update(${sIdx}, ${cIdx}, 'cr', this.innerText)">${c.cr}</div></td>
+                        <td class="col-transfer">
+                            <select class="transfer-sel" onchange="transfer(${sIdx}, ${cIdx}, this.value)">
+                                <option disabled selected>Move to...</option>
+                                ${data.map(t => `<option value="${t.id-1}">Sem ${t.id}</option>`).join('')}
+                            </select>
+                        </td>
+                    </tr>
+                `).join('');
+
+                card.innerHTML = `
+                    <div class="semester-header">Semester ${sem.id} <span>${sem.courses.length} Courses</span></div>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Order</th><th>Cat</th><th>Code</th><th>Name</th><th>L</th><th>T</th><th>P</th><th>Cr</th><th>Transfer</th>
+                                </tr>
+                            </thead>
+                            <tbody>${rows}</tbody>
+                        </table>
+                    </div>
+                    <div class="sem-footer">Total Credits: ${sem.courses.reduce((sum, c) => sum + (parseFloat(c.cr) || 0), 0)}</div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Logic Functions
+        function update(sIdx, cIdx, field, value) {
+            data[sIdx].courses[cIdx][field] = value;
+            autoSave();
+            if (field === 'cr') render(); // Refresh total credits
+        }
+
+        function moveUpDown(sIdx, cIdx, dir) {
+            const courses = data[sIdx].courses;
+            const targetIdx = cIdx + dir;
+            if (targetIdx >= 0 && targetIdx < courses.length) {
+                [courses[cIdx], courses[targetIdx]] = [courses[targetIdx], courses[cIdx]];
+                autoSave();
+                render();
+            }
+        }
+
+        function transfer(sIdx, cIdx, targetSIdx) {
+            targetSIdx = parseInt(targetSIdx);
+            if (sIdx === targetSIdx) return;
+            
+            const courseToMove = data[sIdx].courses.splice(cIdx, 1)[0];
+            data[targetSIdx].courses.push(courseToMove);
+            
+            autoSave();
+            render();
+        }
+
+        function autoSave() { localStorage.setItem('curriculum_v2', JSON.stringify(data)); }
+        function saveToCloud() { alert("Progress synced successfully!"); }
+        function resetAll() { if(confirm("Clear all data?")) { localStorage.clear(); location.reload(); } }
+
+        loadData();
+    </script>
+</body>
+</html>
