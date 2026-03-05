@@ -12,8 +12,8 @@
         "cr": "3"
       },
       {
-        "cat": "HUM",
-        "code": "23ENG101",
+        "cat": "PC",
+        "code": "CS102",
         "name": "Technical Communication",
         "l": "3",
         "t": "0",
@@ -22,7 +22,7 @@
       },
       {
         "cat": "PC",
-        "code": "CS103",
+        "code": "23MAT117",
         "name": "Linear Algebra (Mathematics 1)",
         "l": "3",
         "t": "0",
