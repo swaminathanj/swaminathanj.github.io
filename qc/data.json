@@ -1,1 +1,696 @@
-
+{
+  "semesters": [
+    {
+      "id": 1,
+      "courses": [
+        {
+          "cat": "PC",
+          "code": "S1-C1",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S1-C2",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S1-C3",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S1-C4",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S1-C5",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S1-C6",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S1-C7",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S1-C8",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "courses": [
+        {
+          "cat": "PC",
+          "code": "S2-C1",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S2-C2",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S2-C3",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S2-C4",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S2-C5",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S2-C6",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S2-C7",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S2-C8",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "courses": [
+        {
+          "cat": "PC",
+          "code": "S3-C1",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S3-C2",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S3-C3",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S3-C4",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S3-C5",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S3-C6",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S3-C7",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S3-C8",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "courses": [
+        {
+          "cat": "PC",
+          "code": "S4-C1",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S4-C2",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S4-C3",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S4-C4",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S4-C5",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S4-C6",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S4-C7",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S4-C8",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "courses": [
+        {
+          "cat": "PC",
+          "code": "S5-C1",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S5-C2",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S5-C3",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S5-C4",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S5-C5",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S5-C6",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S5-C7",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S5-C8",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "courses": [
+        {
+          "cat": "PC",
+          "code": "S6-C1",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S6-C2",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S6-C3",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S6-C4",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S6-C5",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S6-C6",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S6-C7",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S6-C8",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "courses": [
+        {
+          "cat": "PC",
+          "code": "S7-C1",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S7-C2",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S7-C3",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S7-C4",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S7-C5",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S7-C6",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S7-C7",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S7-C8",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "courses": [
+        {
+          "cat": "PC",
+          "code": "S8-C1",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S8-C2",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S8-C3",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S8-C4",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S8-C5",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S8-C6",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S8-C7",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        },
+        {
+          "cat": "PC",
+          "code": "S8-C8",
+          "name": "New Course",
+          "l": "3",
+          "t": "0",
+          "p": "0",
+          "cr": "3",
+          "url": "course.html"
+        }
+      ]
+    }
+  ],
+  "electives": [
+    {
+      "cat": "PC",
+      "code": "ELEC-01",
+      "name": "New Course",
+      "l": "3",
+      "t": "0",
+      "p": "0",
+      "cr": "3",
+      "url": "course.html"
+    }
+  ]
+}
