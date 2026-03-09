@@ -4,84 +4,104 @@
       "id": 1,
       "courses": [
         {
-          "cat": "PC",
-          "code": "S1-C1",
-          "name": "New Course",
-          "l": "3",
+          "cat": "HUM",
+          "code": "23ENG101",
+          "name": "Technical Communication",
+          "l": "2",
           "t": "0",
-          "p": "0",
+          "p": "3",
           "cr": "3",
-          "url": "course.html"
+          "url": "s1/tc.html"
         },
         {
-          "cat": "PC",
-          "code": "S1-C2",
-          "name": "New Course",
+          "cat": "CSE",
+          "code": "26CSE___",
+          "name": "Computer Programming",
           "l": "3",
           "t": "0",
-          "p": "0",
+          "p": "2",
           "cr": "3",
-          "url": "course.html"
+          "url": "s1/cp.html"
         },
         {
-          "cat": "PC",
-          "code": "S1-C3",
-          "name": "New Course",
-          "l": "3",
+          "cat": "ENGG",
+          "code": "23CSE102",
+          "name": "Computer Hardware Essentials",
+          "l": "0",
           "t": "0",
-          "p": "0",
-          "cr": "3",
-          "url": "course.html"
+          "p": "3",
+          "cr": "1",
+          "url": "s1/che.html"
         },
         {
-          "cat": "PC",
-          "code": "S1-C4",
-          "name": "New Course",
+          "cat": "SCI",
+          "code": "23MAT117",
+          "name": "Linear Algebra (Mathematics 1)",
           "l": "3",
           "t": "0",
-          "p": "0",
+          "p": "2",
           "cr": "3",
-          "url": "course.html"
+          "url": "s1/la.html"
         },
         {
-          "cat": "PC",
-          "code": "S1-C5",
-          "name": "New Course",
-          "l": "3",
-          "t": "0",
+          "cat": "SCI",
+          "code": "26PHY___",
+          "name": "Mechanics (Physics 1)",
+          "l": "2",
+          "t": "1",
           "p": "0",
           "cr": "3",
-          "url": "course.html"
+          "url": "s1/mech.html"
         },
         {
-          "cat": "PC",
-          "code": "S1-C6",
-          "name": "New Course",
+          "cat": "ENGG",
+          "code": "23EEE104",
+          "name": "Introduction to Electrical and Electronics Engineering",
           "l": "3",
           "t": "0",
           "p": "0",
           "cr": "3",
-          "url": "course.html"
+          "url": "s1/eee.html"
         },
         {
-          "cat": "PC",
-          "code": "S1-C7",
-          "name": "New Course",
-          "l": "3",
+          "cat": "ENGG",
+          "code": "23EEE184",
+          "name": "Basic Electrical and Electronics Engineering Practice",
+          "l": "0",
           "t": "0",
-          "p": "0",
-          "cr": "3",
-          "url": "course.html"
+          "p": "3",
+          "cr": "1",
+          "url": "s1/eeep.html"
         },
         {
-          "cat": "PC",
-          "code": "S1-C8",
-          "name": "New Course",
-          "l": "3",
+          "cat": "HUM",
+          "code": "22ADM101",
+          "name": "Foundations of Indian Heritage",
+          "l": "2",
           "t": "0",
-          "p": "0",
-          "cr": "3",
-          "url": "course.html"
+          "p": "1",
+          "cr": "2",
+          "url": "s1/fih.html"
+        },
+        {
+          "cat": "HUM",
+          "code": "22AVP103",
+          "name": "Mastery Over Mind",
+          "l": "1",
+          "t": "0",
+          "p": "2",
+          "cr": "2",
+          "url": "s1/maom.html"
+        },
+        {
+          "cat": "\n",
+          "code": "\n",
+          "name": "\n",
+          "l": "16",
+          "t": "1",
+          "p": "16",
+          "cr": "\n",
+          "url": "Total (16L + 1T+16P = 33 hrs)"
         }
       ]
     },
