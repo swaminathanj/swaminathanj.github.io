@@ -3,198 +3,224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Curriculum Planner | GitHub Edition</title>
+    <title>Advanced Curriculum Architect</title>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #4b7bec; --secondary: #a29bfe; --accent: #ffd32a; --success: #26de81; --bg: #f0f2f5; }
+        :root { --primary: #4b7bec; --secondary: #a29bfe; --accent: #ffd32a; --success: #26de81; --danger: #ff7675; --bg: #f0f2f5; }
         body { font-family: 'Nunito', sans-serif; background: var(--bg); margin: 0; padding: 20px; }
         
         .nav-bar { 
             position: sticky; top: 10px; background: white; padding: 15px 25px; 
             z-index: 100; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             display: flex; justify-content: space-between; align-items: center;
-            max-width: 1500px; margin: 0 auto 30px; border: 1px solid #ddd;
+            max-width: 1600px; margin: 0 auto 30px; border: 1px solid #ddd;
         }
 
-        .curriculum-grid { 
-            display: grid; grid-template-columns: 1fr 1fr; 
-            gap: 25px; max-width: 1500px; margin: 0 auto; 
-        }
-
-        .semester-card { 
+        .curriculum-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; max-width: 1600px; margin: 0 auto; }
+        .semester-card, .electives-card { 
             background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            border: 1px solid #dcdde1; overflow: hidden; display: flex; flex-direction: column;
+            border: 2px solid transparent; overflow: hidden; display: flex; flex-direction: column; transition: 0.3s;
         }
+        
+        /* Drag and Drop Visual Feedback */
+        .drag-over { border: 2px dashed var(--primary); transform: scale(1.01); background: #ebf2ff; }
 
-        .semester-header { 
+        .semester-header, .electives-header { 
             background: var(--primary); color: white; padding: 12px 15px;
-            font-family: 'Fredoka One', cursive; display: flex; justify-content: space-between;
+            font-family: 'Fredoka One', cursive; display: flex; justify-content: space-between; align-items: center;
         }
-
         .semester-card:nth-child(even) .semester-header { background: var(--secondary); }
+        .electives-header { background: #2d3436; }
 
         .table-wrapper { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; font-size: 0.8rem; min-width: 750px; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.8rem; min-width: 900px; }
         th { background: #f8f9fa; padding: 10px 5px; border-bottom: 2px solid #eee; font-size: 0.6rem; text-transform: uppercase; color: #7f8c8d; }
         td { padding: 6px 4px; border-bottom: 1px solid #f1f2f6; }
+
+        tr[draggable="true"] { cursor: grab; }
+        tr[draggable="true"]:active { cursor: grabbing; }
 
         .editable { outline: none; padding: 3px; border-radius: 3px; transition: 0.2s; border: 1px solid transparent; }
         .editable:focus { background: #fff9db; border-color: var(--accent); }
 
-        .btn { padding: 10px 20px; border-radius: 50px; border: none; font-family: 'Fredoka One', cursive; cursor: pointer; transition: 0.2s; font-size: 0.8rem; }
-        .btn-export { background: var(--success); color: white; }
-        .btn-reset { background: #ff7675; color: white; padding: 5px 15px; }
+        .course-link { color: var(--primary); text-decoration: none; font-weight: 800; display: block; margin-bottom: 2px; }
         
-        .btn-sm { border: 1px solid #ddd; background: white; cursor: pointer; border-radius: 4px; padding: 2px 5px; font-size: 0.7rem; }
-        .btn-sm:hover { background: var(--accent); }
+        .btn { padding: 8px 15px; border-radius: 50px; border: none; font-family: 'Fredoka One', cursive; cursor: pointer; transition: 0.2s; font-size: 0.75rem; }
+        .btn-add { background: var(--success); color: white; }
+        .btn-del { background: none; color: var(--danger); font-size: 1.2rem; font-weight: bold; line-height: 1; }
+        .btn-export { background: var(--primary); color: white; }
 
         .sem-footer { padding: 10px; background: #f8f9fa; text-align: right; font-weight: 800; border-top: 1px solid #eee; }
+        
+        .electives-section { max-width: 1600px; margin: 40px auto 20px; }
 
-        @media (max-width: 1100px) { .curriculum-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 1200px) { .curriculum-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
     <div class="nav-bar">
         <div>
-            <h2 style="margin:0; font-family:'Fredoka One'; color:var(--primary);">Academic Planner</h2>
-            <small id="sync-status" style="color:#666;">Checking for saved data...</small>
+            <h2 style="margin:0; font-family:'Fredoka One'; color:var(--primary);">Degree Roadmap Pro</h2>
+            <small id="sync-status" style="color:#666;">Drag rows to move across semesters</small>
         </div>
         <div style="display: flex; gap: 10px;">
-            <button class="btn btn-export" onclick="exportToJSON()">📤 Export Updated JSON</button>
-            <button class="btn btn-reset" onclick="resetToSource()">Reset to data.json</button>
+            <button class="btn btn-export" onclick="exportToJSON()">📤 Export data.json</button>
+            <button class="btn" style="background:#eee;" onclick="resetData()">Reset All</button>
         </div>
     </div>
 
     <div class="curriculum-grid" id="grid"></div>
 
-    <script>
-        let data = [];
-        const STORAGE_KEY = 'gh_curriculum_data';
+    <div class="electives-section">
+        <div class="electives-card">
+            <div class="electives-header">
+                Stream-Wise Electives
+                <button class="btn btn-add" onclick="addRow('electives')">+ Add Elective</button>
+            </div>
+            <div class="table-wrapper">
+                <table id="electives-table">
+                    <thead><tr><th>Cat</th><th>Code</th><th>Course Name & Link</th><th>HTML File</th><th>L</th><th>T</th><th>P</th><th>Cr</th><th>Actions</th></tr></thead>
+                    <tbody id="electives-body"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
-        // 1. DATA LOADING LOGIC
+    <script>
+        let state = { semesters: [], electives: [] };
+        const STORAGE_KEY = 'gh_curriculum_v4';
+        let draggedItem = null;
+
         async function init() {
-            const localData = localStorage.getItem(STORAGE_KEY);
-            
-            if (localData) {
-                // If the user has made previous edits in this browser
-                data = JSON.parse(localData);
-                document.getElementById('sync-status').innerText = "Loaded from browser storage (Draft)";
-                render();
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                state = JSON.parse(saved);
             } else {
-                // Fetch from the data.json file in the repo
                 try {
-                    const response = await fetch('data.json');
-                    if (!response.ok) throw new Error();
-                    data = await response.json();
-                    document.getElementById('sync-status').innerText = "Loaded from data.json (Source)";
-                } catch (err) {
-                    console.log("data.json not found or empty, creating defaults.");
-                    generateDefaults();
-                }
-                render();
+                    const res = await fetch('data.json');
+                    state = await res.json();
+                } catch { generateDefaults(); }
             }
+            render();
         }
 
         function generateDefaults() {
-            data = [];
-            for (let s = 1; s <= 8; s++) {
-                let sem = { id: s, courses: [] };
-                for (let c = 1; c <= 10; c++) {
-                    sem.courses.push({ cat: 'PC', code: 'CS'+s+'0'+c, name: 'Course '+c, l:'3', t:'0', p:'0', cr:'3' });
-                }
-                data.push(sem);
-            }
+            state.semesters = Array.from({length: 8}, (_, i) => ({
+                id: i + 1,
+                courses: Array.from({length: 8}, (_, j) => createCourse(`S${i+1}-C${j+1}`))
+            }));
+            state.electives = [createCourse('ELEC-01')];
         }
 
-        // 2. RENDERING LOGIC
+        function createCourse(label) {
+            return { cat: 'PC', code: label, name: 'New Course', l: '3', t: '0', p: '0', cr: '3', url: 'course.html' };
+        }
+
         function render() {
+            renderGrid();
+            renderElectives();
+        }
+
+        function renderGrid() {
             const grid = document.getElementById('grid');
             grid.innerHTML = '';
-
-            data.forEach((sem, sIdx) => {
+            state.semesters.forEach((sem, sIdx) => {
                 const card = document.createElement('div');
                 card.className = 'semester-card';
-
-                let rows = sem.courses.map((c, cIdx) => `
-                    <tr>
-                        <td style="width: 50px; text-align:center;">
-                            <button class="btn-sm" onclick="reorder(${sIdx}, ${cIdx}, -1)">↑</button>
-                            <button class="btn-sm" onclick="reorder(${sIdx}, ${cIdx}, 1)">↓</button>
-                        </td>
-                        <td style="width:40px;"><div class="editable" contenteditable="true" onblur="update(${sIdx},${cIdx},'cat',this.innerText)">${c.cat}</div></td>
-                        <td style="width:80px;"><div class="editable" contenteditable="true" onblur="update(${sIdx},${cIdx},'code',this.innerText)">${c.code}</div></td>
-                        <td><div class="editable" contenteditable="true" onblur="update(${sIdx},${cIdx},'name',this.innerText)">${c.name}</div></td>
-                        <td style="width:25px;"><div class="editable" contenteditable="true" onblur="update(${sIdx},${cIdx},'l',this.innerText)">${c.l}</div></td>
-                        <td style="width:25px;"><div class="editable" contenteditable="true" onblur="update(${sIdx},${cIdx},'t',this.innerText)">${c.t}</div></td>
-                        <td style="width:25px;"><div class="editable" contenteditable="true" onblur="update(${sIdx},${cIdx},'p',this.innerText)">${c.p}</div></td>
-                        <td style="width:30px; font-weight:800; background:#fff9db;"><div class="editable" contenteditable="true" onblur="update(${sIdx},${cIdx},'cr',this.innerText)">${c.cr}</div></td>
-                        <td style="width:90px;">
-                            <select onchange="transfer(${sIdx}, ${cIdx}, this.value)" style="font-size:0.7rem; width:100%;">
-                                <option disabled selected>Move To...</option>
-                                ${data.map(t => `<option value="${t.id-1}">Sem ${t.id}</option>`).join('')}
-                            </select>
-                        </td>
-                    </tr>
-                `).join('');
+                card.ondragover = (e) => { e.preventDefault(); card.classList.add('drag-over'); };
+                card.ondragleave = () => card.classList.remove('drag-over');
+                card.ondrop = (e) => handleDrop(e, sIdx);
 
                 card.innerHTML = `
-                    <div class="semester-header">Semester ${sem.id} <span style="font-size:0.7rem; opacity:0.8;">${sem.courses.length} Courses</span></div>
+                    <div class="semester-header">
+                        Semester ${sem.id}
+                        <button class="btn btn-add" onclick="addRow('sem', ${sIdx})">+ Add</button>
+                    </div>
                     <div class="table-wrapper">
                         <table>
-                            <thead><tr><th>Pos</th><th>Cat</th><th>Code</th><th>Name</th><th>L</th><th>T</th><th>P</th><th>Cr</th><th>Transfer</th></tr></thead>
-                            <tbody>${rows}</tbody>
+                            <thead><tr><th>Cat</th><th>Code</th><th>Name & Link</th><th>HTML File</th><th>L</th><th>T</th><th>P</th><th>Cr</th><th></th></tr></thead>
+                            <tbody>${sem.courses.map((c, cIdx) => renderRow(c, 'sem', sIdx, cIdx)).join('')}</tbody>
                         </table>
                     </div>
-                    <div class="sem-footer">Total Credits: ${sem.courses.reduce((sum, c) => sum + (parseFloat(c.cr) || 0), 0)}</div>
+                    <div class="sem-footer">Credits: ${sem.courses.reduce((acc, c) => acc + (parseFloat(c.cr)||0), 0)}</div>
                 `;
                 grid.appendChild(card);
             });
         }
 
-        // 3. EDITING LOGIC
-        function update(sIdx, cIdx, field, val) {
-            data[sIdx].courses[cIdx][field] = val;
-            autoSave();
-            if(field === 'cr') render();
+        function renderElectives() {
+            const body = document.getElementById('electives-body');
+            body.innerHTML = state.electives.map((c, cIdx) => renderRow(c, 'elec', null, cIdx)).join('');
         }
 
-        function reorder(sIdx, cIdx, dir) {
-            const list = data[sIdx].courses;
-            const target = cIdx + dir;
-            if (target >= 0 && target < list.length) {
-                [list[cIdx], list[target]] = [list[target], list[cIdx]];
-                autoSave(); render();
+        function renderRow(c, type, sIdx, cIdx) {
+            const id = type === 'sem' ? `${sIdx}-${cIdx}` : `elec-${cIdx}`;
+            return `
+                <tr draggable="true" ondragstart="handleDragStart('${type}', ${sIdx}, ${cIdx})">
+                    <td style="width:40px;"><div class="editable" contenteditable="true" onblur="update('${type}', ${sIdx}, ${cIdx}, 'cat', this.innerText)">${c.cat}</div></td>
+                    <td style="width:80px;"><div class="editable" contenteditable="true" onblur="update('${type}', ${sIdx}, ${cIdx}, 'code', this.innerText)">${c.code}</div></td>
+                    <td>
+                        <a href="${c.url}" class="course-link">${c.name}</a>
+                        <div class="editable" style="font-size:0.7rem; color:#888" contenteditable="true" onblur="update('${type}', ${sIdx}, ${cIdx}, 'name', this.innerText)">${c.name}</div>
+                    </td>
+                    <td><div class="editable" contenteditable="true" onblur="update('${type}', ${sIdx}, ${cIdx}, 'url', this.innerText)">${c.url}</div></td>
+                    <td style="width:20px;"><div class="editable" contenteditable="true" onblur="update('${type}', ${sIdx}, ${cIdx}, 'l', this.innerText)">${c.l}</div></td>
+                    <td style="width:20px;"><div class="editable" contenteditable="true" onblur="update('${type}', ${sIdx}, ${cIdx}, 't', this.innerText)">${c.t}</div></td>
+                    <td style="width:20px;"><div class="editable" contenteditable="true" onblur="update('${type}', ${sIdx}, ${cIdx}, 'p', this.innerText)">${c.p}</div></td>
+                    <td style="width:25px; font-weight:bold;"><div class="editable" contenteditable="true" onblur="update('${type}', ${sIdx}, ${cIdx}, 'cr', this.innerText)">${c.cr}</div></td>
+                    <td style="width:30px; text-align:center;"><button class="btn-del" onclick="deleteRow('${type}', ${sIdx}, ${cIdx})">×</button></td>
+                </tr>
+            `;
+        }
+
+        // --- Logic Handlers ---
+
+        function handleDragStart(type, sIdx, cIdx) {
+            draggedItem = { type, sIdx, cIdx };
+        }
+
+        function handleDrop(e, targetSIdx) {
+            e.preventDefault();
+            document.querySelectorAll('.semester-card').forEach(c => c.classList.remove('drag-over'));
+            
+            if (draggedItem.type === 'sem') {
+                const item = state.semesters[draggedItem.sIdx].courses.splice(draggedItem.cIdx, 1)[0];
+                state.semesters[targetSIdx].courses.push(item);
+                save(); render();
             }
         }
 
-        function transfer(sIdx, cIdx, targetSIdx) {
-            const item = data[sIdx].courses.splice(cIdx, 1)[0];
-            data[targetSIdx].courses.push(item);
-            autoSave(); render();
+        function addRow(type, sIdx) {
+            const newCourse = createCourse('NEW');
+            if(type === 'sem') state.semesters[sIdx].courses.push(newCourse);
+            else state.electives.push(newCourse);
+            save(); render();
         }
 
-        function autoSave() {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-            document.getElementById('sync-status').innerText = "Changes saved to browser draft";
+        function deleteRow(type, sIdx, cIdx) {
+            if(!confirm("Delete this course?")) return;
+            if(type === 'sem') state.semesters[sIdx].courses.splice(cIdx, 1);
+            else state.electives.splice(cIdx, 1);
+            save(); render();
         }
 
-        function resetToSource() {
-            if(confirm("Discard all browser changes and reload from data.json?")) {
-                localStorage.removeItem(STORAGE_KEY);
-                location.reload();
-            }
+        function update(type, sIdx, cIdx, field, val) {
+            const target = type === 'sem' ? state.semesters[sIdx].courses[cIdx] : state.electives[cIdx];
+            target[field] = val;
+            save();
+            if(field === 'cr' || field === 'name' || field === 'url') render();
         }
 
+        function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
         function exportToJSON() {
-            const blob = new Blob([JSON.stringify(data, null, 2)], {type : 'application/json'});
-            const url = window.URL.createObjectURL(blob);
+            const blob = new Blob([JSON.stringify(state, null, 2)], {type : 'application/json'});
             const a = document.createElement('a');
-            a.href = url;
+            a.href = window.URL.createObjectURL(blob);
             a.download = 'data.json';
             a.click();
-            alert("Step 1: data.json downloaded.\nStep 2: Upload this file to your GitHub repository to update the source.");
         }
+        function resetData() { if(confirm("Clear all?")) { localStorage.removeItem(STORAGE_KEY); location.reload(); }}
 
         init();
     </script>
